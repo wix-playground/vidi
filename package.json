@@ -1,0 +1,50 @@
+{
+  "name": "videoholic",
+  "version": "0.0.0",
+  "description": "Adaptive HTML5-based video playback abstraction library",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "build": "tsc",
+    "bundle": "webpack",
+    "pretest": "npm run bundle",
+    "test": "mocha --reporter=mocha-env-reporter ./dist/test.bundle.js",
+    "prepublish": "typings install",
+    "start": "webpack-dev-server --progress"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wix/wix-media-platform-videoholic.git"
+  },
+  "keywords": [
+    "video",
+    "media",
+    "html5",
+    "mse",
+    "adaptive",
+    "hls",
+    "dash",
+    "mpeg"
+  ],
+  "author": "Avi Vahl (avi.vahl@wix.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wix/wix-media-platform-videoholic/issues"
+  },
+  "homepage": "https://github.com/wix/wix-media-platform-videoholic#readme",
+  "devDependencies": {
+    "chai": "3.5.0",
+    "mocha": "2.5.3",
+    "mocha-env-reporter": "1.0.2",
+    "mocha-loader": "0.7.1",
+    "ts-loader": "0.8.2",
+    "typescript": "1.8.10",
+    "typings": "1.0.4",
+    "webpack": "1.13.1",
+    "webpack-dev-server": "1.14.1"
+  },
+  "dependencies": {
+    "dashjs": "2.1.1",
+    "eventemitter3": "1.2.0",
+    "hls.js": "0.5.33"
+  }
+}

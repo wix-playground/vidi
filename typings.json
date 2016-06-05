@@ -1,0 +1,12 @@
+{
+  "name": "videoholic",
+  "dependencies": {},
+  "globalDevDependencies": {
+    "chai": "registry:dt/chai#3.4.0+20160317120654",
+    "mocha": "registry:dt/mocha#2.2.5+20160317120654",
+    "node": "registry:dt/node#6.0.0+20160524002506"
+  },
+  "globalDependencies": {
+    "eventemitter3": "registry:dt/eventemitter3#1.1.1+20151208234524"
+  }
+}
