@@ -11,5 +11,13 @@ export interface StreamHandler {
      */
     canPlay(stream: Stream): boolean;
 
-    initHandler(stream: Stream);
+    /**
+     * Attach the handler to a <video> element
+     */
+    attachHandler(videoElement: HTMLVideoElement, stream: Stream);
+
+    /**
+     * Detach handler from a <video> element
+     */
+    detachHandler(videoElement: HTMLVideoElement);
 }
