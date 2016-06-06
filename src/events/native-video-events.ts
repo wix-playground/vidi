@@ -1,4 +1,4 @@
-import {PlaybackStatus} from './playback-state';
+import {PlaybackStatus} from '../playback-state';
 
 export const nativeVideoEvents = {
     'loadstart': function () {

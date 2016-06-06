@@ -2,7 +2,7 @@ import EventEmitter = require('eventemitter3');
 import {expect} from 'chai';
 import Videoholic from '../src';
 import {createdMockedVideoElement} from './mocked-video-element';
-import {nativeVideoEvents} from '../src/captured-events';
+import {nativeVideoEvents} from '../src/events';
 import {defaultPlaybackState, PlaybackState, PlaybackStatus} from '../src/playback-state';
 
 // Sample video data

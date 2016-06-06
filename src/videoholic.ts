@@ -1,5 +1,5 @@
 import EventEmitter = require('eventemitter3');
-import {nativeVideoEvents} from './captured-events';
+import {nativeVideoEvents} from './events';
 import {PlaybackState, defaultPlaybackState, PlaybackStatus} from './playback-state';
 
 export class Videoholic extends EventEmitter {
