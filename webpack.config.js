@@ -13,7 +13,7 @@ var loaders = {
 };
 
 var resolve = {
-    extensions : ["", ".webpack.js", ".web.js", ".js", ".ts", ".tsx"]
+    extensions    : ["", ".webpack.js", ".web.js", ".js", ".ts", ".tsx"]
 };
 
 var output = {
@@ -27,9 +27,7 @@ var output = {
 module.exports = {
     context: __dirname,
     entry: {
-        videoholic : ['./src'],
-        test       : ['./test'],
-        webtest    : ['mocha!./test']
+        webtest   : ['mocha!./test']
     },
 
     output: output,

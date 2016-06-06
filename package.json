@@ -5,9 +5,8 @@
   "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc",
-    "bundle": "webpack",
-    "pretest": "npm run bundle",
-    "test": "mocha --reporter=mocha-env-reporter ./dist/test.bundle.js",
+    "pretest": "npm run build",
+    "test": "mocha --reporter=mocha-env-reporter ./dist/test/index.js",
     "prepublish": "typings install",
     "start": "webpack-dev-server --progress"
   },
@@ -43,7 +42,6 @@
     "webpack-dev-server": "1.14.1"
   },
   "dependencies": {
-    "dashjs": "2.1.1",
     "eventemitter3": "1.2.0",
     "hls.js": "0.5.33"
   }
