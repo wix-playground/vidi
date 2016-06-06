@@ -7,8 +7,14 @@ import {defaultPlaybackState, PlaybackState, PlaybackStatus} from '../src/playba
 
 // Sample video data
 const duration = 50, currentTime = 5, muted = true, playbackRate = 0.75, paused = false, volume = 0.9;
+
+// Parameters for mocked video creation
 const mockedVideoParams = { duration, currentTime, muted, playbackRate, volume, paused };
+
+// Matching state for the above sample data
 const matchingPlaybackState: PlaybackState = { duration, currentTime, muted, playbackRate, volume, status: PlaybackStatus.PLAYING };
+
+const handledNativeEvents = Object.keys(nativeVideoEvents);
 
 describe('Videoholic', function () {
     describe('Construction', function () {
@@ -37,7 +43,7 @@ describe('Videoholic', function () {
 
             const videoholic = new Videoholic(vidEl);
 
-            nativeVideoEvents.forEach(e => {
+            handledNativeEvents.forEach(e => {
                 expect(vidEl.listeners[e].length).to.equal(1);
             })
         });
@@ -64,7 +70,7 @@ describe('Videoholic', function () {
                 const videoholic = new Videoholic(vidEl);
                 videoholic.setVideoElement(vidEl2)
 
-                nativeVideoEvents.forEach(e => {
+                handledNativeEvents.forEach(e => {
                     expect(vidEl2.listeners[e].length).to.equal(1);
                 })
             });
@@ -75,7 +81,7 @@ describe('Videoholic', function () {
                 const videoholic = new Videoholic(vidEl);
                 videoholic.setVideoElement(vidEl);
 
-                nativeVideoEvents.forEach(e => {
+                handledNativeEvents.forEach(e => {
                     expect(vidEl.listeners[e].length).to.equal(1);
                 });
             });
@@ -86,13 +92,13 @@ describe('Videoholic', function () {
 
                 const videoholic = new Videoholic(vidEl);
 
-                nativeVideoEvents.forEach(e => {
+                handledNativeEvents.forEach(e => {
                     expect(vidEl.listeners[e].length).to.equal(1);
                 });
 
                 videoholic.setVideoElement(vidEl2);
 
-                nativeVideoEvents.forEach(e => {
+                handledNativeEvents.forEach(e => {
                     expect(vidEl.listeners[e].length).to.equal(0);
                 });
             });
