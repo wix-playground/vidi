@@ -27,7 +27,8 @@ var output = {
 module.exports = {
     context: __dirname,
     entry: {
-        webtest   : ['mocha!./test']
+        videoholic : ['./src'],
+        webtest    : ['mocha!./test']
     },
 
     output: output,
