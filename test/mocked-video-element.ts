@@ -1,4 +1,4 @@
-export function createdMockedVideoElement({duration = 0, currentTime = 0, muted = false, playbackRate = 1, paused = false, volume = 1} = {}): any {
+export function createdMockedVideoElement({duration = 0, currentTime = 0, muted = false, playbackRate = 1, paused = false, volume = 1, src = ''} = {}): any {
     return {
         // <video> attributes
         currentTime,
@@ -7,6 +7,7 @@ export function createdMockedVideoElement({duration = 0, currentTime = 0, muted 
         playbackRate,
         paused,
         volume,
+        src,
 
         listeners: {},
 
