@@ -1,60 +1,80 @@
 import EventEmitter = require('eventemitter3');
 import {nativeVideoEvents} from './events';
-import {PlaybackState, defaultPlaybackState, PlaybackStatus} from './playback-state';
+import {StreamHandler, Stream, PlaybackState, defaultPlaybackState, PlaybackStatus, StreamType} from './types';
 
 export class Videoholic extends EventEmitter {
-    // The currently set nativeVideoEl
-    private nativeVideoEl: HTMLVideoElement = null;
-
     static PlaybackStatus = PlaybackStatus;
+    static StreamType = StreamType;
+
+    private videoElement: HTMLVideoElement = null; // The current HTMLVideoElement
+    private streamHandlers: StreamHandler[] = [];   // All registered stream handlers
+    private attachedHandler: StreamHandler = null;  // Currently attached stream handler
+    private currentSrc: Stream = null;
 
     constructor(nativeVideoEl: HTMLVideoElement = null, options?: Object) {
         super();
         this.onNativeEvent = this.onNativeEvent.bind(this);
+
         this.setVideoElement(nativeVideoEl);
     }
 
     // Public API
 
-    public setVideoElement(nativeVideoEl: HTMLVideoElement) {
-        if (this.nativeVideoEl === nativeVideoEl) {
+    set src(src: Stream) {
+        if (src === this.currentSrc) {
             return;
         }
 
-        this.detachListeners();
-        this.nativeVideoEl = nativeVideoEl;
-        this.attachListeners();
+        this.detachCurrentHandler();
+        this.currentSrc = src;
+        this.attachCompatibleHandler();
+    }
+
+    get src(): Stream {
+        return this.currentSrc;
+    }
+
+    public setVideoElement(nativeVideoEl: HTMLVideoElement) {
+        if (this.videoElement === nativeVideoEl) {
+            return;
+        }
+
+        this.removeVideoListeners(this.videoElement);
+        this.detachCurrentHandler();
+        this.videoElement = nativeVideoEl;
+        this.addVideoListeners(this.videoElement);
+        this.attachCompatibleHandler();
 
     }
 
     public getVideoElement(): HTMLVideoElement {
-        return this.nativeVideoEl;
+        return this.videoElement;
     }
 
     public getPlaybackState(): PlaybackState {
-        if (!this.nativeVideoEl) {
+        if (!this.videoElement) {
             return defaultPlaybackState;
         }
 
         const playbackState: PlaybackState = {
-            currentTime: this.nativeVideoEl.currentTime,
-            duration: this.nativeVideoEl.duration || 0,
-            muted: this.nativeVideoEl.muted,
-            playbackRate: this.nativeVideoEl.playbackRate,
-            status: this.nativeVideoEl.paused ? PlaybackStatus.PAUSED : PlaybackStatus.PLAYING,
-            volume: this.nativeVideoEl.volume
+            currentTime: this.videoElement.currentTime,
+            duration: this.videoElement.duration || 0,
+            muted: this.videoElement.muted,
+            playbackRate: this.videoElement.playbackRate,
+            status: this.videoElement.paused ? PlaybackStatus.PAUSED : PlaybackStatus.PLAYING,
+            volume: this.videoElement.volume
         };
 
         return playbackState;
     }
 
     public play() {
-        if (!this.nativeVideoEl) {
+        if (!this.videoElement) {
             return;
         }
 
         try {
-            const res: any = this.nativeVideoEl.play();
+            const res: any = this.videoElement.play();
             if (res && res.catch) {
                 res.catch(e => this.handleNativeError(e));
             }
@@ -64,12 +84,12 @@ export class Videoholic extends EventEmitter {
     }
 
     public pause() {
-        if (!this.nativeVideoEl) {
+        if (!this.videoElement) {
             return;
         }
 
         try {
-            const res: any = this.nativeVideoEl.pause();
+            const res: any = this.videoElement.pause();
             if (res && res.catch) {
                 res.catch(e => this.handleNativeError(e));
             }
@@ -78,26 +98,69 @@ export class Videoholic extends EventEmitter {
         }
     }
 
-    // Helpers
-
-    private attachListeners() {
-        if (!this.nativeVideoEl) {
-            return;
-        }
-
-        Object.keys(nativeVideoEvents).forEach(e => this.nativeVideoEl.addEventListener(e, this.onNativeEvent));
+    public getSupportedHandlers(): StreamHandler[] {
+        return this.getAllHandlers().filter(handler => handler.isSupported());
     }
 
-    private detachListeners() {
-        if (!this.nativeVideoEl) {
+    public getAllHandlers(): StreamHandler[] {
+        return this.streamHandlers;
+    }
+
+    public registerHandler(stream: StreamHandler) {
+        this.streamHandlers.unshift(stream);
+    }
+
+    // Private helpers
+
+    private attachCompatibleHandler() {
+        if (!this.currentSrc || !this.videoElement) {
             return;
         }
 
-        Object.keys(nativeVideoEvents).forEach(e => this.nativeVideoEl.removeEventListener(e, this.onNativeEvent));
+        const streamHandlers: StreamHandler[] = this.getSupportedHandlers();
+        const compatibleHandlers: StreamHandler[] = [];
+        for (let i = 0; i < streamHandlers.length; ++i) {
+            const handler = streamHandlers[i];
+            const otherHandlers = streamHandlers.filter(h => h !== handler);
+            if (handler.canPlay(this.currentSrc, otherHandlers)) {
+                compatibleHandlers.push(handler);
+            }
+        }
+
+        if (compatibleHandlers.length) {
+            const toAttach = compatibleHandlers[0]; // Currently use the first compatible handler
+            toAttach.attachHandler(this.videoElement, this.currentSrc);
+            this.attachedHandler = toAttach;
+        } else {
+            throw new Error('No compatible handler was found for current src.')
+        }
+    }
+
+    private detachCurrentHandler() {
+        if (this.attachedHandler) {
+            this.attachedHandler.detachHandler(this.videoElement);
+            this.attachedHandler = null;
+        }
+    }
+
+    private addVideoListeners(videoElement) {
+        if (!videoElement) {
+            return;
+        }
+
+        Object.keys(nativeVideoEvents).forEach(e => videoElement.addEventListener(e, this.onNativeEvent));
+    }
+
+    private removeVideoListeners(videoElement) {
+        if (!videoElement) {
+            return;
+        }
+
+        Object.keys(nativeVideoEvents).forEach(e => videoElement.removeEventListener(e, this.onNativeEvent));
     }
 
     private onNativeEvent(event: Event) {
-        if (event.target !== this.nativeVideoEl) {
+        if (event.target !== this.videoElement) {
             return;
         }
 

@@ -2,8 +2,9 @@ import EventEmitter = require('eventemitter3');
 import {expect} from 'chai';
 import Videoholic from '../src';
 import {createdMockedVideoElement} from './mocked-video-element';
+import {createdMockedStreamHandler} from './mocked-stream-handler';
 import {nativeVideoEvents} from '../src/events';
-import {defaultPlaybackState, PlaybackState, PlaybackStatus} from '../src/playback-state';
+import {defaultPlaybackState, PlaybackState, PlaybackStatus} from '../src/types';
 
 // Sample video data
 const duration = 50, currentTime = 5, muted = true, playbackRate = 0.75, paused = false, volume = 0.9;
@@ -102,6 +103,22 @@ describe('Videoholic', function () {
                     expect(vidEl.listeners[e].length).to.equal(0);
                 });
             });
+
+            it('attaches a compatible handler when set to a new HTMLVideoElement', function () {
+                const vidEl = createdMockedVideoElement();
+                const vidEl2 = createdMockedVideoElement();
+                const src = 'http://sampleurl/a.mp4';
+                const videoholic = new Videoholic(vidEl);
+                const streamHandler = createdMockedStreamHandler();
+
+                videoholic.registerHandler(streamHandler);
+                videoholic.src = src;
+                videoholic.setVideoElement(vidEl2);
+
+                expect(streamHandler.attachHandlerCalled).to.equal(true);
+                expect(streamHandler.attachCallCount).to.equal(2);
+                expect(streamHandler.detachCallCount).to.equal(1);
+            });
         });
 
         describe('getPlaybackState()', function () {
@@ -154,6 +171,75 @@ describe('Videoholic', function () {
                 expect(videoholic.pause()).to.not.throw;
             });
         });
+
+        describe('registerHandler()', function () {
+            it('allows registering a new handler', function () {
+                const videoholic = new Videoholic();
+                const mockedHandler = createdMockedStreamHandler();
+                videoholic.registerHandler(mockedHandler);
+
+                expect(videoholic.getAllHandlers()).to.contain(mockedHandler)
+            });
+        });
+
+        describe('getAllHandlers()', function () {
+            it('returns all registered stream handlers', function () {
+                const videoholic = new Videoholic();
+                const mockedHandler = createdMockedStreamHandler();
+                const currentHandlers = videoholic.getAllHandlers();
+                const expectedHandlers = currentHandlers.concat(mockedHandler);
+
+                videoholic.registerHandler(mockedHandler);                
+
+                expect(videoholic.getAllHandlers()).to.eql(expectedHandlers)
+            });
+        });
+
+        describe('getSupportedHandlers()', function () {
+            it('returns only supported stream handlers', function () {
+                const videoholic = new Videoholic();
+                const mockedHandler = createdMockedStreamHandler({isSupported: false});
+
+                videoholic.registerHandler(mockedHandler);                
+
+                expect(videoholic.getSupportedHandlers()).to.not.contain(mockedHandler)
+            });
+        });
+
+        describe('src field', function () {
+            it('allows setting the current src', function () {
+                const src = 'http://sampleurl/a.mp4';
+                const videoholic = new Videoholic();
+
+                videoholic.src = src;
+
+                expect(videoholic.src).to.equal(src)
+            });
+
+            it('attaches a compatible handler once src changes', function () {
+                const src = 'http://sampleurl/a.mp4';
+                const videoholic = new Videoholic(createdMockedVideoElement());
+                const streamHandler = createdMockedStreamHandler();
+
+                videoholic.registerHandler(streamHandler);
+                videoholic.src = src;
+
+                expect(streamHandler.attachHandlerCalled).to.equal(true)
+            });
+
+            it('detaches the current handler before attaching a new matching one', function () {
+                const src = 'http://sampleurl/a.mp4';
+                const anotherSrc = 'http://sampleurl/another.mp4';
+                const videoholic = new Videoholic(createdMockedVideoElement());
+                const streamHandler = createdMockedStreamHandler();
+
+                videoholic.registerHandler(streamHandler);
+                videoholic.src = src;
+                videoholic.src = anotherSrc;
+
+                expect(streamHandler.detachHandlerCalled).to.equal(true)
+            });
+        });
     });
 
     describe('Events', function () {
@@ -162,7 +248,7 @@ describe('Videoholic', function () {
         const videoholic = new Videoholic(vidEl);
 
         function testNativeVideoEvent(nativeEventType: string, expectedEventType: string, expectedData: any, dataDesc: string) {
-            it(`emits a ${expectedEventType} event with the current ${dataDesc} when native reports ${nativeEventType}`, function (done) {
+            it(`emits a ${expectedEventType} event with the current ${dataDesc} when HTMLVideoElement fires ${nativeEventType}`, function (done) {
                 videoholic.once(expectedEventType, data => {
                     expect(data).to.eql(expectedData);
                     done();

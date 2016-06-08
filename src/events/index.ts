@@ -1,1 +1,1 @@
-export {nativeVideoEvents} from './native-video-events';
+export * from './native-video-events';
