@@ -1,4 +1,4 @@
-import {PlaybackStatus} from '../playback-state';
+import {PlaybackStatus} from '../types';
 
 export const nativeVideoEvents = {
     'loadstart': function () {
@@ -6,19 +6,19 @@ export const nativeVideoEvents = {
     },
     
     'durationchange': function () {
-        this.emit('durationchange', this.nativeVideoEl.duration)
+        this.emit('durationchange', this.getVideoElement().duration)
     },
     
     'timeupdate': function () {
-        this.emit('timeupdate', this.nativeVideoEl.currentTime)
+        this.emit('timeupdate', this.getVideoElement().currentTime)
     },
     
     'ratechange': function () {
-        this.emit('ratechange', this.nativeVideoEl.playbackRate)
+        this.emit('ratechange', this.getVideoElement().playbackRate)
     },
     
     'volumechange': function () {
-        this.emit('volumechange', { volume: this.nativeVideoEl.volume, muted: this.nativeVideoEl.muted })
+        this.emit('volumechange', { volume: this.getVideoElement().volume, muted: this.getVideoElement().muted })
     },
     
     'play': function () {
@@ -34,7 +34,7 @@ export const nativeVideoEvents = {
     },
     
     'seeking': function () {
-        if (this.nativeVideoEl.paused) {
+        if (this.getVideoElement().paused) {
             this.emit('statuschange', PlaybackStatus.PAUSED_BUFFERING)
         } else {
             this.emit('statuschange', PlaybackStatus.PLAYING_BUFFERING)
@@ -42,7 +42,7 @@ export const nativeVideoEvents = {
     },
     
     'seeked': function () {
-        if (this.nativeVideoEl.paused) {
+        if (this.getVideoElement().paused) {
             this.emit('statuschange', PlaybackStatus.PAUSED)
         } else {
             this.emit('statuschange', PlaybackStatus.PLAYING)
@@ -54,6 +54,6 @@ export const nativeVideoEvents = {
     },
     
     'error': function () {
-        this.handleNativeError(this.nativeVideoEl.error);
+        this.handleNativeError(this.getVideoElement().error);
     }
 };
