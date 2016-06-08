@@ -1,4 +1,4 @@
-export type Stream = string;
+import {Stream} from './stream';
 
 export interface StreamHandler {
     /**
@@ -9,15 +9,15 @@ export interface StreamHandler {
     /**
      * Whether a stream is playable using the handler
      */
-    canPlay(stream: Stream): boolean;
+    canPlay(stream: Stream, handlers: StreamHandler[]): boolean;
 
     /**
      * Attach the handler to a <video> element
      */
-    attachHandler(videoElement: HTMLVideoElement, stream: Stream);
+    attachHandler(videoElement: HTMLVideoElement, stream: Stream): void;
 
     /**
      * Detach handler from a <video> element
      */
-    detachHandler(videoElement: HTMLVideoElement);
+    detachHandler(videoElement: HTMLVideoElement): void;
 }
