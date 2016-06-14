@@ -5,7 +5,7 @@ export class HlsStreamHandler implements MediaStreamHandler {
     private hls = null;
 
     isSupported(): boolean {
-        return Hls.isSupported();
+        return typeof window !== 'undefined' && Hls.isSupported();
     };
 
     canHandleStream(mediaStream: MediaStream) {
