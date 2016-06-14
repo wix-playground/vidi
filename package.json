@@ -5,6 +5,7 @@
   "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc",
+    "bundle": "webpack --progress",
     "pretest": "npm run build",
     "test": "mocha --reporter=mocha-env-reporter ./dist/test/index.js",
     "prepublish": "typings install",
@@ -37,12 +38,12 @@
     "mocha-loader": "0.7.1",
     "ts-loader": "0.8.2",
     "typescript": "1.8.10",
-    "typings": "1.0.4",
+    "typings": "1.1.0",
     "webpack": "1.13.1",
     "webpack-dev-server": "1.14.1"
   },
   "dependencies": {
     "eventemitter3": "1.2.0",
-    "hls.js": "0.5.33"
+    "hls.js": "0.5.36"
   }
 }
