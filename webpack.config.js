@@ -7,6 +7,7 @@ var loaders = {
             test    : /\.ts[x]?$/,
             exclude : NODE_MODULES_PATH,
             loader  : 'ts-loader'
+            // loader  : 'ts-loader?transpileOnly=true'
         }
     ],
     noParse: /\.min\.js$/
