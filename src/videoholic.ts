@@ -1,36 +1,50 @@
 import EventEmitter = require('eventemitter3');
-import {nativeVideoEvents} from './events';
-import {StreamHandler, Stream, PlaybackState, defaultPlaybackState, PlaybackStatus, StreamType} from './types';
+import {getNativeEventsHandlers} from './events';
+import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaSourceHandler, MediaStreamType, MediaStream, MediaStreamHandler} from './types';
+import {DirectHTTPHandler} from './source-handlers';
+import {GenericStreamHandler, HlsStreamHandler} from './stream-handlers';
 
 export class Videoholic extends EventEmitter {
     static PlaybackStatus = PlaybackStatus;
-    static StreamType = StreamType;
+    static MediaStreamType = MediaStreamType;
 
     private videoElement: HTMLVideoElement = null; // The current HTMLVideoElement
-    private streamHandlers: StreamHandler[] = [];   // All registered stream handlers
-    private attachedHandler: StreamHandler = null;  // Currently attached stream handler
-    private currentSrc: Stream = null;
+    private sourceHandlers: MediaSourceHandler[] = [];0
+    private streamHandlers: MediaStreamHandler[] = [];
+    private currentSrc: MediaSource = null;
+    private attachedStreamHandler: MediaStreamHandler = null;
+    private nativeEventHandlers = getNativeEventsHandlers(this);
 
-    constructor(nativeVideoEl: HTMLVideoElement = null, options?: Object) {
+    constructor(nativeVideoEl: HTMLVideoElement = null) {
         super();
         this.onNativeEvent = this.onNativeEvent.bind(this);
+        this.sourceHandlers.push(new DirectHTTPHandler);
+
+        const hlsStreamHandler = new HlsStreamHandler();
+        if (hlsStreamHandler.isSupported()) {
+            this.streamHandlers.push(hlsStreamHandler)
+        }
+        const genericStreamHandler = new GenericStreamHandler();
+        if (genericStreamHandler.isSupported()) {
+            this.streamHandlers.push(genericStreamHandler)
+        }
 
         this.setVideoElement(nativeVideoEl);
     }
 
     // Public API
 
-    set src(src: Stream) {
+    set src(src: MediaSource) {
         if (src === this.currentSrc) {
             return;
         }
+        this.detachCurrentStreamHandler();
 
-        this.detachCurrentHandler();
         this.currentSrc = src;
-        this.attachCompatibleHandler();
+        this.connectSourceToVideo();
     }
 
-    get src(): Stream {
+    get src(): MediaSource {
         return this.currentSrc;
     }
 
@@ -40,11 +54,11 @@ export class Videoholic extends EventEmitter {
         }
 
         this.removeVideoListeners(this.videoElement);
-        this.detachCurrentHandler();
+        this.detachCurrentStreamHandler();
+
         this.videoElement = nativeVideoEl;
         this.addVideoListeners(this.videoElement);
-        this.attachCompatibleHandler();
-
+        this.connectSourceToVideo();
     }
 
     public getVideoElement(): HTMLVideoElement {
@@ -98,48 +112,55 @@ export class Videoholic extends EventEmitter {
         }
     }
 
-    public getSupportedHandlers(): StreamHandler[] {
-        return this.getAllHandlers().filter(handler => handler.isSupported());
+    public getSourceHandlers(): MediaSourceHandler[] {
+        return this.sourceHandlers;
     }
 
-    public getAllHandlers(): StreamHandler[] {
+    public registerSourceHandler(sourceHandler: MediaSourceHandler) {
+        this.sourceHandlers.unshift(sourceHandler);
+    }
+
+    public getStreamHandlers(): MediaStreamHandler[] {
         return this.streamHandlers;
     }
 
-    public registerHandler(stream: StreamHandler) {
-        this.streamHandlers.unshift(stream);
+    public registerStreamHandler(streamHandler: MediaStreamHandler) {
+        this.streamHandlers.unshift(streamHandler);
     }
 
     // Private helpers
 
-    private attachCompatibleHandler() {
+    private connectSourceToVideo() {
         if (!this.currentSrc || !this.videoElement) {
             return;
         }
 
-        const streamHandlers: StreamHandler[] = this.getSupportedHandlers();
-        const compatibleHandlers: StreamHandler[] = [];
-        for (let i = 0; i < streamHandlers.length; ++i) {
-            const handler = streamHandlers[i];
-            const otherHandlers = streamHandlers.filter(h => h !== handler);
-            if (handler.canPlay(this.currentSrc, otherHandlers)) {
-                compatibleHandlers.push(handler);
-            }
+        const compatibleSourceHandlers = this.getCompatibleSourceHandlers(this.currentSrc);
+        if (!compatibleSourceHandlers.length) {
+            throw new Error(`Videoholic: couldn't find a compatible MediaSourceHandler for src - ${this.currentSrc}`)
         }
 
-        if (compatibleHandlers.length) {
-            const toAttach = compatibleHandlers[0]; // Currently use the first compatible handler
-            toAttach.attachHandler(this.videoElement, this.currentSrc);
-            this.attachedHandler = toAttach;
-        } else {
-            throw new Error('No compatible handler was found for current src.')
+        // We currently use the first found source handler
+        const mediaStream = compatibleSourceHandlers[0].getMediaStream(this.currentSrc);
+
+        const compatibleStreamHandlers = this.streamHandlers.filter(streamHandler => streamHandler.canHandleStream(mediaStream));
+        if (!compatibleStreamHandlers.length) {
+            throw new Error(`Videoholic: couldn't find a compatible StreamHandler for ${MediaStreamType[mediaStream.type]} stream - ${mediaStream.url}`)
         }
+
+        // For safety
+        this.detachCurrentStreamHandler();
+
+        // We currently use the first found source handler
+        const streamHandler = compatibleStreamHandlers[0];
+        streamHandler.attach(this.videoElement, mediaStream);
+        this.attachedStreamHandler = streamHandler;
     }
 
-    private detachCurrentHandler() {
-        if (this.attachedHandler) {
-            this.attachedHandler.detachHandler(this.videoElement);
-            this.attachedHandler = null;
+    private detachCurrentStreamHandler() {
+        if (this.attachedStreamHandler) {
+            this.attachedStreamHandler.detach(this.videoElement);
+            this.attachedStreamHandler = null;
         }
     }
 
@@ -148,7 +169,7 @@ export class Videoholic extends EventEmitter {
             return;
         }
 
-        Object.keys(nativeVideoEvents).forEach(e => videoElement.addEventListener(e, this.onNativeEvent));
+        Object.keys(this.nativeEventHandlers).forEach(e => videoElement.addEventListener(e, this.onNativeEvent));
     }
 
     private removeVideoListeners(videoElement) {
@@ -156,7 +177,7 @@ export class Videoholic extends EventEmitter {
             return;
         }
 
-        Object.keys(nativeVideoEvents).forEach(e => videoElement.removeEventListener(e, this.onNativeEvent));
+        Object.keys(this.nativeEventHandlers).forEach(e => videoElement.removeEventListener(e, this.onNativeEvent));
     }
 
     private onNativeEvent(event: Event) {
@@ -164,12 +185,20 @@ export class Videoholic extends EventEmitter {
             return;
         }
 
-        const handler = nativeVideoEvents[event.type];
-        if (nativeVideoEvents[event.type]) {
-            handler.call(this);
+        const handler = this.nativeEventHandlers[event.type];
+        if (handler) {
+            handler();
         } else {
             throw `Received a native event without an handler: ${event.type}`;
         }
+    }
+
+    private getCompatibleSourceHandlers(src: MediaSource) {
+        return this.sourceHandlers.filter(handler => handler.canHandleSource(src));
+    }
+
+    private getSupportedStreamHandlers() {
+        return this.streamHandlers.filter(handler => handler.isSupported());
     }
 
     // No real error handling yet

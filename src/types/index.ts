@@ -1,3 +1,3 @@
 export * from './playback-state';
-export * from './stream';
-export * from './stream-handler';
+export * from './media-stream';
+export * from './media-source';
