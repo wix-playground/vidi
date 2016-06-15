@@ -10,7 +10,10 @@ const extensionsMap = {
 
 /**
  * Handles direct URLs to video assets, such as:
- * http://www.some-url.com/some_video.mp4
+ * http://domain.name/some_video.mp4
+ * http://domain.name/some_video.webm
+ * http://domain.name/hls_playlist.m3u8
+ * http://domain.name/dash_playlist.mpd
  */
 export class DirectHTTPHandler implements MediaSourceHandler {
     canHandleSource(src: MediaSource): boolean {
