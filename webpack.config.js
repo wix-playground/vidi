@@ -29,9 +29,10 @@ module.exports = {
     context: __dirname,
     entry: {
         videoholic : ['./src'],
-        webtest    : ['mocha!./test']
+        webtest    : ['mocha!./test'],
+        examples   : ['./examples']
     },
-
+    
     output: output,
     resolve: resolve,
     module: loaders
