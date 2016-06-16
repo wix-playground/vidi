@@ -7,9 +7,10 @@ export class DashStreamHandler implements MediaStreamHandler {
     constructor() {
         this.dashPlayer = DashMediaPlayer.create();
         this.dashPlayer.getDebug().setLogToBrowserConsole(false);
-        this.dashPlayer.initialize(null, null, false);
 
-
+        if (this.isSupported()) {
+            this.dashPlayer.initialize(null, null, false);
+        }
     }
 
     isSupported(): boolean {
