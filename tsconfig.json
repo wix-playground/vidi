@@ -4,7 +4,8 @@
         "target": "es5",
         "noImplicitAny": false,
         "sourceMap": true,
-        "outDir": "dist"
+        "outDir": "dist",
+        "jsx": "react"
     },
     "exclude": [
         "node_modules"
