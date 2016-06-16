@@ -2,14 +2,14 @@ import EventEmitter = require('eventemitter3');
 import {getNativeEventsHandlers} from './events';
 import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaSourceHandler, MediaStreamType, MediaStream, MediaStreamHandler} from './types';
 import {DirectHTTPHandler} from './source-handlers';
-import {GenericStreamHandler, HlsStreamHandler} from './stream-handlers';
+import {GenericStreamHandler, HlsStreamHandler, DashStreamHandler} from './stream-handlers';
 
 export class Videoholic extends EventEmitter {
     static PlaybackStatus = PlaybackStatus;
     static MediaStreamType = MediaStreamType;
 
     private videoElement: HTMLVideoElement = null; // The current HTMLVideoElement
-    private sourceHandlers: MediaSourceHandler[] = [];0
+    private sourceHandlers: MediaSourceHandler[] = [];
     private streamHandlers: MediaStreamHandler[] = [];
     private currentSrc: MediaSource = null;
     private attachedStreamHandler: MediaStreamHandler = null;
@@ -20,14 +20,16 @@ export class Videoholic extends EventEmitter {
         this.onNativeEvent = this.onNativeEvent.bind(this);
         this.sourceHandlers.push(new DirectHTTPHandler);
 
-        const hlsStreamHandler = new HlsStreamHandler();
-        if (hlsStreamHandler.isSupported()) {
-            this.streamHandlers.push(hlsStreamHandler)
-        }
-        const genericStreamHandler = new GenericStreamHandler();
-        if (genericStreamHandler.isSupported()) {
-            this.streamHandlers.push(genericStreamHandler)
-        }
+        const builtInStreamHandlers = [
+            new HlsStreamHandler,
+            new DashStreamHandler,
+            new GenericStreamHandler
+        ];
+        builtInStreamHandlers.forEach(handler => {
+            if (handler.isSupported()) {
+                this.streamHandlers.push(handler)
+            }
+        });
 
         this.setVideoElement(nativeVideoEl);
     }
@@ -195,10 +197,6 @@ export class Videoholic extends EventEmitter {
 
     private getCompatibleSourceHandlers(src: MediaSource) {
         return this.sourceHandlers.filter(handler => handler.canHandleSource(src));
-    }
-
-    private getSupportedStreamHandlers() {
-        return this.streamHandlers.filter(handler => handler.isSupported());
     }
 
     // No real error handling yet
