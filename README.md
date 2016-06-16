@@ -18,7 +18,7 @@ Compatible web browsers:
 ## How?
 A small engine makes use of libraries such as 
 [hls.js](https://github.com/dailymotion/hls.js) and [dash.js](https://github.com/Dash-Industry-Forum/dash.js/)
-and sets them up automatically.<br>
+and sets them up automatically when needed.<br>
 All one has to do is provide *videoholic* with a `<video>` node and a `src`.
 
 *Note:* When a browser natively supports a delivery format, the native implementation is preferred.
@@ -50,7 +50,7 @@ Then browse to: [http://localhost:8080/webpack-dev-server](http://localhost:8080
 ### Common commands
 `npm build` - build using TypeScript
 
-`npm bundle` - bundle using webpack
+`npm minify` - bundle and minify using webpack
 
 `npm start` - start webpack-dev-server
 
