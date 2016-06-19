@@ -8,6 +8,7 @@ export const MediaStreamTypes = {
 export interface MediaStream {
     url: string;
     type: string;
+    [key: string]: any;
 };
 
 export interface MediaStreamHandler {
