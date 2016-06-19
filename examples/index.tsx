@@ -21,20 +21,24 @@ const videoStyle = { width: 960, height: 540, background: 'black' }
 class Example extends React.Component<any, State> {
     videoholic: Videoholic = new Videoholic();
 
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+        this.state = { currentUrl: '' };
     }
 
     changeURL(newUrl: string) {
         this.videoholic.src = newUrl;
+        this.setState({ currentUrl: newUrl })
     }
 
     render() {
-        return (<div><video style={videoStyle} controls ref={v => this.videoholic.setVideoElement(v) }></video>
-            <br />
+        return (<div>
             <button onClick={() => this.changeURL(testStreams.HLS) }>HLS</button>
             <button onClick={() => this.changeURL(testStreams.DASH) }>DASH</button>
             <button onClick={() => this.changeURL(testStreams.MP4) }>MP4</button>
             <button onClick={() => this.changeURL(testStreams.WEBM) }>WEBM</button>
+            <br /><br />
+            {this.state.currentUrl ? <video style={videoStyle} controls ref={v => this.videoholic.setVideoElement(v) }></video> : null}
         </div>)
     }
 }

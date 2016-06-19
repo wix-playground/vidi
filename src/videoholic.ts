@@ -1,7 +1,7 @@
 import EventEmitter = require('eventemitter3');
 import {getNativeEventsHandlers} from './events';
 import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaSourceHandler, MediaStreamTypes, MediaStream, MediaStreamHandler} from './types';
-import {URLSourceHandler} from './source-handlers';
+import {MediaStreamSourceHandler, URLSourceHandler} from './source-handlers';
 import {HlsStreamHandler, DashStreamHandler, NativeStreamHandler} from './stream-handlers';
 
 export class Videoholic extends EventEmitter {
@@ -18,7 +18,10 @@ export class Videoholic extends EventEmitter {
     constructor(nativeVideoEl: HTMLVideoElement = null) {
         super();
         this.onNativeEvent = this.onNativeEvent.bind(this);
-        this.sourceHandlers.push(new URLSourceHandler);
+        this.sourceHandlers = [
+            new MediaStreamSourceHandler,
+            new URLSourceHandler
+        ];
 
         const builtInStreamHandlers = [
             new NativeStreamHandler(MediaStreamTypes.HLS),
@@ -27,11 +30,9 @@ export class Videoholic extends EventEmitter {
             new NativeStreamHandler(MediaStreamTypes.MP4),
             new NativeStreamHandler(MediaStreamTypes.WEBM)
         ];
-        builtInStreamHandlers.forEach(handler => {
-            if (handler.isSupported()) {
-                this.streamHandlers.push(handler)
-            }
-        });
+
+        // Only add supported handlers 
+        builtInStreamHandlers.forEach(handler => handler.isSupported() && this.streamHandlers.push(handler));
 
         this.setVideoElement(nativeVideoEl);
     }
