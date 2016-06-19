@@ -1,13 +1,13 @@
-export enum MediaStreamType {
-    MP4,
-    WEBM,
-    HLS,
-    DASH
+export const MediaStreamTypes = {
+    MP4: 'MP4',
+    WEBM: 'WEBM',
+    HLS: 'HLS',
+    DASH: 'DASH'
 }
 
 export interface MediaStream {
     url: string;
-    type: MediaStreamType;
+    type: string;
 };
 
 export interface MediaStreamHandler {
