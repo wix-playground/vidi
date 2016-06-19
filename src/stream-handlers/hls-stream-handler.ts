@@ -1,11 +1,12 @@
 const Hls = require('hls.js');
 import {MediaStream, MediaStreamHandler, MediaStreamType} from '../types';
+import {envSupports} from '../utils';
 
 export class HlsStreamHandler implements MediaStreamHandler {
     private hls = null;
 
     isSupported(): boolean {
-        return typeof window !== 'undefined' && Hls.isSupported();
+        return envSupports.MSE && Hls.isSupported();
     };
 
     canHandleStream(mediaStream: MediaStream) {
@@ -24,7 +25,6 @@ export class HlsStreamHandler implements MediaStreamHandler {
 
     detach(videoElement: HTMLVideoElement) {
         this.hls.destroy();
-        videoElement.src = '';
         this.hls = null;
     }
 }
