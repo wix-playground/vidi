@@ -1,4 +1,4 @@
-export const isBrowser = window !== undefined;
+export const isBrowser = typeof window !== 'undefined';
 
 export const envSupports = {
     MSE: false,
