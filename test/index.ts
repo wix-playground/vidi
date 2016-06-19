@@ -1,2 +1,2 @@
 import './videoholic.spec';
-import './source-handlers.spec';
+import './source-handlers';
