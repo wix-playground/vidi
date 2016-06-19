@@ -1,20 +1,13 @@
 import {MediaStream, MediaStreamHandler, MediaStreamType} from '../types';
+import {envSupports} from '../utils';
+
 const DashMediaPlayer = require('dashjs/dist/src/streaming/MediaPlayer').default();
 
 export class DashStreamHandler implements MediaStreamHandler {
     private dashPlayer = null;
 
-    constructor() {
-        this.dashPlayer = DashMediaPlayer.create();
-        this.dashPlayer.getDebug().setLogToBrowserConsole(false);
-
-        if (this.isSupported()) {
-            this.dashPlayer.initialize(null, null, false);
-        }
-    }
-
     isSupported(): boolean {
-        return typeof window !== 'undefined' && true;
+        return envSupports.MSE;
     };
 
     canHandleStream(mediaStream: MediaStream) {
@@ -26,21 +19,18 @@ export class DashStreamHandler implements MediaStreamHandler {
     }
 
     attach(videoElement: HTMLVideoElement, mediaStream: MediaStream) {
-        let workaroundApplied = false;
-        if (window !== undefined && window['dashjs'] === undefined) {
-            window['dashjs'] = {}
-            workaroundApplied = true;
-        }
+        this.dashPlayer = DashMediaPlayer.create();
+        this.dashPlayer.getDebug().setLogToBrowserConsole(false);
+        this.dashPlayer.initialize(null, null, false);
+
+        window['dashjs'] = {} // Workaround for dashjs trying to access global variable
         this.dashPlayer.attachView(videoElement);
         this.dashPlayer.attachSource(mediaStream.url);
-
-        if (workaroundApplied) {
-            delete window['dashjs'];
-        }
+        delete window['dashjs'];
     }
 
     detach(videoElement: HTMLVideoElement) {
         this.dashPlayer.reset()
-        videoElement.src = '';
+        this.dashPlayer = null;
     }
 }
