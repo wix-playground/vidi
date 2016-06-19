@@ -1,4 +1,3 @@
-
 import {expect} from 'chai';
 import {URLSourceHandler} from '../../src/source-handlers';
 import {MediaStreamTypes} from '../../src/types';
@@ -8,7 +7,7 @@ describe('URLSourceHandler', function () {
     function testHandling(ext: string, expectedType: string) {
         it(`should handle string sources with ${ext} extension and return a ${expectedType} MediaStream`, function () {
             const url = 'http://url/a.' + ext;
-            expect(urlSourceHandler.canHandleSource(url), 'canHandleSource return value').to.equal(true);
+            expect(urlSourceHandler.canHandleSource(url)).to.equal(true);
             expect(urlSourceHandler.getMediaStream(url)).to.eql({url, type: expectedType});
         });
     }
