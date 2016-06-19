@@ -1,7 +1,7 @@
 import EventEmitter = require('eventemitter3');
 import {getNativeEventsHandlers} from './events';
 import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaSourceHandler, MediaStreamTypes, MediaStream, MediaStreamHandler} from './types';
-import {DirectHTTPHandler} from './source-handlers';
+import {URLSourceHandler} from './source-handlers';
 import {HlsStreamHandler, DashStreamHandler, NativeStreamHandler} from './stream-handlers';
 
 export class Videoholic extends EventEmitter {
@@ -18,7 +18,7 @@ export class Videoholic extends EventEmitter {
     constructor(nativeVideoEl: HTMLVideoElement = null) {
         super();
         this.onNativeEvent = this.onNativeEvent.bind(this);
-        this.sourceHandlers.push(new DirectHTTPHandler);
+        this.sourceHandlers.push(new URLSourceHandler);
 
         const builtInStreamHandlers = [
             new NativeStreamHandler(MediaStreamTypes.HLS),

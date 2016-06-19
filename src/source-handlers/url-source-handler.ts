@@ -1,12 +1,12 @@
 import {MediaSource, MediaSourceHandler, MediaStream, MediaStreamTypes} from '../types';
 import {getExtFromUrl} from '../utils';
 
-const extensionsMap = {
-    mp4: MediaStreamTypes.MP4,
-    webm: MediaStreamTypes.WEBM,
-    m3u8: MediaStreamTypes.HLS,
-    mpd: MediaStreamTypes.DASH
-}
+const extensionsMap = Object.create(null);
+
+extensionsMap.mp4 = MediaStreamTypes.MP4;
+extensionsMap.webm = MediaStreamTypes.WEBM;
+extensionsMap.m3u8 = MediaStreamTypes.HLS;
+extensionsMap.mpd = MediaStreamTypes.DASH;
 
 /**
  * Handles direct URLs to video assets, such as:
@@ -15,7 +15,7 @@ const extensionsMap = {
  * http://domain.name/hls_playlist.m3u8
  * http://domain.name/dash_playlist.mpd
  */
-export class DirectHTTPHandler implements MediaSourceHandler {
+export class URLSourceHandler implements MediaSourceHandler {
     canHandleSource(src: MediaSource): boolean {
         if (typeof src !== "string") {
             return false;
