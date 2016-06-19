@@ -32,7 +32,7 @@ module.exports = {
         webtest    : ['mocha!./test'],
         examples   : ['./examples']
     },
-    
+    devtool: 'eval',
     output: output,
     resolve: resolve,
     module: loaders
