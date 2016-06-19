@@ -1,13 +1,14 @@
 import {MediaStream, MediaStreamHandler, MediaStreamType} from '../types';
+import {envSupports} from '../utils';
 
-export class GenericStreamHandler implements MediaStreamHandler {
+export class NativeProgressiveStreamHandler implements MediaStreamHandler {
     isSupported(): boolean {
-        return true;
+        return envSupports.MP4 || envSupports.WEBM;
     };
 
     canHandleStream(mediaStream: MediaStream) {
         const type = mediaStream.type;
-        if (type === MediaStreamType.MP4 || type === MediaStreamType.WEBM) {
+        if ((type === MediaStreamType.MP4 && envSupports.MP4) || (type === MediaStreamType.WEBM && envSupports.WEBM)) {
             return true;
         } else {
             return false;
@@ -19,6 +20,5 @@ export class GenericStreamHandler implements MediaStreamHandler {
     }
 
     detach(videoElement: HTMLVideoElement) {
-        videoElement.src = '';
     }
 }
