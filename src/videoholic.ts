@@ -1,12 +1,12 @@
 import EventEmitter = require('eventemitter3');
 import {getNativeEventsHandlers} from './events';
-import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaSourceHandler, MediaStreamType, MediaStream, MediaStreamHandler} from './types';
+import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaSourceHandler, MediaStreamTypes, MediaStream, MediaStreamHandler} from './types';
 import {DirectHTTPHandler} from './source-handlers';
-import {GenericStreamHandler, HlsStreamHandler, DashStreamHandler} from './stream-handlers';
+import {HlsStreamHandler, DashStreamHandler, NativeStreamHandler} from './stream-handlers';
 
 export class Videoholic extends EventEmitter {
     static PlaybackStatus = PlaybackStatus;
-    static MediaStreamType = MediaStreamType;
+    static MediaStreamTypes = MediaStreamTypes;
 
     private videoElement: HTMLVideoElement = null; // The current HTMLVideoElement
     private sourceHandlers: MediaSourceHandler[] = [];
@@ -21,9 +21,11 @@ export class Videoholic extends EventEmitter {
         this.sourceHandlers.push(new DirectHTTPHandler);
 
         const builtInStreamHandlers = [
+            new NativeStreamHandler(MediaStreamTypes.HLS),
             new HlsStreamHandler,
             new DashStreamHandler,
-            new GenericStreamHandler
+            new NativeStreamHandler(MediaStreamTypes.MP4),
+            new NativeStreamHandler(MediaStreamTypes.WEBM)
         ];
         builtInStreamHandlers.forEach(handler => {
             if (handler.isSupported()) {
@@ -147,7 +149,7 @@ export class Videoholic extends EventEmitter {
 
         const compatibleStreamHandlers = this.streamHandlers.filter(streamHandler => streamHandler.canHandleStream(mediaStream));
         if (!compatibleStreamHandlers.length) {
-            throw new Error(`Videoholic: couldn't find a compatible StreamHandler for ${MediaStreamType[mediaStream.type]} stream - ${mediaStream.url}`)
+            throw new Error(`Videoholic: couldn't find a compatible StreamHandler for ${MediaStreamTypes[mediaStream.type]} stream - ${mediaStream.url}`)
         }
 
         // For safety
