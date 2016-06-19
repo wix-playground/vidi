@@ -1,4 +1,4 @@
-import {MediaStream, MediaStreamHandler} from '../src/types'
+import {MediaStream} from '../src/types'
 
 export function createMockedStreamHandler({isSupported = true, canPlay = true} = {}){
     return {

@@ -1,5 +1,5 @@
 const Hls = require('hls.js');
-import {MediaStream, MediaStreamHandler, MediaStreamType} from '../types';
+import {MediaStream, MediaStreamHandler, MediaStreamTypes} from '../types';
 import {envSupports} from '../utils';
 
 export class HlsStreamHandler implements MediaStreamHandler {
@@ -10,11 +10,7 @@ export class HlsStreamHandler implements MediaStreamHandler {
     };
 
     canHandleStream(mediaStream: MediaStream) {
-        if (mediaStream.type === MediaStreamType.HLS) {
-            return true;
-        } else {
-            return false;
-        }
+        return mediaStream.type === MediaStreamTypes.HLS;
     }
 
     attach(videoElement: HTMLVideoElement, mediaStream: MediaStream) {

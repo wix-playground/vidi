@@ -1,11 +1,11 @@
-import {MediaSource, MediaSourceHandler, MediaStream, MediaStreamType} from '../types';
+import {MediaSource, MediaSourceHandler, MediaStream, MediaStreamTypes} from '../types';
 import {getExtFromUrl} from '../utils';
 
 const extensionsMap = {
-    mp4: MediaStreamType.MP4,
-    webm: MediaStreamType.WEBM,
-    m3u8: MediaStreamType.HLS,
-    mpd: MediaStreamType.DASH
+    mp4: MediaStreamTypes.MP4,
+    webm: MediaStreamTypes.WEBM,
+    m3u8: MediaStreamTypes.HLS,
+    mpd: MediaStreamTypes.DASH
 }
 
 /**
@@ -21,11 +21,7 @@ export class DirectHTTPHandler implements MediaSourceHandler {
             return false;
         }
         const ext = getExtFromUrl(src)
-        if (extensionsMap[ext] !== undefined) {
-            return true;
-        } else {
-            return false;
-        }
+        return extensionsMap[ext] !== undefined;
     }
 
     getMediaStream(src: MediaSource): MediaStream {
