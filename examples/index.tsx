@@ -7,7 +7,8 @@ document.body.appendChild(root);
 
 const testStreams = {
     HLS: 'http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8',
-    DASH: 'http://dash.edgesuite.net/akamai/bbb_30fps/bbb_30fps.mpd',
+    // DASH: 'http://dash.edgesuite.net/akamai/bbb_30fps/bbb_30fps.mpd',
+    DASH: 'http://demo.unified-streaming.com/video/tears-of-steel/tears-of-steel.ism/.mpd',
     MP4: 'http://media.wixapps.net/ggl-105826725040924916100/video/1d336a477eae470a8c7d86f59420aa80/480p/mp4/file.mp4',
     WEBM: 'http://techslides.com/demos/sample-videos/small.webm'
 }
