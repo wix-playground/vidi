@@ -9,7 +9,7 @@ export class MediaStreamSourceHandler implements MediaSourceHandler {
         return (src !== null && typeof src === 'object' && src.url !== undefined && src.type !== undefined);
     }
 
-    getMediaStream(src: MediaSource): MediaStream {
-        return src;
+    getMediaStreams(src: MediaSource): MediaStream[] {
+        return [src];
     }
 }

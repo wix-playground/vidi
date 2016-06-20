@@ -2,7 +2,7 @@ import EventEmitter = require('eventemitter3');
 import {getNativeEventsHandlers} from './events';
 import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaSourceHandler, MediaStreamTypes, MediaStream, MediaStreamHandler} from './types';
 import {MediaStreamSourceHandler, URLSourceHandler} from './source-handlers';
-import {HlsStreamHandler, DashStreamHandler, NativeStreamHandler} from './stream-handlers';
+import {HlsStreamHandler, DashStreamHandler, NativeStreamHandler, ShakaStreamHandler} from './stream-handlers';
 
 export class Videoholic extends EventEmitter {
     static PlaybackStatus = PlaybackStatus;
@@ -24,6 +24,7 @@ export class Videoholic extends EventEmitter {
         ];
 
         const builtInStreamHandlers = [
+            // new ShakaStreamHandler,
             new NativeStreamHandler(MediaStreamTypes.HLS),
             new HlsStreamHandler,
             new DashStreamHandler,
@@ -142,11 +143,18 @@ export class Videoholic extends EventEmitter {
 
         const compatibleSourceHandlers = this.getCompatibleSourceHandlers(this.currentSrc);
         if (!compatibleSourceHandlers.length) {
-            throw new Error(`Videoholic: couldn't find a compatible MediaSourceHandler for src - ${this.currentSrc}`)
+            throw new Error(`Videoholic: couldn't find a compatible SourceHandler for src - ${this.currentSrc}`)
         }
 
-        // We currently use the first found source handler
-        const mediaStream = compatibleSourceHandlers[0].getMediaStream(this.currentSrc);
+        // We currently use the first compatible SourceHandler
+        const mediaStreams = compatibleSourceHandlers[0].getMediaStreams(this.currentSrc);
+
+        if (!mediaStreams.length) {
+            throw new Error(`Videoholic: compatible SourceHandler returned no MediaStreams for src - ${this.currentSrc}`)
+        }
+
+        // Use the first MediaStream for now
+        const mediaStream = mediaStreams[0];
 
         const compatibleStreamHandlers = this.streamHandlers.filter(streamHandler => streamHandler.canHandleStream(mediaStream));
         if (!compatibleStreamHandlers.length) {

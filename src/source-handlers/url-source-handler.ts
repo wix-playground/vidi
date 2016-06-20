@@ -24,7 +24,7 @@ export class URLSourceHandler implements MediaSourceHandler {
         return extensionsMap[ext] !== undefined;
     }
 
-    getMediaStream(src: MediaSource): MediaStream {
-        return { url: src, type: extensionsMap[getExtFromUrl(src)] };
+    getMediaStreams(src: MediaSource): MediaStream[] {
+        return [{ url: src, type: extensionsMap[getExtFromUrl(src)] }];
     }
 }

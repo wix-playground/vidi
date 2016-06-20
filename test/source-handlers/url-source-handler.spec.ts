@@ -8,7 +8,7 @@ describe('URLSourceHandler', function () {
         it(`should handle string sources with ${ext} extension and return a ${expectedType} MediaStream`, function () {
             const url = 'http://url/a.' + ext;
             expect(urlSourceHandler.canHandleSource(url)).to.equal(true);
-            expect(urlSourceHandler.getMediaStream(url)).to.eql({url, type: expectedType});
+            expect(urlSourceHandler.getMediaStreams(url)).to.eql([{url, type: expectedType}]);
         });
     }
 

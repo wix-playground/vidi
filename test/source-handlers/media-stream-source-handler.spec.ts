@@ -7,7 +7,7 @@ describe ('MediaStreamSourceHandler', function () {
     it(`should handle MediaStream sources and return them as they are`, function () {
         const src: MediaStream = {url: 'http://url/to/asset/without/extension/', type:'HLS', moreData: {test: 123}};
         expect(mediaStreamSourceHandler.canHandleSource(src)).to.equal(true);
-        expect(mediaStreamSourceHandler.getMediaStream(src)).to.eql(src);
+        expect(mediaStreamSourceHandler.getMediaStreams(src)).to.eql([src]);
     });
 
     it('should not handle non-MediaStream sources', function () {

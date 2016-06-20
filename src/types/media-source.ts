@@ -11,5 +11,5 @@ export interface MediaSourceHandler {
     /**
      * Get a MediaStream from a provided source
      */
-    getMediaStream(src: MediaSource): MediaStream;
+    getMediaStreams(src: MediaSource): MediaStream[];
 }
