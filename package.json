@@ -28,7 +28,7 @@
     "mpeg"
   ],
   "author": "Avi Vahl (avi.vahl@wix.com)",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/wix/wix-media-platform-videoholic/issues"
   },
@@ -51,6 +51,7 @@
   "dependencies": {
     "dashjs": "2.1.1",
     "eventemitter3": "1.2.0",
-    "hls.js": "0.5.39"
+    "hls.js": "0.5.39",
+    "shaka-player": "2.0.0-beta2"
   }
 }
