@@ -5,6 +5,7 @@ import path = require('path');
 
 const mimeTypes = {
     mp4: 'video/mp4',
+    m4s: 'video/mp4',
     m3u8: 'application/vnd.apple.mpegurl',
     webm: 'video/webm',
     ts: 'video/MP2T',

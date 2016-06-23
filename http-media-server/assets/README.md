@@ -11,3 +11,9 @@ ffmpeg -framerate 1/5 -i HLS.png -r 30 -c:v libx264 -crf 22 -movflags faststart 
 ffmpeg -i HLS.mp4 sample.m3u8
 rm HLS.mp4
 ```
+
+DASH
+```bash
+ffmpeg -framerate 1/5 -i DASH.png -r 30 -c:v libx264 -crf 22 -movflags faststart -pix_fmt yuv420p -g 59 sample.mp4
+mp4box -dash 3000 -profile dashavc264:live sample.mp4
+```
