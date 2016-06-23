@@ -1,21 +1,27 @@
 {
-  "name": "videoholic",
+  "name": "vidi",
   "version": "0.0.0",
   "description": "Adaptive HTML5-based video playback abstraction library",
   "main": "dist/src/index.js",
   "scripts": {
-    "build": "tsc",
+    "clean": "rimraf ./dist",
+    "copy": "cp -R --parents ./http-media-server/assets ./dist",
+    "build": "npm run build:transpile",
+    "build:transpile": "tsc",
     "build:dashjs": "babel ./node_modules/dashjs/ -d ./node_modules/dashjs/dist/ --ignore dist/**,contrib/** --presets es2015",
+    "bundle": "webpack --progress",
+    "bundle:watch": "webpack --progress -w",
+    "mediaserver": "node ./dist/http-media-server/standalone",
     "minify": "webpack --progress -p --config webpack.config.prod.js",
-    "pretest": "npm run build",
-    "test": "npm run test:node",
-    "test:node": "mocha --reporter=mocha-env-reporter ./dist/test/index.js",
+    "pretest": "npm run clean && npm run build && npm run copy && npm run bundle",
+    "test": "npm run test:browser",
+    "test:browser": "node ./dist/test/boot-and-test",
     "prepublish": "npm run build:dashjs && typings install",
     "start": "webpack-dev-server --progress"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:wix/wix-media-platform-videoholic.git"
+    "url": "git@github.com:wix/vidi.git"
   },
   "keywords": [
     "video",
@@ -30,18 +36,24 @@
   "author": "Avi Vahl (avi.vahl@wix.com)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/wix/wix-media-platform-videoholic/issues"
+    "url": "https://github.com/wix/vidi/issues"
   },
-  "homepage": "https://github.com/wix/wix-media-platform-videoholic#readme",
+  "homepage": "https://github.com/wix/vidi#readme",
   "devDependencies": {
     "babel-cli": "6.10.1",
     "babel-preset-es2015": "6.9.0",
     "chai": "3.5.0",
+    "karma": "0.13.22",
+    "karma-chrome-launcher": "1.0.1",
+    "karma-firefox-launcher": "1.0.0",
+    "karma-ie-launcher": "1.0.0",
+    "karma-mocha": "1.0.1",
+    "karma-safari-launcher": "1.0.0",
     "mocha": "2.5.3",
-    "mocha-env-reporter": "1.0.2",
     "mocha-loader": "0.7.1",
     "react": "15.1.0",
     "react-dom": "15.1.0",
+    "rimraf": "2.5.2",
     "ts-loader": "0.8.2",
     "typescript": "1.8.10",
     "typings": "1.3.0",

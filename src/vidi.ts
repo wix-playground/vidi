@@ -4,7 +4,7 @@ import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaS
 import {MediaStreamSourceHandler, URLSourceHandler} from './source-handlers';
 import {HlsStreamHandler, DashStreamHandler, NativeStreamHandler, ShakaStreamHandler} from './stream-handlers';
 
-export class Videoholic extends EventEmitter {
+export class Vidi extends EventEmitter {
     static PlaybackStatus = PlaybackStatus;
     static MediaStreamTypes = MediaStreamTypes;
 
@@ -143,14 +143,14 @@ export class Videoholic extends EventEmitter {
 
         const compatibleSourceHandlers = this.getCompatibleSourceHandlers(this.currentSrc);
         if (!compatibleSourceHandlers.length) {
-            throw new Error(`Videoholic: couldn't find a compatible SourceHandler for src - ${this.currentSrc}`)
+            throw new Error(`Vidi: couldn't find a compatible SourceHandler for src - ${this.currentSrc}`)
         }
 
         // We currently use the first compatible SourceHandler
         const mediaStreams = compatibleSourceHandlers[0].getMediaStreams(this.currentSrc);
 
         if (!mediaStreams.length) {
-            throw new Error(`Videoholic: compatible SourceHandler returned no MediaStreams for src - ${this.currentSrc}`)
+            throw new Error(`Vidi: compatible SourceHandler returned no MediaStreams for src - ${this.currentSrc}`)
         }
 
         // Use the first MediaStream for now
@@ -158,7 +158,7 @@ export class Videoholic extends EventEmitter {
 
         const compatibleStreamHandlers = this.streamHandlers.filter(streamHandler => streamHandler.canHandleStream(mediaStream));
         if (!compatibleStreamHandlers.length) {
-            throw new Error(`Videoholic: couldn't find a compatible StreamHandler for ${MediaStreamTypes[mediaStream.type]} stream - ${mediaStream.url}`)
+            throw new Error(`Vidi: couldn't find a compatible StreamHandler for ${MediaStreamTypes[mediaStream.type]} stream - ${mediaStream.url}`)
         }
 
         // For safety
@@ -197,7 +197,7 @@ export class Videoholic extends EventEmitter {
         if (event.target !== this.videoElement) {
             return;
         }
-
+        // console.log('native event fired: '+event.type)
         const handler = this.nativeEventHandlers[event.type];
         if (handler) {
             handler();

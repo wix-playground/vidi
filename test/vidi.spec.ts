@@ -1,6 +1,6 @@
 import EventEmitter = require('eventemitter3');
 import {expect} from 'chai';
-import Videoholic from '../src';
+import Vidi from '../src';
 import {createdMockedVideoElement, createMockedStreamHandler, createdMockedSourceHandler} from '../test-kit';
 import {getNativeEventsHandlers} from '../src/events';
 import {defaultPlaybackState, PlaybackState, PlaybackStatus, MediaStreamHandler} from '../src/types';
@@ -16,36 +16,39 @@ const matchingPlaybackState: PlaybackState = { duration, currentTime, muted, pla
 
 const handledNativeEvents = Object.keys(getNativeEventsHandlers(null));
 
-describe('Videoholic', function () {
+describe('Vidi', function () {
     describe('Construction', function () {
         it('can be constructed without any parameters', function () {
-            const videoholic = new Videoholic();
+            const vidi = new Vidi();
 
-            expect(videoholic.getVideoElement()).to.equal(null);
+            expect(vidi.getVideoElement()).to.equal(null);
         });
 
         it('can be constructed with an HTMLVideoElement', function () {
             const vidEl = createdMockedVideoElement();
 
-            const videoholic = new Videoholic(vidEl);
+            const vidi = new Vidi(vidEl);
 
-            expect(videoholic.getVideoElement()).to.equal(vidEl);
+            expect(vidi.getVideoElement()).to.equal(vidEl);
         });
 
-        it('is an instance of EventEmitter', function () {
-            const videoholic = new Videoholic();
+        it('is an instance of EventEmitter3', function () {
+            const vidi = new Vidi();
 
-            expect(videoholic).to.be.instanceof(EventEmitter);
+            expect(vidi).to.be.instanceof(EventEmitter);
         });
 
         it('adds native video event listeners when constructed with an HTMLVideoElement', function () {
+            
             const vidEl = createdMockedVideoElement();
 
-            const videoholic = new Videoholic(vidEl);
+            const vidi = new Vidi(vidEl);
+// attach mock listener
 
-            handledNativeEvents.forEach(e => {
-                expect(vidEl.listeners[e].length).to.equal(1);
-            })
+            handledNativeEvents.forEach(e => vidEl.emit(e));
+            // assert mocked interactions
+
+
         });
     });
 
@@ -53,20 +56,20 @@ describe('Videoholic', function () {
         describe('src field', function () {
             it('allows setting the current src', function () {
                 const src = 'http://sampleurl/a.mp4';
-                const videoholic = new Videoholic();
+                const vidi = new Vidi();
 
-                videoholic.src = src;
+                vidi.src = src;
 
-                expect(videoholic.src).to.equal(src)
+                expect(vidi.src).to.equal(src)
             });
 
             it('attaches a compatible stream handler once src changes', function () {
                 const src = 'http://sampleurl/a.mp4';
-                const videoholic = new Videoholic(createdMockedVideoElement());
+                const vidi = new Vidi(createdMockedVideoElement());
                 const streamHandler = createMockedStreamHandler();
 
-                videoholic.registerStreamHandler(streamHandler);
-                videoholic.src = src;
+                vidi.registerStreamHandler(streamHandler);
+                vidi.src = src;
 
                 expect(streamHandler.attachCalled).to.equal(true)
             });
@@ -74,12 +77,12 @@ describe('Videoholic', function () {
             it('detaches the current handler before attaching a new matching one', function () {
                 const src = 'http://sampleurl/a.mp4';
                 const anotherSrc = 'http://sampleurl/another.mp4';
-                const videoholic = new Videoholic(createdMockedVideoElement());
+                const vidi = new Vidi(createdMockedVideoElement());
                 const streamHandler = createMockedStreamHandler();
 
-                videoholic.registerStreamHandler(streamHandler);
-                videoholic.src = src;
-                videoholic.src = anotherSrc;
+                vidi.registerStreamHandler(streamHandler);
+                vidi.src = src;
+                vidi.src = anotherSrc;
 
                 expect(streamHandler.detachCalled).to.equal(true)
             });
@@ -89,16 +92,16 @@ describe('Videoholic', function () {
             it(`calls the HTMLVideoElement's play method`, function () {
                 const vidEl = createdMockedVideoElement();
 
-                const videoholic = new Videoholic(vidEl);
-                videoholic.play()
+                const vidi = new Vidi(vidEl);
+                vidi.play()
 
                 expect(vidEl.playCalled).to.equal(true);
             });
 
             it(`does not throw if no HTMLVideoElement is set`, function () {
-                const videoholic = new Videoholic();
+                const vidi = new Vidi();
 
-                expect(videoholic.play()).to.not.throw;
+                expect(vidi.play()).to.not.throw;
             });
         });
 
@@ -106,16 +109,16 @@ describe('Videoholic', function () {
             it(`calls the HTMLVideoElement's pause method`, function () {
                 const vidEl = createdMockedVideoElement();
 
-                const videoholic = new Videoholic(vidEl);
-                videoholic.pause()
+                const vidi = new Vidi(vidEl);
+                vidi.pause()
 
                 expect(vidEl.pauseCalled).to.equal(true);
             });
 
             it(`does not throw if no HTMLVideoElement is set`, function () {
-                const videoholic = new Videoholic();
+                const vidi = new Vidi();
 
-                expect(videoholic.pause()).to.not.throw;
+                expect(vidi.pause()).to.not.throw;
             });
         });
 
@@ -124,15 +127,15 @@ describe('Videoholic', function () {
             it('returns the current playback state of the set HTMLVideoElement', function () {
                 const vidEl = createdMockedVideoElement(mockedVideoParams);
 
-                const videoholic = new Videoholic(vidEl);
+                const vidi = new Vidi(vidEl);
 
-                expect(videoholic.getPlaybackState()).to.eql(matchingPlaybackState);
+                expect(vidi.getPlaybackState()).to.eql(matchingPlaybackState);
             });
 
             it('returns the defaultPlaybackState when no HTMLVideoElement is set', function () {
-                const videoholic = new Videoholic();
+                const vidi = new Vidi();
 
-                expect(videoholic.getPlaybackState()).to.eql(defaultPlaybackState);
+                expect(vidi.getPlaybackState()).to.eql(defaultPlaybackState);
             });
         });
 
@@ -142,19 +145,19 @@ describe('Videoholic', function () {
                 const vidEl = createdMockedVideoElement();
                 const vidEl2 = createdMockedVideoElement();
 
-                const videoholic = new Videoholic(vidEl);
-                expect(videoholic.getVideoElement()).to.equal(vidEl);
-                videoholic.setVideoElement(vidEl2)
+                const vidi = new Vidi(vidEl);
+                expect(vidi.getVideoElement()).to.equal(vidEl);
+                vidi.setVideoElement(vidEl2)
 
-                expect(videoholic.getVideoElement()).to.equal(vidEl2);
+                expect(vidi.getVideoElement()).to.equal(vidEl2);
             });
 
             it('adds native video event listeners when set to a new HTMLVideoElement', function () {
                 const vidEl = createdMockedVideoElement();
                 const vidEl2 = createdMockedVideoElement();
 
-                const videoholic = new Videoholic(vidEl);
-                videoholic.setVideoElement(vidEl2)
+                const vidi = new Vidi(vidEl);
+                vidi.setVideoElement(vidEl2)
 
                 handledNativeEvents.forEach(e => {
                     expect(vidEl2.listeners[e].length).to.equal(1);
@@ -164,8 +167,8 @@ describe('Videoholic', function () {
             it('does not re-add listeners if set to the current HTMLVideoElement', function () {
                 const vidEl = createdMockedVideoElement();
 
-                const videoholic = new Videoholic(vidEl);
-                videoholic.setVideoElement(vidEl);
+                const vidi = new Vidi(vidEl);
+                vidi.setVideoElement(vidEl);
 
                 handledNativeEvents.forEach(e => {
                     expect(vidEl.listeners[e].length).to.equal(1);
@@ -176,13 +179,13 @@ describe('Videoholic', function () {
                 const vidEl = createdMockedVideoElement();
                 const vidEl2 = createdMockedVideoElement();
 
-                const videoholic = new Videoholic(vidEl);
+                const vidi = new Vidi(vidEl);
 
                 handledNativeEvents.forEach(e => {
                     expect(vidEl.listeners[e].length).to.equal(1);
                 });
 
-                videoholic.setVideoElement(vidEl2);
+                vidi.setVideoElement(vidEl2);
 
                 handledNativeEvents.forEach(e => {
                     expect(vidEl.listeners[e].length).to.equal(0);
@@ -193,12 +196,12 @@ describe('Videoholic', function () {
                 const vidEl = createdMockedVideoElement();
                 const vidEl2 = createdMockedVideoElement();
                 const src = 'http://sampleurl/a.mp4';
-                const videoholic = new Videoholic(vidEl);
+                const vidi = new Vidi(vidEl);
                 const streamHandler = createMockedStreamHandler();
 
-                videoholic.registerStreamHandler(streamHandler);
-                videoholic.src = src;
-                videoholic.setVideoElement(vidEl2);
+                vidi.registerStreamHandler(streamHandler);
+                vidi.src = src;
+                vidi.setVideoElement(vidEl2);
 
                 expect(streamHandler.attachCalled).to.equal(true);
                 expect(streamHandler.attachCallCount).to.equal(2);
@@ -208,47 +211,47 @@ describe('Videoholic', function () {
 
         describe('registerSourceHandler()', function () {
             it('allows registering a new handler', function () {
-                const videoholic = new Videoholic();
+                const vidi = new Vidi();
                 const mockedHandler = createdMockedSourceHandler();
-                videoholic.registerSourceHandler(mockedHandler);
+                vidi.registerSourceHandler(mockedHandler);
 
-                expect(videoholic.getSourceHandlers()).to.contain(mockedHandler)
+                expect(vidi.getSourceHandlers()).to.contain(mockedHandler)
             });
         });
 
         describe('registerStreamHandler()', function () {
             it('allows registering a new handler', function () {
-                const videoholic = new Videoholic();
+                const vidi = new Vidi();
                 const mockedHandler = createMockedStreamHandler();
-                videoholic.registerStreamHandler(mockedHandler);
+                vidi.registerStreamHandler(mockedHandler);
 
-                expect(videoholic.getStreamHandlers()).to.contain(mockedHandler)
+                expect(vidi.getStreamHandlers()).to.contain(mockedHandler)
             });
         });
 
         describe('getSourceHandlers()', function () {
             it('returns all registered source handlers', function () {
-                const videoholic = new Videoholic();
+                const vidi = new Vidi();
                 const mockedHandler = createdMockedSourceHandler();
-                const builtInHandlers = videoholic.getSourceHandlers();
+                const builtInHandlers = vidi.getSourceHandlers();
                 const expectedHandlers = [mockedHandler].concat(builtInHandlers);
 
-                videoholic.registerSourceHandler(mockedHandler);
+                vidi.registerSourceHandler(mockedHandler);
 
-                expect(videoholic.getSourceHandlers()).to.eql(expectedHandlers)
+                expect(vidi.getSourceHandlers()).to.eql(expectedHandlers)
             });
         });
 
         describe('getStreamHandlers()', function () {
             it('returns all registered stream handlers', function () {
-                const videoholic = new Videoholic();
+                const vidi = new Vidi();
                 const mockedHandler = createMockedStreamHandler();
-                const builtInHandlers = videoholic.getStreamHandlers();
+                const builtInHandlers = vidi.getStreamHandlers();
                 const expectedHandlers = [mockedHandler as MediaStreamHandler].concat(builtInHandlers);
 
-                videoholic.registerStreamHandler(mockedHandler);
+                vidi.registerStreamHandler(mockedHandler);
 
-                expect(videoholic.getStreamHandlers()).to.eql(expectedHandlers)
+                expect(vidi.getStreamHandlers()).to.eql(expectedHandlers)
             });
         });
 
@@ -257,11 +260,11 @@ describe('Videoholic', function () {
     describe('Events', function () {
         const vidEl = createdMockedVideoElement(mockedVideoParams);
 
-        const videoholic = new Videoholic(vidEl);
+        const vidi = new Vidi(vidEl);
 
         function testNativeVideoEvent(nativeEventType: string, expectedEventType: string, expectedData: any, dataDesc: string) {
             it(`emits a ${expectedEventType} event with the current ${dataDesc} when HTMLVideoElement fires ${nativeEventType}`, function (done) {
-                videoholic.once(expectedEventType, data => {
+                vidi.once(expectedEventType, data => {
                     expect(data).to.eql(expectedData);
                     done();
                 })
