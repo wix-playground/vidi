@@ -28,7 +28,7 @@ var output = {
 module.exports = {
     context: __dirname,
     entry: {
-        videoholic : ['./src']
+        vidi : ['./src']
     },
 
     output: output,

@@ -1,6 +1,6 @@
 /// <reference path="../typings/index.d.ts"/>
 
-import {Videoholic} from './videoholic';
+import {Vidi} from './vidi';
 
-export default Videoholic;
-export {Videoholic};
+export default Vidi;
+export {Vidi};

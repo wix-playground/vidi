@@ -1,62 +1,62 @@
 import {PlaybackStatus} from '../types';
-import {Videoholic} from '../videoholic';
+import {Vidi} from '../vidi';
 
-export function getNativeEventsHandlers(videoholic: Videoholic) {
+export function getNativeEventsHandlers(vidi: Vidi) {
     return {
         'loadstart': function () {
-            videoholic.emit('loadstart', videoholic.getPlaybackState());
+            vidi.emit('loadstart', vidi.getPlaybackState());
         },
 
         'durationchange': function () {
-            videoholic.emit('durationchange', videoholic.getVideoElement().duration)
+            vidi.emit('durationchange', vidi.getVideoElement().duration)
         },
 
         'timeupdate': function () {
-            videoholic.emit('timeupdate', videoholic.getVideoElement().currentTime)
+            vidi.emit('timeupdate', vidi.getVideoElement().currentTime)
         },
 
         'ratechange': function () {
-            videoholic.emit('ratechange', videoholic.getVideoElement().playbackRate)
+            vidi.emit('ratechange', vidi.getVideoElement().playbackRate)
         },
 
         'volumechange': function () {
-            videoholic.emit('volumechange', { volume: videoholic.getVideoElement().volume, muted: videoholic.getVideoElement().muted })
+            vidi.emit('volumechange', { volume: vidi.getVideoElement().volume, muted: vidi.getVideoElement().muted })
         },
 
         'play': function () {
-            videoholic.emit('statuschange', PlaybackStatus.PLAYING_BUFFERING)
+            vidi.emit('statuschange', PlaybackStatus.PLAYING_BUFFERING)
         },
 
         'playing': function () {
-            videoholic.emit('statuschange', PlaybackStatus.PLAYING)
+            vidi.emit('statuschange', PlaybackStatus.PLAYING)
         },
 
         'pause': function () {
-            videoholic.emit('statuschange', PlaybackStatus.PAUSED)
+            vidi.emit('statuschange', PlaybackStatus.PAUSED)
         },
 
         'seeking': function () {
-            if (videoholic.getVideoElement().paused) {
-                videoholic.emit('statuschange', PlaybackStatus.PAUSED_BUFFERING)
+            if (vidi.getVideoElement().paused) {
+                vidi.emit('statuschange', PlaybackStatus.PAUSED_BUFFERING)
             } else {
-                videoholic.emit('statuschange', PlaybackStatus.PLAYING_BUFFERING)
+                vidi.emit('statuschange', PlaybackStatus.PLAYING_BUFFERING)
             }
         },
 
         'seeked': function () {
-            if (videoholic.getVideoElement().paused) {
-                videoholic.emit('statuschange', PlaybackStatus.PAUSED)
+            if (vidi.getVideoElement().paused) {
+                vidi.emit('statuschange', PlaybackStatus.PAUSED)
             } else {
-                videoholic.emit('statuschange', PlaybackStatus.PLAYING)
+                vidi.emit('statuschange', PlaybackStatus.PLAYING)
             }
         },
 
         'ended': function () {
-            videoholic.emit('statuschange', PlaybackStatus.ENDED)
+            vidi.emit('statuschange', PlaybackStatus.ENDED)
         },
 
         'error': function () {
-            videoholic.emit('error', videoholic.getVideoElement().error);
+            vidi.emit('error', vidi.getVideoElement().error);
         }
     };
 
