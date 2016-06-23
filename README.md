@@ -1,10 +1,10 @@
-# videoholic
+# vidi
 
 Adaptive HTML5-based video playback abstraction library.
 
 ## What?
 
-***videoholic*** simplifies playback of
+***vidi*** simplifies playback of
 [HLS](https://en.wikipedia.org/wiki/HTTP_Live_Streaming) and
 [MPEG-DASH](https://en.wikipedia.org/wiki/Dynamic_Adaptive_Streaming_over_HTTP)
 video sources on today's web browsers.
@@ -19,7 +19,7 @@ Compatible web browsers:
 A small engine makes use of libraries such as 
 [hls.js](https://github.com/dailymotion/hls.js) and [dash.js](https://github.com/Dash-Industry-Forum/dash.js/)
 and sets them up automatically when needed.<br>
-All one has to do is provide *videoholic* with a `<video>` node and a `src`.
+All one has to do is provide *vidi* with a `<video>` node and a `src`.
 
 *Note:* When a browser natively supports a delivery format, the native implementation is preferred.
 
@@ -40,8 +40,8 @@ The project is set up using the following tools: TypeScript, npm, webpack, mocha
 
 To get dev mode running, use the following commands:
 ```Bash
-git clone git@github.com:wix/wix-media-platform-videoholic.git videoholic
-cd videoholic
+git clone git@github.com:wix/vidi.git
+cd vidi
 npm install
 npm start
 ```
