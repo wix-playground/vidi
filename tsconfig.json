@@ -8,6 +8,8 @@
         "jsx": "react"
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "http-media-server/assets",
+        "dist"
     ]
 }
