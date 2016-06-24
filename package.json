@@ -43,7 +43,7 @@
     "babel-cli": "6.10.1",
     "babel-preset-es2015": "6.9.0",
     "chai": "3.5.0",
-    "karma": "0.13.22",
+    "karma": "1.0.0",
     "karma-chrome-launcher": "1.0.1",
     "karma-firefox-launcher": "1.0.0",
     "karma-ie-launcher": "1.0.0",
@@ -63,7 +63,7 @@
   "dependencies": {
     "dashjs": "2.1.1",
     "eventemitter3": "1.2.0",
-    "hls.js": "0.5.39",
+    "hls.js": "0.5.40",
     "shaka-player": "2.0.0-beta2"
   }
 }
