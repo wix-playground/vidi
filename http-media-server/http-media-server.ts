@@ -36,7 +36,12 @@ export function startHttpMediaServer(port = 3000, onListen: Function = () => { }
                 const ext = path.extname(uri).slice(1);
                 const mimeType = mimeTypes[ext];
                 if (mimeType) {
-                    res.writeHead(200, { 'Content-Type': mimeType, 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Range' });
+                    res.writeHead(200, {
+                        'Content-Type': mimeType,
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Headers': 'Range',
+                        'Content-Length': fs.statSync(fileName).size
+                    });
                     const stream = fs.createReadStream(fileName);
                     stream.pipe(res);
                 } else {
