@@ -63,7 +63,7 @@
   "dependencies": {
     "dashjs": "2.1.1",
     "eventemitter3": "1.2.0",
-    "hls.js": "0.5.40",
+    "hls.js": "0.5.41",
     "shaka-player": "2.0.0-beta2"
   }
 }
