@@ -212,6 +212,6 @@ export class Vidi extends EventEmitter {
 
     // No real error handling yet
     private handleNativeError(error) {
-        throw new Error(`Video error: ${error}`);
+        this.emit('error', error);
     }
 }
