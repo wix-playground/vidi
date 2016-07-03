@@ -52,3 +52,28 @@ pause(): void
 Same as calling the native `pause()` method on the attached `<video>` node,
 but also handles exceptions and Promise rejections (depending on the browser),
 and exposes them via the `error` event.
+
+####getSourceHandlers() 
+```ts
+getSourceHandlers(): MediaSourceHandler[]
+```
+Returns an array of currently registered `MediaSourceHandler`s.
+
+####registerSourceHandler() 
+```ts
+registerSourceHandler(sourceHandler: MediaSourceHandler): void
+```
+Registers a new `MediaSourceHandler`.
+
+
+####getStreamHandlers() 
+```ts
+getStreamHandlers(): MediaStreamHandler[]
+```
+Returns an array of currently registered `MediaStreamHandler`s.
+
+####registerStreamHandler() 
+```ts
+registerStreamHandler(streamHandler: MediaStreamHandler): void
+```
+Registers a new `MediaStreamHandler`.
