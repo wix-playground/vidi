@@ -23,7 +23,7 @@ All one has to do is provide *vidi* with a `<video>` node and a `src`.
 
 *Note:* When a browser natively supports a delivery format, the native implementation is preferred.
 
-## Features:
+## Features
 - HLS and MPEG-DASH playback capabilities in browsers without native support.
 - Automatically sets and cleans up helper libraries on demand.
 - Allows ingestion of custom sources by registering a compatible `SourceHandler`.
@@ -31,11 +31,26 @@ All one has to do is provide *vidi* with a `<video>` node and a `src`.
 - Normalizes video events to make them useful for player UI development.
 - Minimal number of dependencies. 
 
+## Getting started
+
+```js
+import Vidi from 'vidi';
+
+// Assuming there is a <video> element in the document with id 'my-video-element'.
+const videoElement = document.getElementById('my-video-element');
+
+// Create a new Vidi instance
+const vidi = new Vidi(videoElement);
+
+vidi.src = 'https://some-url.net/sample.m3u8';
+// And that's it! vidi sets up everything for playback.
+```
+
 ## API
 
-TODO: write this section.
+See [API.md](API.md)
 
-## Development:
+## Development
 The project is set up using the following tools: TypeScript, npm, webpack, mocha, and chai.
 
 To get dev mode running, use the following commands:
