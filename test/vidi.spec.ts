@@ -37,19 +37,6 @@ describe('Vidi', function () {
 
             expect(vidi).to.be.instanceof(EventEmitter);
         });
-
-        it('adds native video event listeners when constructed with an HTMLVideoElement', function () {
-            
-            const vidEl = createdMockedVideoElement();
-
-            const vidi = new Vidi(vidEl);
-// attach mock listener
-
-            handledNativeEvents.forEach(e => vidEl.emit(e));
-            // assert mocked interactions
-
-
-        });
     });
 
     describe('Public API', function () {
