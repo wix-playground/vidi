@@ -1,16 +1,15 @@
 #vidi's API
 
-###constructor
+####constructor
 ```ts
 class Vidi(nativeVideoEl?: HTMLVideoElement)
 ```
-Returns a new vidi instance that can manage a single `<video>` element.
-The instance is also an [EventEmitter3](https://github.com/primus/eventemitter3), which allows subscribing to a normalized set of video events.
+Returns a new vidi instance.
 
 `nativeVideoEl` is an optional paramaters which sets the currently managed `<video>`.
-Same as not passing a value and later calling [setVideoElement()](#setVideoElement).
+Same effect as not passing a value and later calling [setVideoElement()](#setVideoElement) with the element.
 
-###setVideoElement
+####setVideoElement
 ```ts
 setVideoElement(nativeVideoEl: HTMLVideoElement)
 ```
@@ -18,19 +17,19 @@ Sets the currently managed `<video>` element.
 If a previous element is already set, vidi will detach from it.
 If a `src` is already set, it will be loaded in the new element. 
 
-###getVideoElement
+####getVideoElement
 ```ts
 getVideoElement(): HTMLVideoElement
 ```
 Returns the currently managed `<video>` element.
 
-###src getter()
+####src getter()
 ```ts
 get src(): MediaSource
 ```
 Returns the current src.
 
-###src setter() 
+####src setter() 
 ```ts
 set src(src: MediaSource): void
 ```
