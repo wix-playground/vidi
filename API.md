@@ -6,22 +6,25 @@ class Vidi(nativeVideoEl?: HTMLVideoElement)
 ```
 Returns a new vidi instance.
 
-`nativeVideoEl` is an optional paramaters which sets the currently managed `<video>`.
-Same effect as not passing a value and later calling [setVideoElement()](#setVideoElement) with the element.
+`nativeVideoEl` is an optional paramaters and is a shorthand for:
+```ts
+const vidi = new Vidi();
+vidi.setVideoElement(nativeVideoEl);
+```
 
 ####setVideoElement
 ```ts
 setVideoElement(nativeVideoEl: HTMLVideoElement)
 ```
-Sets the currently managed `<video>` element.
-If a previous element is already set, vidi will detach from it.
-If a `src` is already set, it will be loaded in the new element. 
+Attaches to a new `<video>` element.
+If a previous element was set, `vidi` will detach from it.
+If a `src` was set, it will be loaded in the new element. 
 
 ####getVideoElement
 ```ts
 getVideoElement(): HTMLVideoElement
 ```
-Returns the currently managed `<video>` element.
+Returns the currently attached `<video>` element.
 
 ####src getter()
 ```ts
