@@ -2,7 +2,7 @@
 
 ###constructor
 ```ts
-new Vidi(nativeVideoEl?: HTMLVideoElement)
+class Vidi(nativeVideoEl?: HTMLVideoElement)
 ```
 Returns a new vidi instance that can manage a single `<video>` element.
 The instance is also an [EventEmitter3](https://github.com/primus/eventemitter3), which allows subscribing to a normalized set of video events.
@@ -37,3 +37,19 @@ set src(src: MediaSource): void
 Sets a new src. If a `<video>` element is already attached, this will stop current playback and load the new src.
 
 *TypeScript not: `MediaSource` is a type alias for `any`.* 
+
+####play() 
+```ts
+play(): void
+```
+Same as calling the native `play()` method on the attached `<video>` node,
+but also handles exceptions and Promise rejections (depending on the browser),
+and exposes them via the `error` event.
+
+####pause() 
+```ts
+pause(): void
+```
+Same as calling the native `pause()` method on the attached `<video>` node,
+but also handles exceptions and Promise rejections (depending on the browser),
+and exposes them via the `error` event.
