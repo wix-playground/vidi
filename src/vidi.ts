@@ -2,7 +2,7 @@ import EventEmitter = require('eventemitter3');
 import {getNativeEventsHandlers} from './events';
 import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaSourceHandler, MediaStreamTypes, MediaStream, MediaStreamHandler} from './types';
 import {MediaStreamSourceHandler, URLSourceHandler} from './source-handlers';
-import {HlsStreamHandler, DashStreamHandler, NativeStreamHandler, ShakaStreamHandler} from './stream-handlers';
+import {HlsStreamHandler, DashStreamHandler, NativeStreamHandler/*, ShakaStreamHandler*/} from './stream-handlers';
 
 export class Vidi extends EventEmitter {
     static PlaybackStatus = PlaybackStatus;
