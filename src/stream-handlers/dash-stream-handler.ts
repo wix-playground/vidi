@@ -3,6 +3,10 @@ import {envSupports} from '../utils';
 
 const DashMediaPlayer = require('dashjs/dist/src/streaming/MediaPlayer').default();
 
+/**
+ * Handles [[MediaStream]]s with type [[MediaStreamTypes.DASH]] using
+ * [dash.js](https://github.com/Dash-Industry-Forum/dash.js).
+ */
 export class DashStreamHandler implements MediaStreamHandler {
     private dashPlayer = null;
 

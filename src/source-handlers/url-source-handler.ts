@@ -9,11 +9,11 @@ extensionsMap.m3u8 = MediaStreamTypes.HLS;
 extensionsMap.mpd = MediaStreamTypes.DASH;
 
 /**
- * Handles direct URLs to video assets, such as:
- * http://domain.name/some_video.mp4
- * http://domain.name/some_video.webm
- * http://domain.name/hls_playlist.m3u8
- * http://domain.name/dash_playlist.mpd
+ * Handles direct URLs to video assets with the following extensions:
+ * - http://domain.name/some_video.mp4 *(MP4 media file)*
+ * - http://domain.name/some_video.webm *(WebM media file)*
+ * - http://domain.name/hls_playlist.m3u8 *(HLS playlist)*
+ * - http://domain.name/dash_playlist.mpd *(DASH playlist)*
  */
 export class URLSourceHandler implements MediaSourceHandler {
     canHandleSource(src: MediaSource): boolean {

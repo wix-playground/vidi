@@ -1,5 +1,9 @@
 export const isBrowser = typeof window !== 'undefined';
 
+/**
+ * This is a map which lists native support of formats and APIs.
+ * It gets filled during runtime with the relevant values to the current environment.
+ */
 export const envSupports = {
     MSE: false,
     HLS: false,

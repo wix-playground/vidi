@@ -2,6 +2,10 @@ const Hls = require('hls.js');
 import {MediaStream, MediaStreamHandler, MediaStreamTypes} from '../types';
 import {envSupports} from '../utils';
 
+/**
+ * Handles [[MediaStream]]s with type [[MediaStreamTypes.HLS]] using
+ * [hls.js](https://github.com/dailymotion/hls.js).
+ */
 export class HlsStreamHandler implements MediaStreamHandler {
     private hls = null;
 
