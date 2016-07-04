@@ -38,7 +38,7 @@ set src(src: MediaSource): void
 ```
 Sets a new src. If a `<video>` element is already attached, this will stop current playback and load the new src.
 
-*TypeScript not: `MediaSource` is a type alias for `any`.* 
+*TypeScript note: `MediaSource` is a type alias for `any`.* 
 
 ####play() 
 ```ts
