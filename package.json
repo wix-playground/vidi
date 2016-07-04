@@ -9,7 +9,7 @@
     "build": "npm run build:transpile",
     "build:transpile": "tsc",
     "build:dashjs": "babel ./node_modules/dashjs/ -d ./node_modules/dashjs/dist/ --ignore dist/**,contrib/** --presets es2015",
-    "build:docs": "typedoc --module commonjs --mode file --target es5 --excludeNotExported ./src --out docs",
+    "build:docs": "typedoc --tsconfig tsconfig.json --mode file --excludeNotExported ./src --out docs",
     "bundle": "webpack --progress",
     "bundle:watch": "webpack --progress -w",
     "mediaserver": "node ./dist/http-media-server/standalone",
