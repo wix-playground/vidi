@@ -4,8 +4,35 @@ import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaS
 import {MediaStreamSourceHandler, URLSourceHandler} from './source-handlers';
 import {HlsStreamHandler, DashStreamHandler, NativeStreamHandler/*, ShakaStreamHandler*/} from './stream-handlers';
 
+/**
+ * The default `vidi` main application class.
+ * 
+ * It holds the core logic that intends to simplify playback loading decisions by:
+ * - Allowing custom sources that may specify several [[MediaStream]] objects that can be played.
+ * - Checking formats support in the current playback environment.
+ * - Picking the most-suitable [[MediaStream]] for the current `src` and environment.
+ * 
+ * By default, the following **stream** handlers are pre-registered:
+ * 1. [[NativeStreamHandler]]([[MediaStreamTypes]].HLS)
+ * 2. [[HlsStreamHandler]]
+ * 3. [[DashStreamHandler]]
+ * 4. [[NativeStreamHandler]]([[MediaStreamTypes]].MP4)
+ * 5. [[NativeStreamHandler]]([[MediaStreamTypes]].WEBM)
+ * 
+ * And the following **source** handlers:
+ * 1. [[URLSourceHandler]]
+ * 2. [[MediaStreamSourceHandler]]
+ * 
+ * The minimal requirements for working playback are:
+ * 1. an `HTMLVideoElement`, which can be provided during construction, or later by calling [[setVideoElement]].
+ * 2. a `src`, which can be set via the [[src]] setter.
+ */
 export class Vidi extends EventEmitter {
     static PlaybackStatus = PlaybackStatus;
+
+    /**
+     * Static built-in string identifiers for known stream formats.
+     */
     static MediaStreamTypes = MediaStreamTypes;
 
     private videoElement: HTMLVideoElement = null; // The current HTMLVideoElement
@@ -15,6 +42,15 @@ export class Vidi extends EventEmitter {
     private attachedStreamHandler: MediaStreamHandler = null;
     private nativeEventHandlers = getNativeEventsHandlers(this);
 
+    /**
+     * The main entry point to using Vidi.
+     * 
+     * @param nativeVideoEl is an optional paramaters and is a shorthand for:
+     * ```ts
+     * const vidi = new Vidi();
+     * vidi.setVideoElement(nativeVideoEl);
+     * ```
+     */
     constructor(nativeVideoEl: HTMLVideoElement = null) {
         super();
         this.onNativeEvent = this.onNativeEvent.bind(this);
@@ -38,8 +74,13 @@ export class Vidi extends EventEmitter {
         this.setVideoElement(nativeVideoEl);
     }
 
-    // Public API
-
+    /**
+     * Sets a new `src` for playback.
+     * If a `<video>` element is already attached, this will initiate loading of the new `src` into it.
+     * 
+     * @param src The new [[MediaSource]].
+     * 
+     */
     set src(src: MediaSource) {
         if (src === this.currentSrc) {
             return;
@@ -49,11 +90,21 @@ export class Vidi extends EventEmitter {
         this.currentSrc = src;
         this.connectSourceToVideo();
     }
-
+    
+    /**
+     * @returns The currently set [[MediaSource]] on this vidi instance.
+     */
     get src(): MediaSource {
         return this.currentSrc;
     }
 
+    /**
+     * Attaches to a new `<video>` element.
+     * If a previous element was set, `vidi` will detach from it.
+     * If a `src` is already set, this will initiate loading it into the new element. 
+     * 
+     * @param nativeVideoEl The new `<video>` element to attach to.
+     */
     public setVideoElement(nativeVideoEl: HTMLVideoElement) {
         if (this.videoElement === nativeVideoEl) {
             return;
@@ -67,10 +118,20 @@ export class Vidi extends EventEmitter {
         this.connectSourceToVideo();
     }
 
+    /**
+     * @returns The currently attached `<video>` element.
+     */
     public getVideoElement(): HTMLVideoElement {
         return this.videoElement;
     }
 
+    /**
+     * @returns If a `<video>` element is attached, it returns the current [[PlaybackState]] as an object.
+     * 
+     * Otherwise, it returns [[defaultPlaybackState]].
+     * 
+     * 
+     */
     public getPlaybackState(): PlaybackState {
         if (!this.videoElement) {
             return defaultPlaybackState;
@@ -87,7 +148,14 @@ export class Vidi extends EventEmitter {
 
         return playbackState;
     }
-
+    
+    /**
+     * Same as calling the native `play()` method on the attached `<video>` node,
+     * but also handles exceptions and Promise rejections (depending on the browser),
+     * and exposes them via the `error` event.
+     * 
+     * *Does nothing when no `<video>` is attached.*
+     */
     public play() {
         if (!this.videoElement) {
             return;
@@ -103,6 +171,13 @@ export class Vidi extends EventEmitter {
         }
     }
 
+    /**
+     * Same as calling the native `pause()` method on the attached `<video>` node,
+     * but also handles exceptions and Promise rejections (depending on the browser),
+     * and exposes them via the `error` event.
+     * 
+     * *Does nothing when no `<video>` is attached.*
+     */
     public pause() {
         if (!this.videoElement) {
             return;
@@ -118,18 +193,36 @@ export class Vidi extends EventEmitter {
         }
     }
 
+    /**
+     * @returns An array of currently registered [[MediaSourceHandler]]s.
+     */
     public getSourceHandlers(): MediaSourceHandler[] {
         return this.sourceHandlers;
     }
 
+    /**
+     * Register a new [[MediaSourceHandler]].
+     * 
+     * *Note: The handler is added to the beginning of the array, which gives it a higher priority.*
+     * @param sourceHandler The [[MediaSourceHandler]] to add.
+     */
     public registerSourceHandler(sourceHandler: MediaSourceHandler) {
         this.sourceHandlers.unshift(sourceHandler);
     }
 
+    /**
+     * @returns An array of currently registered [[MediaStreamHandler]]s.
+     */
     public getStreamHandlers(): MediaStreamHandler[] {
         return this.streamHandlers;
     }
 
+    /**
+     * Register a new [[MediaStreamHandler]].
+     * 
+     * *Note: The handler is added to the beginning of the array, which gives it a higher priority.*
+     * @param streamHandler The [[MediaStreamHandler]] to add.
+     */
     public registerStreamHandler(streamHandler: MediaStreamHandler) {
         this.streamHandlers.unshift(streamHandler);
     }
