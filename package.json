@@ -54,7 +54,7 @@
     "mocha-loader": "0.7.1",
     "react": "15.2.0",
     "react-dom": "15.2.0",
-    "rimraf": "2.5.2",
+    "rimraf": "2.5.3",
     "ts-loader": "0.8.2",
     "typedoc": "0.4.4",
     "typescript": "1.8.10",
@@ -65,7 +65,7 @@
   "dependencies": {
     "dashjs": "2.1.1",
     "eventemitter3": "1.2.0",
-    "hls.js": "0.5.41",
+    "hls.js": "0.6.2-1",
     "shaka-player": "2.0.0-beta2"
   }
 }
