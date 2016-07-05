@@ -48,7 +48,7 @@ vidi.src = 'https://some-url.net/sample.m3u8';
 
 ## API
 
-See [API Documentation](API.md)
+See [API Documentation](https://wix.github.io/vidi/docs/)
 
 ## Development
 The project is set up using the following tools: TypeScript, npm, webpack, mocha, and chai.
