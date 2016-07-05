@@ -14,7 +14,7 @@ export interface MediaStream {
     /**
      * URL to the actual asset needed for playback
      * 
-     * *For example: `mp4` file, `m3u8` playlist, and so on...*
+     * *Actual asset can be a `mp4` file, `m3u8` playlist, etc. *
      */
     url: string;
 
