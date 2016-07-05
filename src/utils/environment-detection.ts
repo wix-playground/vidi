@@ -1,3 +1,6 @@
+/**
+ * `true` if we are running inside a web browser, `false` otherwise (e.g. running inside Node.js). 
+ */
 export const isBrowser = typeof window !== 'undefined';
 
 /**
