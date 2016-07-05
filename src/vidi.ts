@@ -92,6 +92,8 @@ export class Vidi extends EventEmitter {
     }
     
     /**
+     * Getter for the src.
+     * 
      * @returns The currently set [[MediaSource]] on this vidi instance.
      */
     get src(): MediaSource {
