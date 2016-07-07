@@ -8,7 +8,6 @@ Without `vidi`:
 | WebM 	|    ✓   	|    ✓    	|      	|        	|      	|
 | HLS  	|        	|         	|   ✓  	|    ✓   	|      	|
 | DASH 	|        	|         	|   ✓  	|        	|      	|
-| MSE  	|    ✓   	|    ✓    	|   ✓  	|    ✓   	|   ✓  	|
 
 With `vidi`:
 
@@ -18,7 +17,6 @@ With `vidi`:
 | WebM 	|    ✓   	|    ✓    	|      	|        	|      	|
 | HLS  	|    ✓   	|    ✓    	|   ✓  	|    ✓   	|   ✓  	|
 | DASH 	|    ✓   	|    ✓    	|   ✓  	|    ✓   	|   ✓  	|
-| MSE  	|    ✓   	|    ✓    	|   ✓  	|    ✓   	|   ✓  	|
 
 
 *Notes:*
