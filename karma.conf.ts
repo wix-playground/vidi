@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Tue Jun 21 2016 05:49:56 GMT+0300 (Jerusalem Daylight Time)
 
-module.exports = function(config) {
+module.exports = (config) => {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -55,7 +55,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'Firefox', 'IE'],
 
 
     // Continuous Integration mode
