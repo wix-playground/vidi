@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import {renderDemo} from '../examples/example';
+import {envSupports} from '../src/utils/environment-detection';
 
 describe('Vidi E2E', function () {
     beforeEach(function () {
@@ -10,13 +11,28 @@ describe('Vidi E2E', function () {
         document.body.removeChild(this.stageRoot);
     });
 
-    const formatsToTest = ['mp4', 'webm', 'hls', 'dash'];
+    const formatsToTest = [];
+    if (envSupports.MP4) {
+        formatsToTest.push('MP4')
+    }
+
+    if (envSupports.WEBM) {
+        formatsToTest.push('WEBM');
+    }
+
+    if (envSupports.HLS || envSupports.MSE) {
+        formatsToTest.push('HLS');
+    }
+
+    if (envSupports.DASH || envSupports.MSE) {
+        formatsToTest.push('DASH');
+    }
 
     formatsToTest.forEach(format => {
-        it(`allows playback of ${format}`, function (done) {
+        it(`allows playback of ${format}, if possible`, function (done) {
             const videoElement = document.getElementById('nativeVideo');
 
-            videoElement.addEventListener('loadstart', function durationChange() {
+            videoElement.addEventListener('canplay', () => {
                 done();
             });
 

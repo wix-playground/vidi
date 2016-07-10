@@ -28,10 +28,10 @@ export function renderDemo(): HTMLElement {
 
         render() {
             return (<div>
-                <button id="hls" onClick={() => this.changeURL(testStreams.HLS) }>HLS</button>
-                <button id="dash" onClick={() => this.changeURL(testStreams.DASH) }>DASH</button>
-                <button id="mp4" onClick={() => this.changeURL(testStreams.MP4) }>MP4</button>
-                <button id="webm" onClick={() => this.changeURL(testStreams.WEBM) }>WEBM</button>
+                <button id="HLS" onClick={() => this.changeURL(testStreams.HLS) }>HLS</button>
+                <button id="DASH" onClick={() => this.changeURL(testStreams.DASH) }>DASH</button>
+                <button id="MP4" onClick={() => this.changeURL(testStreams.MP4) }>MP4</button>
+                <button id="WEBM" onClick={() => this.changeURL(testStreams.WEBM) }>WEBM</button>
                 <input type="text" id="customurl" />
                 <button id="custom" onClick={() => this.changeURL((document.getElementById('customurl') as HTMLInputElement).value) }>Custom</button>
                 <br /><br />
