@@ -3,6 +3,8 @@ import {renderDemo} from '../examples/example';
 import {envSupports} from '../src/utils/environment-detection';
 
 describe('Vidi E2E', function () {
+    this.timeout(5000); // 5 seconds
+
     beforeEach(function () {
         this.stageRoot = renderDemo();
     });
