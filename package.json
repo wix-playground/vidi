@@ -8,7 +8,8 @@
     "copy": "cp -R --parents ./http-media-server/assets ./dist",
     "build": "npm run build:transpile",
     "build:transpile": "tsc",
-    "build:dashjs": "babel ./node_modules/dashjs/ -d ./node_modules/dashjs/dist/ --ignore dist/**,contrib/** --presets es2015",
+    "build:dashjs": "babel ./node_modules/dashjs/ -d ./node_modules/dashjs/vidi/ --ignore dist/**,contrib/** --presets es2015",
+    "build:hlsjs": "babel ./node_modules/hls.js/ -d ./node_modules/hls.js/vidi/ --ignore dist/**,lib/**,tests/** --presets es2015",
     "build:docs": "typedoc --tsconfig tsconfig.json --mode file --excludeNotExported ./src --out docs",
     "bundle": "webpack --progress",
     "bundle:watch": "webpack --progress -w",
@@ -17,7 +18,7 @@
     "pretest": "npm run clean && npm run build && npm run copy && npm run bundle",
     "test": "npm run test:browser",
     "test:browser": "node ./dist/test/boot-and-test",
-    "prepublish": "npm run build:dashjs && typings install",
+    "prepublish": "npm run build:dashjs && npm run build:hlsjs && typings install",
     "start": "webpack-dev-server --progress"
   },
   "repository": {
@@ -65,7 +66,8 @@
   "dependencies": {
     "dashjs": "2.2.0",
     "eventemitter3": "1.2.0",
-    "hls.js": "0.6.2-1",
-    "shaka-player": "2.0.0-beta2"
+    "hls.js": "0.6.2-2",
+    "shaka-player": "2.0.0-beta2",
+    "webworkify": "1.3.0"
   }
 }
