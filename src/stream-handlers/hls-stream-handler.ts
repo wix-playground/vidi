@@ -1,4 +1,4 @@
-const Hls = require('hls.js');
+const Hls = require('hls.js/vidi/src/index.js');
 import {MediaStream, MediaStreamHandler, MediaStreamTypes} from '../types';
 import {envSupports} from '../utils';
 
