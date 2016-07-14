@@ -1,4 +1,3 @@
-import EventEmitter = require('eventemitter3');
 import {expect} from 'chai';
 import Vidi from '../src';
 import {createdMockedVideoElement, createMockedStreamHandler, createdMockedSourceHandler} from '../test-kit';
