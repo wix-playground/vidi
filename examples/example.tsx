@@ -8,7 +8,8 @@ export function renderDemo(): HTMLElement {
 
     const testStreams = {
         HLS: 'http://localhost:3000/sample.m3u8',
-        DASH: 'http://localhost:3000/sample.mpd',
+        // DASH: 'http://localhost:3000/sample.mpd',
+        DASH: 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
         MP4: 'http://localhost:3000/sample.mp4',
         WEBM: 'http://localhost:3000/sample.webm'
     }
