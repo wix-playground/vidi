@@ -48,7 +48,7 @@ vidi.src = 'https://some-url.net/sample.m3u8';
 
 ## API
 
-See [API Documentation](https://wix.github.io/vidi/docs/)
+See [API Documentation](https://wix.github.io/vidi/docs/classes/vidi.html)
 
 ## Development
 The project is set up using the following tools: TypeScript, npm, webpack, mocha, and chai.
@@ -70,3 +70,5 @@ Then browse to: [http://localhost:8080/webpack-dev-server](http://localhost:8080
 `npm start` - start webpack-dev-server
 
 `npm test` - run tests, builds project first
+
+`npm run mediaserver` - starts a local http media server. see `http=media-server` folder.
