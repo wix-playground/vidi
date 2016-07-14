@@ -239,8 +239,8 @@ export class Vidi {
     }
 
     /**
-     * Add a one time listener to a specific event.
-     * It will be removed after the first event is emitted.
+     * Add a one-time listener to a specific event.
+     * It will be automatically removed after the event type is emitted and `callback` is called.
      * 
      * @param eventType The event type for which the `callback` should be called.
      * @param callback The function to call once the event is emitted.
@@ -269,7 +269,8 @@ export class Vidi {
 
     /**
      * Trigger a new event.
-     * Calls every listener that was added for the event with `data` passed. 
+     * Calls every listener that was added for the provided event type
+     * with `data` passed as the first parameter.
      * 
      * @param eventType The event type to emit/trigger.
      * @param data An optional data parameter to pass as first parameter to the callback.
