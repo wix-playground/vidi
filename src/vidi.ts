@@ -1,6 +1,5 @@
-import EventEmitter = require('eventemitter3');
 import {getNativeEventsHandlers} from './events';
-import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaSourceHandler, MediaStreamTypes, MediaStream, MediaStreamHandler} from './types';
+import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaSourceHandler, MediaStreamTypes, MediaStream, MediaStreamHandler, EventListener, EventListenerMap} from './types';
 import {MediaStreamSourceHandler, URLSourceHandler} from './source-handlers';
 import {HlsStreamHandler, DashStreamHandler, NativeStreamHandler/*, ShakaStreamHandler*/} from './stream-handlers';
 
@@ -27,7 +26,7 @@ import {HlsStreamHandler, DashStreamHandler, NativeStreamHandler/*, ShakaStreamH
  * 1. an `HTMLVideoElement`, which can be provided during construction, or later by calling [[setVideoElement]].
  * 2. a `src`, which can be set via the [[src]] setter.
  */
-export class Vidi extends EventEmitter {
+export class Vidi {
     static PlaybackStatus = PlaybackStatus;
 
     /**
@@ -41,6 +40,7 @@ export class Vidi extends EventEmitter {
     private currentSrc: MediaSource = null;
     private attachedStreamHandler: MediaStreamHandler = null;
     private nativeEventHandlers = getNativeEventsHandlers(this);
+    private eventListeners: EventListenerMap = Object.create(null);
 
     /**
      * The main entry point to using Vidi.
@@ -52,7 +52,6 @@ export class Vidi extends EventEmitter {
      * ```
      */
     constructor(nativeVideoEl: HTMLVideoElement = null) {
-        super();
         this.onNativeEvent = this.onNativeEvent.bind(this);
         this.sourceHandlers = [
             new MediaStreamSourceHandler,
@@ -90,7 +89,7 @@ export class Vidi extends EventEmitter {
         this.currentSrc = src;
         this.connectSourceToVideo();
     }
-    
+
     /**
      * Getter for the src.
      * 
@@ -150,7 +149,7 @@ export class Vidi extends EventEmitter {
 
         return playbackState;
     }
-    
+
     /**
      * Same as calling the native `play()` method on the attached `<video>` node,
      * but also handles exceptions and Promise rejections (depending on the browser),
@@ -229,7 +228,79 @@ export class Vidi extends EventEmitter {
         this.streamHandlers.unshift(streamHandler);
     }
 
+    /**
+     * Add a listener to a specific event.
+     * 
+     * @param eventType The event type for which the `callback` should be called.
+     * @param callback The function to call once the event is emitted.
+     */
+    public on(eventType: string, callback: Function) {
+        this.addEventListenerToMap(eventType, callback);
+    }
+
+    /**
+     * Add a one time listener to a specific event.
+     * It will be removed after the first event is emitted.
+     * 
+     * @param eventType The event type for which the `callback` should be called.
+     * @param callback The function to call once the event is emitted.
+     */
+    public once(eventType: string, callback: Function) {
+        this.addEventListenerToMap(eventType, callback, true);
+    }
+
+
+    /**
+     * Remove a listener to a specific event.
+     * 
+     * @param eventType The event type for which the `callback` was added.
+     * @param callback The callback function to remove.
+     */
+    public off(eventType: string, callback: Function) {
+        if (!eventType || !callback) {
+            return;
+        }
+
+        const currentListeners = this.eventListeners[eventType];
+        if (currentListeners !== undefined) {
+            this.eventListeners[eventType] = currentListeners.filter(listener => listener.callback !== callback)
+        }
+    }
+
+    
     // Private helpers
+
+
+    /**
+     * Trigger a new event.
+     * Calls every listener that was added for the event with `data` passed. 
+     * 
+     * @param eventType The event type to emit/trigger.
+     * @param data An optional data parameter to pass as first parameter to the callback.
+     */
+    private emit(eventType: string, data?: any) {
+        if (!eventType) {
+            return;
+        }
+
+        const removeAfterEmit: EventListener[] = [];
+
+        const currentListeners = this.eventListeners[eventType];
+        if (!currentListeners) {
+            return;
+        }
+
+        currentListeners.forEach(listener => {
+            listener.callback.call(this, data);
+            if (listener.once) {
+                removeAfterEmit.push(listener)
+            }
+        });
+
+        if (removeAfterEmit.length) {
+            this.eventListeners[eventType] = currentListeners.filter(listener => removeAfterEmit.indexOf(listener) === -1);
+        }
+    }
 
     private connectSourceToVideo() {
         if (!this.currentSrc || !this.videoElement) {
@@ -305,8 +376,21 @@ export class Vidi extends EventEmitter {
         return this.sourceHandlers.filter(handler => handler.canHandleSource(src));
     }
 
-    // No real error handling yet
     private handleNativeError(error) {
         this.emit('error', error);
+    }
+
+    private addEventListenerToMap(eventType: string, callback: Function, once: boolean = false) {
+        if (!eventType || !callback) {
+            return;
+        }
+        const toAdd = { once, callback };
+
+        const currentListeners = this.eventListeners[eventType];
+        if (currentListeners === undefined) {
+            this.eventListeners[eventType] = [toAdd]
+        } else {
+            currentListeners.push(toAdd)
+        }
     }
 }

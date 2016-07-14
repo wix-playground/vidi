@@ -7,9 +7,6 @@
     "react": "registry:dt/react#0.14.0+20160630100702",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040"
   },
-  "globalDependencies": {
-    "eventemitter3": "registry:dt/eventemitter3#1.1.1+20151208234524"
-  },
   "devDependencies": {
     "chai": "registry:npm/chai#3.5.0+20160415060238"
   }

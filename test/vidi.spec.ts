@@ -31,12 +31,6 @@ describe('Vidi', function () {
 
             expect(vidi.getVideoElement()).to.equal(vidEl);
         });
-
-        it('is an instance of EventEmitter3', function () {
-            const vidi = new Vidi();
-
-            expect(vidi).to.be.instanceof(EventEmitter);
-        });
     });
 
     describe('Public API', function () {
