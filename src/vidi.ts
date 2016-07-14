@@ -267,10 +267,6 @@ export class Vidi {
         }
     }
 
-    
-    // Private helpers
-
-
     /**
      * Trigger a new event.
      * Calls every listener that was added for the event with `data` passed. 
@@ -278,7 +274,7 @@ export class Vidi {
      * @param eventType The event type to emit/trigger.
      * @param data An optional data parameter to pass as first parameter to the callback.
      */
-    private emit(eventType: string, data?: any) {
+    public emit(eventType: string, data?: any) {
         if (!eventType) {
             return;
         }
@@ -301,6 +297,8 @@ export class Vidi {
             this.eventListeners[eventType] = currentListeners.filter(listener => removeAfterEmit.indexOf(listener) === -1);
         }
     }
+
+    // Private helpers
 
     private connectSourceToVideo() {
         if (!this.currentSrc || !this.videoElement) {
