@@ -1,13 +1,12 @@
 {
   "name": "vidi",
-  "dependencies": {},
   "globalDevDependencies": {
     "mocha": "registry:dt/mocha#2.2.5+20160619032855",
-    "node": "registry:dt/node#6.0.0+20160709114037",
-    "react": "registry:dt/react#0.14.0+20160630100702",
-    "react-dom": "registry:dt/react-dom#0.14.0+20160412154040"
+    "node": "registry:dt/node#6.0.0+20160709114037"
   },
   "devDependencies": {
-    "chai": "registry:npm/chai#3.5.0+20160415060238"
+    "chai": "registry:npm/chai#3.5.0+20160415060238",
+    "react": "registry:npm/react#15.0.1+20160601175240",
+    "react-dom": "registry:npm/react-dom#15.0.1+20160705210405"
   }
 }
