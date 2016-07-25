@@ -1,6 +1,6 @@
 {
   "name": "vidi",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Adaptive HTML5-based video playback abstraction library",
   "main": "dist/src/index.js",
   "scripts": {
@@ -36,7 +36,7 @@
     "mpeg"
   ],
   "author": "Avi Vahl (avi.vahl@wix.com)",
-  "license": "Apache-2.0",
+  "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {
     "url": "https://github.com/wix/vidi/issues"
   },
@@ -66,7 +66,6 @@
   "dependencies": {
     "dashjs": "2.2.0",
     "hls.js": "0.6.2-2",
-    "shaka-player": "2.0.0-beta2",
     "webworkify": "1.3.0"
   }
 }
