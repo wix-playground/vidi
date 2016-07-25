@@ -32,7 +32,7 @@ export function startHttpMediaServer(port = 3000, onListen: Function = () => { }
             if (!exists) {
                 printMessage('File not found: ' + uri, 404);
             } else {
-                // console.log('Sending file: ' + fileName);
+                console.log('Sending file: ' + fileName);
                 const ext = path.extname(uri).slice(1);
                 const mimeType = mimeTypes[ext];
                 if (mimeType) {
