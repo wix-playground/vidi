@@ -1,3 +1,5 @@
+### Basic usage
+
 ```ts
 // Play a single mp4 source:
 vidi.src = 'http://my-url/video.mp4';
@@ -39,6 +41,10 @@ vidi.src = [
     { url: 'http://my-url/adaptive-stream.m3u8', type: Vidi.MediaTypes.HLS },
 ];
 
+
+```
+### MediaLevels
+```ts
 vidi.on('levels', function (levels: MediaLevels[]) {
     // Listen to this event to know the current bitrates of an adaptive source  
 });
@@ -46,5 +52,37 @@ vidi.on('levels', function (levels: MediaLevels[]) {
 vidi.on('currentLevel', function (level: number) {
     // When a new level is exposed 
 }
+
+```
+
+### Native event handling
+```ts
+vidi.on('loadstart', function (playbackState: PlaybackState) { 
+
+});
+
+vidi.on('durationchange', function (newDuration: number) {
+
+});
+
+vidi.on('timeupdate', function (currentTime: number) {
+
+});
+
+vidi.on('ratechange', function (playbackRate: number) {
+
+});
+
+vidi.on('volumechange', function (volumeData: {volume: number, muted: boolean}){
+
+});
+
+vidi.on('statuschange', function (playbackStatus: PlaybackStatus) {
+
+});
+
+vidi.on('error', function (errorData) {
+    
+});
 
 ```
