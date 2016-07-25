@@ -13,7 +13,7 @@ Compatible web browsers:
 * Chrome (tested with v51.0.2704.84)
 * Firefox (tested with v47.0)
 * Internet Explorer 11 (tested on Windows 10)
-* Safari
+* Safari (tested with 9)
 
 ## How?
 A small engine makes use of libraries such as 
