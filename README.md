@@ -46,6 +46,8 @@ vidi.src = 'https://some-url.net/sample.m3u8';
 // And that's it! vidi sets up everything for playback.
 ```
 
+For more advanced usage examples, see [`HOWTO.md`](HOWTO.md).
+
 ## API
 
 See [API Documentation](https://wix.github.io/vidi/docs/classes/vidi.html)
