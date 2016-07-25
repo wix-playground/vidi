@@ -1,4 +1,4 @@
-const Hls = require('hls.js/vidi/src/index.js');
+const Hls = require('../../../externals/hls.js/src/index.js');
 import {MediaStream, PlayableStream, MediaStreamTypes, MediaLevel, EmitEventsFn, EnvironmentSupport, MediaStreamDeliveryType} from '../../types';
 
 export class HlsStream implements PlayableStream {

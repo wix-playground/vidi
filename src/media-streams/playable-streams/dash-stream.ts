@@ -1,7 +1,7 @@
 import {MediaStream, PlayableStream, MediaStreamTypes, MediaLevel, EmitEventsFn, EnvironmentSupport, MediaStreamDeliveryType} from '../../types';
 
-const DashMediaPlayer = require('dashjs/vidi/src/streaming/MediaPlayer').default();
-const DashEvents = require('dashjs/vidi/src/streaming/MediaPlayerEvents').default;
+const DashMediaPlayer = require('../../../externals/dashjs/src/streaming/MediaPlayer').default();
+const DashEvents = require('../../../externals/dashjs/src/streaming/MediaPlayerEvents').default;
 
 export class DashStream implements PlayableStream {
     private dashPlayer = null;
