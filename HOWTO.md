@@ -43,6 +43,8 @@ vidi.on('levels', function (levels: MediaLevels[]) {
     // Listen to this event to know the current bitrates of an adaptive source  
 });
 
-
+vidi.on('currentLevel', function (level: number) {
+    // When a new level is exposed 
+}
 
 ```

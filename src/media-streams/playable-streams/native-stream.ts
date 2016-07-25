@@ -11,7 +11,8 @@ export function nativeStreamFactory(streamType: string, deliveryType: MediaStrea
             videoElement.src = this.mediaStreams[this.currentLevel].url;
             this.emit('levels', this.mediaStreams.map(mediaStream => {
                 return { name: mediaStream.name || mediaStream.url };
-            }), this.currentLevel);
+            }));
+            this.emit('currentLevel', this.currentLevel);
         }
 
         public detach(videoElement: HTMLVideoElement) {
@@ -36,6 +37,7 @@ export function nativeStreamFactory(streamType: string, deliveryType: MediaStrea
                 const timeBeforeSwitch = videoElement.currentTime;
                 videoElement.src = this.mediaStreams[this.currentLevel].url;
                 videoElement.currentTime = timeBeforeSwitch;
+                this.emit('currentLevel', this.currentLevel);
             }
         }
     }
