@@ -1,46 +1,49 @@
 import {getNativeEventsHandlers} from './events';
-import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaSourceHandler, MediaStreamTypes, MediaStream, MediaStreamHandler, EventListener, EventListenerMap} from './types';
-import {MediaStreamSourceHandler, URLSourceHandler} from './source-handlers';
-import {HlsStreamHandler, DashStreamHandler, NativeStreamHandler/*, ShakaStreamHandler*/} from './stream-handlers';
+import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaStreamTypes, MediaStream, PlayableStream, PlayableStreamCreator, EventListener, EventListenerMap, MediaStreamDeliveryType} from './types';
+import {HlsStream, DashStream, nativeStreamFactory, mediaSourceToMediaStream, resolvePlayableStreams} from './media-streams';
+import {NativeEnvironmentSupport} from './utils';
 
 /**
  * The default `vidi` main application class.
  * 
  * It holds the core logic that intends to simplify playback loading decisions by:
- * - Allowing custom sources that may specify several [[MediaStream]] objects that can be played.
- * - Checking formats support in the current playback environment.
- * - Picking the most-suitable [[MediaStream]] for the current `src` and environment.
+ * - Allow specification of several sources. Prioritizing adaptive sources.
+ * - Checking formats support in the current playback environment
  * 
- * By default, the following **stream** handlers are pre-registered:
- * 1. [[NativeStreamHandler]]([[MediaStreamTypes]].HLS)
- * 2. [[HlsStreamHandler]]
- * 3. [[DashStreamHandler]]
- * 4. [[NativeStreamHandler]]([[MediaStreamTypes]].MP4)
- * 5. [[NativeStreamHandler]]([[MediaStreamTypes]].WEBM)
- * 
- * And the following **source** handlers:
- * 1. [[URLSourceHandler]]
- * 2. [[MediaStreamSourceHandler]]
+ * The following stream formats are supported:
+ * 1. Native HLS
+ * 2. HLS via MSE (hls.js)
+ * 3. MPEG-DASH via MSE (dash.js)
+ * 4. Native MP4
+ * 5. Native WebM
  * 
  * The minimal requirements for working playback are:
  * 1. an `HTMLVideoElement`, which can be provided during construction, or later by calling [[setVideoElement]].
- * 2. a `src`, which can be set via the [[src]] setter.
+ * 2. a `MediaSource`, which can be set via the [[src]] setter.
  */
 export class Vidi {
-    static PlaybackStatus = PlaybackStatus;
-
+    /**
+     * Static built-in enum for playback status values.
+     */
+    public static PlaybackStatus = PlaybackStatus;
     /**
      * Static built-in string identifiers for known stream formats.
      */
-    static MediaStreamTypes = MediaStreamTypes;
+    public static MediaStreamTypes = MediaStreamTypes;
 
-    private videoElement: HTMLVideoElement = null; // The current HTMLVideoElement
-    private sourceHandlers: MediaSourceHandler[] = [];
-    private streamHandlers: MediaStreamHandler[] = [];
-    private currentSrc: MediaSource = null;
-    private attachedStreamHandler: MediaStreamHandler = null;
+    /**
+     * Event handling
+     */
     private nativeEventHandlers = getNativeEventsHandlers(this);
     private eventListeners: EventListenerMap = Object.create(null);
+
+
+    private streamCreators: PlayableStreamCreator[] = [];
+    private videoElement: HTMLVideoElement = null; // The current HTMLVideoElement
+    private currentSrc: MediaSource | MediaSource[] = null;
+
+    private playableStreams: PlayableStream[] = null;
+    private connectedStream: PlayableStream = null;
 
     /**
      * The main entry point to using Vidi.
@@ -53,22 +56,17 @@ export class Vidi {
      */
     constructor(nativeVideoEl: HTMLVideoElement = null) {
         this.onNativeEvent = this.onNativeEvent.bind(this);
-        this.sourceHandlers = [
-            new MediaStreamSourceHandler,
-            new URLSourceHandler
-        ];
 
-        const builtInStreamHandlers = [
-            // new ShakaStreamHandler,
-            new NativeStreamHandler(MediaStreamTypes.HLS),
-            new HlsStreamHandler,
-            new DashStreamHandler,
-            new NativeStreamHandler(MediaStreamTypes.MP4),
-            new NativeStreamHandler(MediaStreamTypes.WEBM)
+        const streamCreators: PlayableStreamCreator[] = [
+            nativeStreamFactory(MediaStreamTypes.HLS, MediaStreamDeliveryType.NATIVE_ADAPTIVE), // Native HLS (Safari, Edge)
+            HlsStream, // Hls via hls.js (Chrome, Firefox, IE11, Opera?)
+            DashStream, // MPEG-DASH via dash.js (Chrome, Firefox, IE11, Safari, Edge)
+            nativeStreamFactory(MediaStreamTypes.MP4, MediaStreamDeliveryType.NATIVE_PROGRESSIVE), // Native MP4 (Chrome, Firefox, IE11, Safari, Edge)
+            nativeStreamFactory(MediaStreamTypes.WEBM,  MediaStreamDeliveryType.NATIVE_PROGRESSIVE) // Native WebM (Chrome, Firefox)
         ];
 
         // Only add supported handlers 
-        builtInStreamHandlers.forEach(handler => handler.isSupported() && this.streamHandlers.push(handler));
+        streamCreators.forEach(streamCreator => streamCreator.isSupported(NativeEnvironmentSupport) && this.streamCreators.push(streamCreator));
 
         this.setVideoElement(nativeVideoEl);
     }
@@ -80,14 +78,17 @@ export class Vidi {
      * @param src The new [[MediaSource]].
      * 
      */
-    set src(src: MediaSource) {
+    set src(src: MediaSource | MediaSource[]) {
         if (src === this.currentSrc) {
             return;
         }
-        this.detachCurrentStreamHandler();
+
+        this.detachCurrentStream();
 
         this.currentSrc = src;
-        this.connectSourceToVideo();
+
+        this.resolvePlayableStreams();
+        this.connectStreamToVideo();
     }
 
     /**
@@ -95,7 +96,7 @@ export class Vidi {
      * 
      * @returns The currently set [[MediaSource]] on this vidi instance.
      */
-    get src(): MediaSource {
+    get src(): MediaSource | MediaSource[] {
         return this.currentSrc;
     }
 
@@ -111,12 +112,12 @@ export class Vidi {
             return;
         }
 
-        this.removeVideoListeners(this.videoElement);
-        this.detachCurrentStreamHandler();
+        this.removeNativeVideoListeners(this.videoElement);
+        this.detachCurrentStream();
 
         this.videoElement = nativeVideoEl;
-        this.addVideoListeners(this.videoElement);
-        this.connectSourceToVideo();
+        this.addNativeVideoListeners(this.videoElement);
+        this.connectStreamToVideo();
     }
 
     /**
@@ -195,37 +196,10 @@ export class Vidi {
     }
 
     /**
-     * @returns An array of currently registered [[MediaSourceHandler]]s.
-     */
-    public getSourceHandlers(): MediaSourceHandler[] {
-        return this.sourceHandlers;
-    }
-
-    /**
-     * Register a new [[MediaSourceHandler]].
-     * 
-     * *Note: The handler is added to the beginning of the array, which gives it a higher priority.*
-     * @param sourceHandler The [[MediaSourceHandler]] to add.
-     */
-    public registerSourceHandler(sourceHandler: MediaSourceHandler) {
-        this.sourceHandlers.unshift(sourceHandler);
-    }
-
-    /**
      * @returns An array of currently registered [[MediaStreamHandler]]s.
      */
-    public getStreamHandlers(): MediaStreamHandler[] {
-        return this.streamHandlers;
-    }
-
-    /**
-     * Register a new [[MediaStreamHandler]].
-     * 
-     * *Note: The handler is added to the beginning of the array, which gives it a higher priority.*
-     * @param streamHandler The [[MediaStreamHandler]] to add.
-     */
-    public registerStreamHandler(streamHandler: MediaStreamHandler) {
-        this.streamHandlers.unshift(streamHandler);
+    public getStreamHandlers(): PlayableStreamCreator[] {
+        return this.streamCreators;
     }
 
     /**
@@ -275,7 +249,7 @@ export class Vidi {
      * @param eventType The event type to emit/trigger.
      * @param data An optional data parameter to pass as first parameter to the callback.
      */
-    public emit(eventType: string, data?: any) {
+    public emit(eventType: string, ...args) {
         if (!eventType) {
             return;
         }
@@ -288,7 +262,7 @@ export class Vidi {
         }
 
         currentListeners.forEach(listener => {
-            listener.callback.call(this, data);
+            listener.callback.call(this, ...args);
             if (listener.once) {
                 removeAfterEmit.push(listener)
             }
@@ -299,50 +273,54 @@ export class Vidi {
         }
     }
 
+    /**
+     * 
+     */
+    public setMediaLevel(index: number) {
+        if (this.connectedStream) {
+            this.connectedStream.setMediaLevel(index, this.videoElement);
+        }
+    }
+
     // Private helpers
 
-    private connectSourceToVideo() {
-        if (!this.currentSrc || !this.videoElement) {
+    private resolvePlayableStreams() {
+        if (!this.currentSrc) {
+            this.playableStreams = [];
             return;
         }
 
-        const compatibleSourceHandlers = this.getCompatibleSourceHandlers(this.currentSrc);
-        if (!compatibleSourceHandlers.length) {
-            throw new Error(`Vidi: couldn't find a compatible SourceHandler for src - ${this.currentSrc}`)
+        let mediaStreams: MediaStream[];
+        if (Array.isArray(this.currentSrc)) {
+            mediaStreams = (this.currentSrc as MediaSource[]).map(mediaSourceToMediaStream);
+        } else {
+            mediaStreams = [mediaSourceToMediaStream(this.currentSrc as MediaSource)];
         }
 
-        // We currently use the first compatible SourceHandler
-        const mediaStreams = compatibleSourceHandlers[0].getMediaStreams(this.currentSrc);
-
-        if (!mediaStreams.length) {
-            throw new Error(`Vidi: compatible SourceHandler returned no MediaStreams for src - ${this.currentSrc}`)
-        }
-
-        // Use the first MediaStream for now
-        const mediaStream = mediaStreams[0];
-
-        const compatibleStreamHandlers = this.streamHandlers.filter(streamHandler => streamHandler.canHandleStream(mediaStream));
-        if (!compatibleStreamHandlers.length) {
-            throw new Error(`Vidi: couldn't find a compatible StreamHandler for ${MediaStreamTypes[mediaStream.type]} stream - ${mediaStream.url}`)
-        }
-
-        // For safety
-        this.detachCurrentStreamHandler();
-
-        // We currently use the first found source handler
-        const streamHandler = compatibleStreamHandlers[0];
-        streamHandler.attach(this.videoElement, mediaStream);
-        this.attachedStreamHandler = streamHandler;
+        this.playableStreams = resolvePlayableStreams(mediaStreams, this.streamCreators, this.emit.bind(this));
     }
 
-    private detachCurrentStreamHandler() {
-        if (this.attachedStreamHandler) {
-            this.attachedStreamHandler.detach(this.videoElement);
-            this.attachedStreamHandler = null;
+    private connectStreamToVideo() {
+        if (!this.playableStreams || !this.videoElement) {
+            return;
+        }
+
+        if (this.playableStreams.length > 0) {
+            // Use the first MediaStream for now
+            // Later, we can use the others as fallback
+            this.connectedStream = this.playableStreams[0];
+            this.connectedStream.attach(this.videoElement);
         }
     }
 
-    private addVideoListeners(videoElement) {
+    private detachCurrentStream() {
+        if (this.connectedStream) {
+            this.connectedStream.detach(this.videoElement);
+            this.connectedStream = null;
+        }
+    }
+
+    private addNativeVideoListeners(videoElement) {
         if (!videoElement) {
             return;
         }
@@ -350,7 +328,7 @@ export class Vidi {
         Object.keys(this.nativeEventHandlers).forEach(e => videoElement.addEventListener(e, this.onNativeEvent));
     }
 
-    private removeVideoListeners(videoElement) {
+    private removeNativeVideoListeners(videoElement) {
         if (!videoElement) {
             return;
         }
@@ -362,17 +340,12 @@ export class Vidi {
         if (event.target !== this.videoElement) {
             return;
         }
-        // console.log('native event fired: '+event.type)
         const handler = this.nativeEventHandlers[event.type];
         if (handler) {
             handler();
         } else {
             throw `Received a native event without an handler: ${event.type}`;
         }
-    }
-
-    private getCompatibleSourceHandlers(src: MediaSource) {
-        return this.sourceHandlers.filter(handler => handler.canHandleSource(src));
     }
 
     private handleNativeError(error) {

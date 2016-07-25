@@ -6,3 +6,5 @@ export interface EventListener {
 export interface EventListenerMap {
     [type: string]: EventListener[];
 }
+
+export type EmitEventsFn = (eventType: string, ...args) => void;

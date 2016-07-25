@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {renderDemo} from '../examples/example';
-import {envSupports} from '../src/utils/environment-detection';
+import {NativeEnvironmentSupport} from '../src/utils/environment-detection';
 
 describe('Vidi E2E', function () {
     this.timeout(5000); // 5 seconds
@@ -14,19 +14,19 @@ describe('Vidi E2E', function () {
     });
 
     const formatsToTest = [];
-    if (envSupports.MP4) {
+    if (NativeEnvironmentSupport.MP4) {
         formatsToTest.push('MP4')
     }
 
-    if (envSupports.WEBM) {
+    if (NativeEnvironmentSupport.WEBM) {
         formatsToTest.push('WEBM');
     }
 
-    if (envSupports.HLS || envSupports.MSE) {
+    if (NativeEnvironmentSupport.HLS || NativeEnvironmentSupport.MSE) {
         formatsToTest.push('HLS');
     }
 
-    if (envSupports.DASH || envSupports.MSE) {
+    if (NativeEnvironmentSupport.DASH || NativeEnvironmentSupport.MSE) {
         formatsToTest.push('DASH');
     }
 

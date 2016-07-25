@@ -1,3 +1,5 @@
+import {EnvironmentSupport} from '../types';
+
 /**
  * `true` if we are running inside a web browser, `false` otherwise (e.g. running inside Node.js). 
  */
@@ -7,7 +9,7 @@ export const isBrowser = typeof window !== 'undefined';
  * This is a map which lists native support of formats and APIs.
  * It gets filled during runtime with the relevant values to the current environment.
  */
-export const envSupports = {
+export const NativeEnvironmentSupport: EnvironmentSupport = {
     MSE: false,
     HLS: false,
     DASH: false,
@@ -19,24 +21,24 @@ function detectEnvironment() {
     if (!isBrowser) {
         return;
     }
-    envSupports.MSE = ('WebKitMediaSource' in window) || ('MediaSource' in window);
+    NativeEnvironmentSupport.MSE = ('WebKitMediaSource' in window) || ('MediaSource' in window);
 
     const video = document.createElement('video');
     if (video.canPlayType('application/x-mpegURL') || video.canPlayType('application/vnd.apple.mpegURL')) {
-        envSupports.HLS = true;
+        NativeEnvironmentSupport.HLS = true;
     }
 
     if (video.canPlayType('application/dash+xml')) {
-        envSupports.DASH = true;
+        NativeEnvironmentSupport.DASH = true;
     }
 
     if (video.canPlayType('video/mp4')) {
-        envSupports.MP4 = true;
+        NativeEnvironmentSupport.MP4 = true;
     }
 
     if (video.canPlayType('video/webm')) {
-        envSupports.WEBM = true;
+        NativeEnvironmentSupport.WEBM = true;
     }
 }
 
-detectEnvironment();
+detectEnvironment(); // Run once
