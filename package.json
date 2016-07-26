@@ -9,7 +9,6 @@
     "build": "npm run build:transpile && npm run copy",
     "build:transpile": "tsc",
     "build:dashjs": "babel ./node_modules/dashjs/ -d ./externals/dashjs --ignore dist/**,contrib/** --presets es2015",
-    "build:hlsjs": "babel ./node_modules/hls.js/ -d ./externals/hls.js --ignore dist/**,lib/**,tests/** --presets es2015",
     "build:docs": "typedoc --tsconfig tsconfig.json --mode file --excludeNotExported ./src --out docs",
     "bundle": "webpack --progress",
     "bundle:watch": "webpack --progress -w",
@@ -18,7 +17,7 @@
     "pretest": "npm run clean && npm run build && npm run bundle",
     "test": "npm run test:browser",
     "test:browser": "node ./dist/test/boot-and-test",
-    "prepublish": "npm run build:dashjs && npm run build:hlsjs && typings install",
+    "prepublish": "npm run build:dashjs && typings install",
     "start": "webpack-dev-server --progress"
   },
   "repository": {
