@@ -14,7 +14,7 @@ vidi.src = 'http://my-url/video.m3u8';
 vidi.src = 'http://my-url/video.mpd';
 
 // Play a url without file extension by specifying type:
-vidi.src = { url: 'http://my-url/video-source', type: Vidi.MediaTypes.HLS };
+vidi.src = { url: 'http://my-url/video-source', type: Vidi.MediaStreamTypes.HLS };
 
 
 // Several sources can be provided as an array:
@@ -27,7 +27,7 @@ vidi.src = [
 // And can also be mixed:
 vidi.src = [
   'http://my-url/video.mp4',
-  { url: 'http://my-url/video.webm', type: Vidi.MediaTypes.WEBM },
+  { url: 'http://my-url/video.webm', type: Vidi.MediaStreamTypes.WEBM },
   'http://my-url/video.m3u8'
 ];
 
@@ -35,10 +35,10 @@ vidi.src = [
 // they are being treated as different MediaLevels instead of separate sources.
 // Same API as adaptive sources.
 vidi.src = [
-    { url: 'http://my-url/low_quality.mp4', type: Vidi.MediaTypes.MP4, name: '480p' },    //    |---
-    { url: 'http://my-url/medium_quality.mp4', type: Vidi.MediaTypes.MP4, name: '720p' }, //  <=|    These three will be grouped by Vidi
-    { url: 'http://my-url/high_quality.mp4', type: Vidi.MediaTypes.MP4, name: '1080p' },  //    |---
-    { url: 'http://my-url/adaptive-stream.m3u8', type: Vidi.MediaTypes.HLS },
+    { url: 'http://my-url/low_quality.mp4', type: Vidi.MediaStreamTypes.MP4, name: '480p' },    //    |---
+    { url: 'http://my-url/medium_quality.mp4', type: Vidi.MediaStreamTypes.MP4, name: '720p' }, //  <=|    These three will be grouped by Vidi
+    { url: 'http://my-url/high_quality.mp4', type: Vidi.MediaStreamTypes.MP4, name: '1080p' },  //    |---
+    { url: 'http://my-url/adaptive-stream.m3u8', type: Vidi.MediaStreamTypes.HLS },
 ];
 
 
