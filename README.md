@@ -73,7 +73,8 @@ and choose the ideal format.
 
 The order of sources in the array doesn't matter.
 The logic uses the following prioritization system to pick the most suitable format
-(*#1 has the highest priority, #2 has a lower one, etc...*):
+(*from highest to lowest*):
+
 1. **Adaptive sources** that can be played via **native** browser support. *Example: HLS on Safari* 
 2. **Adaptive sources** that can be played via **MSE**-based libraries. *Example: DASH on Chrome*
 3. **Progressive** sources (MP4 and WebM) that can be played via **native** browser support.
