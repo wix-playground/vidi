@@ -1,7 +1,7 @@
 import {getNativeEventsHandlers} from './events';
 import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaStreamTypes, MediaStream, PlayableStream, PlayableStreamCreator, EventListener, EventListenerMap, MediaStreamDeliveryType} from './types';
-import {HlsStream, DashStream, nativeStreamFactory, mediaSourceToMediaStream, resolvePlayableStreams} from './media-streams';
-import {NativeEnvironmentSupport} from './utils';
+import {HlsStream, DashStream, nativeStreamFactory, resolvePlayableStreams, detectStreamType} from './media-streams';
+import {NativeEnvironmentSupport, isString} from './utils';
 
 /**
  * The default `vidi` main application class.
@@ -62,7 +62,7 @@ export class Vidi {
             HlsStream, // Hls via hls.js (Chrome, Firefox, IE11, Opera?)
             DashStream, // MPEG-DASH via dash.js (Chrome, Firefox, IE11, Safari, Edge)
             nativeStreamFactory(MediaStreamTypes.MP4, MediaStreamDeliveryType.NATIVE_PROGRESSIVE), // Native MP4 (Chrome, Firefox, IE11, Safari, Edge)
-            nativeStreamFactory(MediaStreamTypes.WEBM,  MediaStreamDeliveryType.NATIVE_PROGRESSIVE) // Native WebM (Chrome, Firefox)
+            nativeStreamFactory(MediaStreamTypes.WEBM, MediaStreamDeliveryType.NATIVE_PROGRESSIVE) // Native WebM (Chrome, Firefox)
         ];
 
         // Only add supported handlers 
@@ -284,19 +284,24 @@ export class Vidi {
 
     // Private helpers
 
+    private autoDetectSourceTypes(mediaSources: MediaSource[]): MediaStream[] {
+        return mediaSources.map(mediaSource => {
+            if (isString(mediaSource)) {
+                const url = mediaSource as string;
+                return { url, type: detectStreamType(url) };
+            } else {
+                return mediaSource as MediaStream;
+            }
+        });
+    }
+
     private resolvePlayableStreams() {
         if (!this.currentSrc) {
             this.playableStreams = [];
             return;
         }
-
-        let mediaStreams: MediaStream[];
-        if (Array.isArray(this.currentSrc)) {
-            mediaStreams = (this.currentSrc as MediaSource[]).map(mediaSourceToMediaStream);
-        } else {
-            mediaStreams = [mediaSourceToMediaStream(this.currentSrc as MediaSource)];
-        }
-
+        const mediaSources: MediaSource[] = [].concat(this.currentSrc);
+        const mediaStreams = this.autoDetectSourceTypes(mediaSources);
         this.playableStreams = resolvePlayableStreams(mediaStreams, this.streamCreators, this.emit.bind(this));
     }
 

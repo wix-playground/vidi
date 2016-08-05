@@ -1,3 +1,3 @@
 export * from './playable-streams';
-export * from './media-source-to-media-stream';
+export * from './detect-stream-type';
 export * from './playback-resolution';
