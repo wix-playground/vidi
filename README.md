@@ -17,7 +17,7 @@
 
 ### Installation
 ***vidi*** is currently only available via npm:
-```sh
+```bash
 $ npm install vidi --save
 ```
 
