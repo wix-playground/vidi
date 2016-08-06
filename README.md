@@ -72,7 +72,7 @@ and will automatically detect and choose the ideal format for the current browse
 
 The order of sources in the array doesn't matter.
 The logic uses the following prioritization system to pick the most suitable format
-(*from highest to lowest*):
+(*from highest priority to lowest*):
 
 1. **Adaptive sources** that can be played via **native** browser support. *Example: HLS on Safari* 
 2. **Adaptive sources** that can be played via **MSE**-based libraries. *Example: DASH on Chrome*
@@ -93,13 +93,13 @@ The following events can be listened to:
 
 | Event Type     | `<video>` info sent to the listener                                     |
 |----------------|-------------------------------------------------------------------------|
-| statuschange   | `PlaybackStatus` value                                                  |
+| statuschange   | `PlaybackStatus` value. One of:<ul><li>`vidi.PlaybackStatus.PLAYING`</li><li>`vidi.PlaybackStatus.PAUSED`</li><li>`vidi.PlaybackStatus.ENDED`</li><li>`vidi.PlaybackStatus.PLAYING_BUFFERING`</li><li>`vidi.PlaybackStatus.PAUSED_BUFFERING`</li></ul> |
 | durationchange | Duration (in milliseconds)                                              |
 | timeupdate     | Current time (in milliseconds)                                          |
 | ratechange     | Playback rate (*0 to 1, where 1 is full-speed, 0.5 is half-speed, etc*) |
 | volumechange   | An object containing `volume` and `muted` keys                          |
-| loadstart      | `PlaybackState` object containing all the data above combined                       |
-| error          | The error which occurred                                                 |
+| loadstart      | `PlaybackState` object containing all data above combined               |
+| error          | The error which occurred                                                |
 
 Subscribing to events can be done using the `.on()` or `.once()` methods:
 ```ts
