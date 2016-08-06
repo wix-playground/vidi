@@ -47,7 +47,7 @@ vidi.src = 'http://my-url/video.mpd';
 vidi.src = { url: 'http://my-url/video-source', type: Vidi.MediaStreamTypes.HLS };
 ```
 
-At this point, we have a working HTML5 `<video>` playback of all the supported source formats.
+At this point, we have a working HTML5 `<video>` playback of all the [supported source formats](FORMATS.md).
 
 ### *And now, the real magic occurs...*
 
