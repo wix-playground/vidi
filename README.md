@@ -68,7 +68,7 @@ vidi.src = [
 ];
 ```
 ***vidi*** assumes the URLs point to **different formats** of the **same video**,
-and will automatically detect and choose the ideal format for current browser.
+and will automatically detect and choose the ideal format for the current browser.
 
 The order of sources in the array doesn't matter.
 The logic uses the following prioritization system to pick the most suitable format
@@ -81,7 +81,7 @@ The logic uses the following prioritization system to pick the most suitable for
 The algorithm bases decisions using browser feature detection.
 
 ### Events
-***vidi*** provides an easier to use event system.
+***vidi*** provides an easy to use event system.
 Listeners (callbacks) receive relevant data, per event type,
 as the first parameter.
 
@@ -93,22 +93,20 @@ The following events can be listened to:
 
 | Event Type     | `<video>` info sent to the listener                                     |
 |----------------|-------------------------------------------------------------------------|
-| loadstart      | `PlaybackState` object containing all data below.                       |
+| statuschange   | `PlaybackStatus` value                                                  |
 | durationchange | Duration (in milliseconds)                                              |
 | timeupdate     | Current time (in milliseconds)                                          |
 | ratechange     | Playback rate (*0 to 1, where 1 is full-speed, 0.5 is half-speed, etc*) |
 | volumechange   | An object containing `volume` and `muted` keys                          |
-| statuschange   | `PlaybackStatus` value                                                  |
+| loadstart      | `PlaybackState` object containing all the data above combined                       |
 | error          | The error which occurred                                                 |
 
 Subscribing to events can be done using the `.on()` or `.once()` methods:
 ```ts
-function durationChangeHandler (newDuration: number) {
-    console.log('New duration of video: ' + newDuration);
-}
-
 // Callback will be called on every durationchange event
-vidi.on('durationchange', durationChangeHandler);
+vidi.on('durationchange', function (newDuration) {
+    console.log('New duration of video: ' + newDuration);
+});
 
 // Callback will be called only once (for the first error event)
 vidi.once('error', function (errorData) {
