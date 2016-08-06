@@ -18,7 +18,7 @@
     "test": "npm run test:browser",
     "test:browser": "node ./dist/test/boot-and-test",
     "prepublish": "npm run build:dashjs && typings install",
-    "start": "webpack-dev-server --progress"
+    "start": "webpack-dev-server --progress --config webpack.test.config.js"
   },
   "repository": {
     "type": "git",
