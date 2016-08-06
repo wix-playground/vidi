@@ -23,7 +23,7 @@ $ npm install vidi --save
 
 ### Usage
 We begin by importing ***vidi*** into our module, and initiallizing it:
-```js
+```ts
 import {Vidi} from 'vidi';
 // or, if you aren't using ES6 modules:
 // const Vidi = require('vidi).Vidi;
@@ -36,7 +36,7 @@ const vidi = new Vidi(videoElement);
 ```
 
 A source can then be set:
-```js
+```ts
 // Type of stream is automatically detected from the URL
 vidi.src = 'http://my-url/video.mp4';
 vidi.src = 'http://my-url/video.webm';
@@ -52,7 +52,7 @@ At this point, we have a working HTML5 `<video>` playback of all the supported s
 ### *And now, the real magic occurs...*
 
 Multiple sources (of different formats) can be provided as an array:
-```js
+```ts
 vidi.src = [
   'http://my-url/video.mp4',
   'http://my-url/video.webm',
@@ -60,16 +60,15 @@ vidi.src = [
 ];
 ```
 Types can still be specified explicitly (for all or some of the sources):
-```js
+```ts
 vidi.src = [
   'http://my-url/video.mp4',
   { url: 'http://my-url/video.webm', type: Vidi.MediaStreamTypes.WEBM },
   'http://my-url/video.m3u8'
 ];
 ```
-***vidi*** assumes the URLs point to different formats of the same video.
-It will automatically detect what can be played in the current browser
-and choose the ideal format.
+***vidi*** assumes the URLs point to **different formats** of the **same video**,
+and will automatically detect and choose the ideal format for current browser.
 
 The order of sources in the array doesn't matter.
 The logic uses the following prioritization system to pick the most suitable format
@@ -82,41 +81,50 @@ The logic uses the following prioritization system to pick the most suitable for
 The algorithm bases decisions using browser feature detection.
 
 ### Events
-```js
-vidi.on('loadstart', function (playbackState: PlaybackState) { 
+***vidi*** provides an easier to use event system.
+Listeners (callbacks) receive relevant data, per event type,
+as the first parameter.
 
+It also normalizes several "status" changing native events
+(*play, playing, pause, seeking, seeked, and ended*)
+into a single `statuschange` event.
+
+The following events can be listened to:
+| Event Type     | `<video>` info sent to the listener                                     |
+|----------------|-------------------------------------------------------------------------|
+| loadstart      | `PlaybackState` object containing all data below.                       |
+| durationchange | Duration (in milliseconds)                                              |
+| timeupdate     | Current time (in milliseconds)                                          |
+| ratechange     | Playback rate (*0 to 1, where 1 is full-speed, 0.5 is half-speed, etc*) |
+| volumechange   | An object containing `volume` and `muted` keys                          |
+| statuschange   | `PlaybackStatus` value                                                  |
+| error          | The error which occurred                                                 |
+
+Subscribing to events can be done using the `.on()` or `.once()` methods:
+```ts
+function durationChangeHandler (newDuration: number) {
+    console.log('New duration of video: ' + newDuration);
+}
+
+// Callback will be called on every durationchange event
+vidi.on('durationchange', durationChangeHandler);
+
+// Callback will be called only once (for the first error event)
+vidi.once('error', function (errorData) {
+    console.error('All hell broke loose!', errorData);
 });
+```
 
-vidi.on('durationchange', function (newDuration: number) {
-
-});
-
-vidi.on('timeupdate', function (currentTime: number) {
-
-});
-
-vidi.on('ratechange', function (playbackRate: number) {
-
-});
-
-vidi.on('volumechange', function (volumeData: {volume: number, muted: boolean}){
-
-});
-
-vidi.on('statuschange', function (playbackStatus: PlaybackStatus) {
-
-});
-
-vidi.on('error', function (errorData) {
-    
-});
+To un-subscribe a listener:
+```ts
+vidi.off('durationchange', durationChangeHandler);
 ```
 
 ### Advanced features
 
 #### Pseudo-adpative:
 
-```js
+```ts
 // When two or more sources point to the same format,
 // they are being treated as different MediaLevels instead of separate sources.
 // Same API as adaptive sources.
