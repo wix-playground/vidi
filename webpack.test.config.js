@@ -28,10 +28,9 @@ var output = {
 module.exports = {
     context: __dirname,
     entry: {
-        // vidi       : ['./src'],
-        test       : ['./test']
-        // webtest    : ['mocha!./test'],
-        // examples   : ['./examples']
+        test       : ['./test'],
+        webtest    : ['mocha!./test'],
+        examples   : ['./examples']
     },
     devtool: 'inline-source-map',
     output: output,
