@@ -6,7 +6,7 @@ var loaders = {
         {
             test    : /\.ts[x]?$/,
             exclude : NODE_MODULES_PATH,
-            loader  : 'ts-loader'
+            loader  : 'awesome-typescript-loader'
             // loader  : 'ts-loader?transpileOnly=true'
         }
     ],
@@ -33,7 +33,7 @@ module.exports = {
         webtest    : ['mocha!./test'],
         examples   : ['./examples']
     },
-    devtool: 'eval',
+    devtool: 'inline-source-map',
     output: output,
     resolve: resolve,
     module: loaders
