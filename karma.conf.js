@@ -23,7 +23,13 @@ module.exports = (config) => {
     exclude: [
     ],
 
-
+    client: {
+      mocha: {
+        reporter: 'html', // change Karma's debug.html to the mocha web reporter
+        ui: 'bdd'
+      }
+    },
+    
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
