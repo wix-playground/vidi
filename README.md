@@ -90,6 +90,7 @@ It also normalizes several "status" changing native events
 into a single `statuschange` event.
 
 The following events can be listened to:
+
 | Event Type     | `<video>` info sent to the listener                                     |
 |----------------|-------------------------------------------------------------------------|
 | loadstart      | `PlaybackState` object containing all data below.                       |
