@@ -59,7 +59,7 @@ vidi.src = [
   'http://my-url/video.m3u8'
 ];
 ```
-Types can still be specified explicitly:
+Types can still be specified explicitly (for all or some of the sources):
 ```js
 vidi.src = [
   'http://my-url/video.mp4',
