@@ -6,7 +6,7 @@ const mediaServer = startHttpMediaServer(3000, startKarma);
 function startKarma() {
     const karmaOptions = {
         port: 9876,
-        configFile: process.cwd() + '/karma.conf.ts',
+        configFile: process.cwd() + '/karma.conf.js',
         singleRun: true
     };
     const karmaServer = new KarmaServer(karmaOptions, cleanup);
