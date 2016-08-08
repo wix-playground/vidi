@@ -144,7 +144,7 @@ vidi.on('levels', function (levels: MediaLevels[]) {
 vidi.on('currentLevel', function (level: number) {
     // When a new level is exposed 
 }
-
+```
 ## API
 
 See [API Documentation](https://wix.github.io/vidi/docs/classes/vidi.html)
