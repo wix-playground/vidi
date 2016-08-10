@@ -7,7 +7,7 @@ var loaders = {
         {
             test    : /\.ts[x]?$/,
             exclude : NODE_MODULES_PATH,
-            loader  : 'ts-loader'
+            loader  : 'awesome-typescript-loader'
         }
     ],
     noParse: /\.min\.js$/
