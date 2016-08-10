@@ -5,7 +5,9 @@
   "main": "dist/src/index.js",
   "scripts": {
     "clean": "rimraf ./dist",
-    "copy": "mkdirp ./dist/http-media-server/assets && ncp ./http-media-server/assets ./dist/http-media-server/assets",
+    "copy": "mkdirp ./dist/http-media-server/assets && npm run copy:assets && npm run copy:externals",
+    "copy:assets": "ncp ./http-media-server/assets ./dist/http-media-server/assets",
+    "copy:externals": "ncp ./externals ./dist/externals",
     "build": "npm run build:transpile && npm run copy",
     "build:transpile": "tsc",
     "build:dashjs": "babel ./node_modules/dashjs/ -d ./externals/dashjs --ignore dist/**,contrib/** --presets es2015",
