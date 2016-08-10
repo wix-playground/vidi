@@ -121,6 +121,8 @@ vidi.off('durationchange', durationChangeHandler);
 
 ### Advanced features
 
+> Work in progress!
+
 #### Pseudo-adpative:
 
 ```ts
@@ -145,9 +147,6 @@ vidi.on('currentLevel', function (level: number) {
     // When a new level is exposed 
 }
 ```
-## API
-
-See [API Documentation](https://wix.github.io/vidi/docs/classes/vidi.html)
 
 ## Development
 The project is set up using the following tools: TypeScript, npm, webpack, mocha, and chai.
