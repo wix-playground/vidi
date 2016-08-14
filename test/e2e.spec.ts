@@ -1,44 +1,35 @@
 import {expect} from 'chai';
-import {renderDemo} from '../examples/example';
+import {Vidi} from '../src';
 import {NativeEnvironmentSupport} from '../src/utils/environment-detection';
 
-describe('Vidi E2E', function () {
-    this.timeout(5000); // 5 seconds
+describe('Vidi e2e', function () {
+    const formatsToTest = [
+        { type: 'MP4', url: 'http://localhost:3000/sample.mp4', supportedByEnv: NativeEnvironmentSupport.MP4 },
+        { type: 'WEBM', url: 'http://localhost:3000/sample.webm', supportedByEnv: NativeEnvironmentSupport.WEBM },
+        { type: 'HLS', url: 'http://localhost:3000/sample.m3u8', supportedByEnv: NativeEnvironmentSupport.HLS || NativeEnvironmentSupport.MSE },
+        { type: 'DASH', url: 'http://localhost:3000/sample.mpd', supportedByEnv: NativeEnvironmentSupport.DASH || NativeEnvironmentSupport.MSE }
+    ];
 
     beforeEach(function () {
-        this.stageRoot = renderDemo();
+        this.videoElement = document.createElement('video');
+        document.body.appendChild(this.videoElement)
     });
 
     afterEach(function () {
-        document.body.removeChild(this.stageRoot);
+        document.body.removeChild(this.videoElement);
     });
 
-    const formatsToTest = [];
-    if (NativeEnvironmentSupport.MP4) {
-        formatsToTest.push('MP4')
-    }
 
-    if (NativeEnvironmentSupport.WEBM) {
-        formatsToTest.push('WEBM');
-    }
+    formatsToTest.forEach(formatToTest => {
+        if (formatToTest.supportedByEnv) {
+            it(`allows playback of ${formatToTest.type}`, function (done) {
+                this.videoElement.addEventListener('canplay', () => {
+                    done();
+                });
 
-    if (NativeEnvironmentSupport.HLS || NativeEnvironmentSupport.MSE) {
-        formatsToTest.push('HLS');
-    }
-
-    if (NativeEnvironmentSupport.DASH || NativeEnvironmentSupport.MSE) {
-        formatsToTest.push('DASH');
-    }
-
-    formatsToTest.forEach(format => {
-        it(`allows playback of ${format}, if possible`, function (done) {
-            const videoElement = document.getElementById('nativeVideo');
-
-            videoElement.addEventListener('canplay', () => {
-                done();
+                const vidi = new Vidi(this.videoElement);
+                vidi.src = formatToTest.url;
             });
-
-            document.getElementById(format).click();
-        });
+        }
     });
 });
