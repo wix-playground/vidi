@@ -17,8 +17,7 @@
     "mediaserver": "node ./dist/http-media-server/standalone",
     "minify": "webpack --progress -p --config webpack.prod.config.js",
     "pretest": "npm run clean && npm run build && npm run bundle",
-    "test": "npm run test:browser",
-    "test:browser": "node ./dist/test/boot-and-test",
+    "test": "node ./dist/test/boot-mediaserver-and-test",
     "prepublish": "npm run build:dashjs && typings install",
     "start": "webpack-dev-server --progress --config webpack.test.config.js"
   },
