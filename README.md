@@ -37,17 +37,19 @@ const vidi = new Vidi(videoElement);
 
 A source can then be set:
 ```ts
-// Type of stream is automatically detected from the URL
 vidi.src = 'http://my-url/video.mp4';
-vidi.src = 'http://my-url/video.webm';
-vidi.src = 'http://my-url/video.m3u8';
-vidi.src = 'http://my-url/video.mpd';
+```
 
-// And can also be specified explicitly
+The type of stream is automatically detected from the URL.
+
+The following extensions are recognized: `.mp4` (MP4), `.webm` (WebM), `.m3u8` (HLS manifest), and `.mpd` (DASH manifest).  
+
+If the URL does not end with the file extension, type can be specified explicitly:
+```ts
 vidi.src = { url: 'http://my-url/video-source', type: Vidi.MediaStreamTypes.HLS };
 ```
 
-At this point, we have a working HTML5 `<video>` playback of all the [supported source formats](FORMATS.md).
+After a `<video>` and a `src` are provided, we have a working HTML5 media playback of all the [supported source formats](FORMATS.md).
 
 ### *And now, the real magic occurs...*
 
