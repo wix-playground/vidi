@@ -1,5 +1,4 @@
-import {EnvironmentSupport, MediaStream, PlayableStream, MediaSource, PlayableStreamCreator, EmitEventsFn} from '../types';
-import {HlsStream, DashStream} from './playable-streams';
+import {MediaStream, PlayableStream, PlayableStreamCreator, EmitEventsFn} from '../types';
 
 interface GroupedMediaStreams {
     [type: string]: MediaStream[]
@@ -8,13 +7,14 @@ interface GroupedMediaStreams {
 export function resolvePlayableStreams(mediaStreams: MediaStream[], playableStreamCreators: PlayableStreamCreator[], emit: EmitEventsFn): PlayableStream[] {
     const playableStreams: PlayableStream[] = [];
     const groupedStreams = groupStreamsByMediaType(mediaStreams);
+    
     Object.keys(groupedStreams).forEach(mediaType => {
         const mediaStreams = groupedStreams[mediaType]
 
         for (let i = 0; i < playableStreamCreators.length; ++i) {
-            const StreamHandler = playableStreamCreators[i];
-            if (StreamHandler.canPlay(mediaType)) {
-                playableStreams.push(new StreamHandler(mediaStreams, emit));
+            const playableStreamCreator = playableStreamCreators[i];
+            if (playableStreamCreator.canPlay(mediaType)) {
+                playableStreams.push(new playableStreamCreator(mediaStreams, emit));
                 break;
             }
         };
@@ -29,11 +29,10 @@ export function resolvePlayableStreams(mediaStreams: MediaStream[], playableStre
 function groupStreamsByMediaType(mediaStreams: MediaStream[]): GroupedMediaStreams {
     const typeMap: GroupedMediaStreams = {};
     mediaStreams.forEach(mediaStream => {
-        if (typeMap[mediaStream.type]) {
-            typeMap[mediaStream.type].push(mediaStream)
-        } else {
-            typeMap[mediaStream.type] = [mediaStream];
+        if (!Array.isArray(mediaStream.type)) {
+            typeMap[mediaStream.type] = [];
         }
+        typeMap[mediaStream.type].push(mediaStream)
     });
     return typeMap;
 }
