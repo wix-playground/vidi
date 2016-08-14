@@ -23,11 +23,9 @@ describe('Vidi e2e', function () {
     formatsToTest.forEach(formatToTest => {
         if (formatToTest.supportedByEnv) {
             it(`allows playback of ${formatToTest.type}`, function (done) {
-                this.videoElement.addEventListener('canplay', () => {
-                    done();
-                });
-
                 const vidi = new Vidi(this.videoElement);
+
+                vidi.once('loadstart', () => done());
                 vidi.src = formatToTest.url;
             });
         }
