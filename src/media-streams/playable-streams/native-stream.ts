@@ -1,6 +1,6 @@
 import {MediaStream, PlayableStream, EnvironmentSupport, EmitEventsFn, MediaStreamDeliveryType} from '../../types';
 
-export function nativeStreamFactory(streamType: string, deliveryType: MediaStreamDeliveryType) {
+export function getNativeStreamCreator(streamType: string, deliveryType: MediaStreamDeliveryType) {
     class NativeStream implements PlayableStream {
         private currentLevel: number = 0;
 
