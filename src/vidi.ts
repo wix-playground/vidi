@@ -1,25 +1,12 @@
 import {getNativeEventsHandlers} from './events';
 import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaStreamTypes, MediaStream, PlayableStream, PlayableStreamCreator, EventListener, EventListenerMap, MediaStreamDeliveryType} from './types';
-import {HlsStream, DashStream, nativeStreamFactory, resolvePlayableStreams, detectStreamType} from './media-streams';
+import {HlsStream, DashStream, getNativeStreamCreator, resolvePlayableStreams, detectStreamType} from './media-streams';
 import {NativeEnvironmentSupport, isString} from './utils';
 
 /**
- * The default `vidi` main application class.
+ * The main `vidi` class.
  * 
- * It holds the core logic that intends to simplify playback loading decisions by:
- * - Allow specification of several sources. Prioritizing adaptive sources.
- * - Checking formats support in the current playback environment
- * 
- * The following stream formats are supported:
- * 1. Native HLS
- * 2. HLS via MSE (hls.js)
- * 3. MPEG-DASH via MSE (dash.js)
- * 4. Native MP4
- * 5. Native WebM
- * 
- * The minimal requirements for working playback are:
- * 1. an `HTMLVideoElement`, which can be provided during construction, or later by calling [[setVideoElement]].
- * 2. a `MediaSource`, which can be set via the [[src]] setter.
+ * Each instance manages playback for a single HTMLVideoElement, onto which sources can be loaded.
  */
 export class Vidi {
     /**
@@ -37,16 +24,15 @@ export class Vidi {
     private nativeEventHandlers = getNativeEventsHandlers(this);
     private eventListeners: EventListenerMap = Object.create(null);
 
-
-    private streamCreators: PlayableStreamCreator[] = [];
-    private videoElement: HTMLVideoElement = null; // The current HTMLVideoElement
+    private playableStreamCreators: PlayableStreamCreator[] = [];
+    private videoElement: HTMLVideoElement = null;
     private currentSrc: MediaSource | MediaSource[] = null;
 
     private playableStreams: PlayableStream[] = null;
-    private connectedStream: PlayableStream = null;
+    private attachedStream: PlayableStream = null;
 
     /**
-     * The main entry point to using Vidi.
+     * Constructor for creating Vidi instances
      * 
      * @param nativeVideoEl is an optional paramaters and is a shorthand for:
      * ```ts
@@ -58,15 +44,15 @@ export class Vidi {
         this.onNativeEvent = this.onNativeEvent.bind(this);
 
         const streamCreators: PlayableStreamCreator[] = [
-            nativeStreamFactory(MediaStreamTypes.HLS, MediaStreamDeliveryType.NATIVE_ADAPTIVE), // Native HLS (Safari, Edge)
+            getNativeStreamCreator(MediaStreamTypes.HLS, MediaStreamDeliveryType.NATIVE_ADAPTIVE), // Native HLS (Safari, Edge)
             HlsStream, // Hls via hls.js (Chrome, Firefox, IE11, Opera?)
             DashStream, // MPEG-DASH via dash.js (Chrome, Firefox, IE11, Safari, Edge)
-            nativeStreamFactory(MediaStreamTypes.MP4, MediaStreamDeliveryType.NATIVE_PROGRESSIVE), // Native MP4 (Chrome, Firefox, IE11, Safari, Edge)
-            nativeStreamFactory(MediaStreamTypes.WEBM, MediaStreamDeliveryType.NATIVE_PROGRESSIVE) // Native WebM (Chrome, Firefox)
+            getNativeStreamCreator(MediaStreamTypes.MP4, MediaStreamDeliveryType.NATIVE_PROGRESSIVE), // Native MP4 (Chrome, Firefox, IE11, Safari, Edge)
+            getNativeStreamCreator(MediaStreamTypes.WEBM, MediaStreamDeliveryType.NATIVE_PROGRESSIVE) // Native WebM (Chrome, Firefox)
         ];
 
         // Only add supported handlers 
-        streamCreators.forEach(streamCreator => streamCreator.isSupported(NativeEnvironmentSupport) && this.streamCreators.push(streamCreator));
+        streamCreators.forEach(streamCreator => streamCreator.isSupported(NativeEnvironmentSupport) && this.playableStreamCreators.push(streamCreator));
 
         this.setVideoElement(nativeVideoEl);
     }
@@ -101,9 +87,9 @@ export class Vidi {
     }
 
     /**
-     * Attaches to a new `<video>` element.
+     * Attaches the `vidi` instance to a new `<video>` element.
      * If a previous element was set, `vidi` will detach from it.
-     * If a `src` is already set, this will initiate loading it into the new element. 
+     * If a `src` is already set, this will also trigger loading the `src` into the new element. 
      * 
      * @param nativeVideoEl The new `<video>` element to attach to.
      */
@@ -129,8 +115,7 @@ export class Vidi {
 
     /**
      * @returns If a `<video>` element is attached, it returns the current [[PlaybackState]] as an object.
-     * 
-     * Otherwise, it returns [[defaultPlaybackState]].
+     * Otherwise, returns [[defaultPlaybackState]].
      * 
      * 
      */
@@ -193,13 +178,6 @@ export class Vidi {
         } catch (e) {
             this.handleNativeError(e);
         }
-    }
-
-    /**
-     * @returns An array of currently registered [[MediaStreamHandler]]s.
-     */
-    public getStreamHandlers(): PlayableStreamCreator[] {
-        return this.streamCreators;
     }
 
     /**
@@ -274,11 +252,11 @@ export class Vidi {
     }
 
     /**
-     * 
+     * Sets the current level for the 
      */
     public setMediaLevel(index: number) {
-        if (this.connectedStream) {
-            this.connectedStream.setMediaLevel(index, this.videoElement);
+        if (this.attachedStream) {
+            this.attachedStream.setMediaLevel(index, this.videoElement);
         }
     }
 
@@ -302,7 +280,7 @@ export class Vidi {
         }
         const mediaSources: MediaSource[] = [].concat(this.currentSrc);
         const mediaStreams = this.autoDetectSourceTypes(mediaSources);
-        this.playableStreams = resolvePlayableStreams(mediaStreams, this.streamCreators, this.emit.bind(this));
+        this.playableStreams = resolvePlayableStreams(mediaStreams, this.playableStreamCreators, this.emit.bind(this));
     }
 
     private connectStreamToVideo() {
@@ -311,17 +289,17 @@ export class Vidi {
         }
 
         if (this.playableStreams.length > 0) {
-            // Use the first MediaStream for now
+            // Use the first PlayableStream for now
             // Later, we can use the others as fallback
-            this.connectedStream = this.playableStreams[0];
-            this.connectedStream.attach(this.videoElement);
+            this.attachedStream = this.playableStreams[0];
+            this.attachedStream.attach(this.videoElement);
         }
     }
 
     private detachCurrentStream() {
-        if (this.connectedStream) {
-            this.connectedStream.detach(this.videoElement);
-            this.connectedStream = null;
+        if (this.attachedStream) {
+            this.attachedStream.detach(this.videoElement);
+            this.attachedStream = null;
         }
     }
 
