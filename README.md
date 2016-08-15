@@ -172,3 +172,6 @@ Then browse to: [http://localhost:8080/webpack-dev-server](http://localhost:8080
 `npm test` - run tests, builds project first
 
 `npm run mediaserver` - starts a local http media server. see `http=media-server` folder.
+
+## License
+We use a custom license, see [LICENSE.md](LICENSE.md).
