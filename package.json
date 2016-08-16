@@ -5,12 +5,9 @@
   "main": "dist/src/index.js",
   "scripts": {
     "clean": "rimraf ./dist",
-    "copy": "mkdirp ./dist/http-media-server/assets && npm run copy:assets && npm run copy:externals",
-    "copy:assets": "ncp ./http-media-server/assets ./dist/http-media-server/assets",
-    "copy:externals": "ncp ./externals ./dist/externals",
-    "build": "npm run build:transpile && npm run copy",
+    "copy:assets": "mkdirp ./dist/http-media-server/assets && ncp ./http-media-server/assets ./dist/http-media-server/assets",
+    "build": "npm run build:transpile && npm run copy:assets",
     "build:transpile": "tsc",
-    "build:dashjs": "babel ./node_modules/dashjs/ -d ./externals/dashjs --ignore dist/**,contrib/** --presets es2015",
     "build:docs": "typedoc --tsconfig tsconfig.json --mode file --excludeNotExported ./src --out docs",
     "bundle": "webpack --progress --config webpack.test.config.js",
     "bundle:watch": "webpack --progress -w --config webpack.test.config.js",
@@ -18,7 +15,7 @@
     "minify": "webpack --progress -p --config webpack.prod.config.js",
     "pretest": "npm run clean && npm run build && npm run bundle",
     "test": "node ./dist/test/boot-mediaserver-and-test",
-    "prepublish": "npm run build:dashjs && typings install",
+    "prepublish": "typings install",
     "start": "webpack-dev-server --progress --config webpack.test.config.js"
   },
   "repository": {
@@ -43,8 +40,6 @@
   "homepage": "https://github.com/wix/vidi#readme",
   "devDependencies": {
     "awesome-typescript-loader": "2.1.1",
-    "babel-cli": "6.11.4",
-    "babel-preset-es2015": "6.13.2",
     "chai": "3.5.0",
     "karma": "1.2.0",
     "karma-chrome-launcher": "1.0.1",
@@ -66,10 +61,8 @@
     "webpack-dev-server": "1.14.1"
   },
   "dependencies": {
-    "codem-isoboxer": "0.2.3",
     "dashjs": "2.2.0",
     "hls.js": "0.6.2-2",
-    "round10": "1.0.3",
     "webworkify": "1.3.0"
   }
 }

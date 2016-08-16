@@ -1,7 +1,8 @@
 import {MediaStream, PlayableStream, MediaStreamTypes, MediaLevel, EmitEventsFn, EnvironmentSupport, MediaStreamDeliveryType} from '../../types';
 
-const DashMediaPlayer = require('../../../externals/dashjs/src/streaming/MediaPlayer').default();
-const DashEvents = require('../../../externals/dashjs/src/streaming/MediaPlayerEvents').default;
+require('dashjs/dist/dash.all.min');
+const DashMediaPlayer = window['dashjs'].MediaPlayer();
+const DashEvents = window['dashjs'].MediaPlayer.events;
 
 export class DashStream implements PlayableStream {
     private dashPlayer = null;
@@ -20,10 +21,8 @@ export class DashStream implements PlayableStream {
     public attach(videoElement: HTMLVideoElement) {
         this.dashPlayer = DashMediaPlayer.create();
         this.dashPlayer.getDebug().setLogToBrowserConsole(false);
-        window['dashjs'] = {} // Workaround for dashjs trying to access global variable
         this.dashPlayer.initialize(videoElement, this.mediaStream.url, videoElement.autoplay);
         this.dashPlayer.on(DashEvents.STREAM_INITIALIZED, this.onStreamInitialized);
-        delete window['dashjs'];
     }
 
     public detach(videoElement: HTMLVideoElement) {
