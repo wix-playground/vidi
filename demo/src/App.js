@@ -56,7 +56,7 @@ export class App extends Component {
       <div className="App">
         <div className="content">
           <h1 className="vidi">vidi</h1>
-          <h2><code className="code">&lt; video&gt; </code> <span className="tagLine">playback simplified</span></h2>
+          <h2><code className="code">&lt;video&gt;</code> <span className="tagLine">playback simplified</span></h2>
           <video className="video" key="video" controls ref={this.handleVideoRef} />
           <div className="formWrapper">
             <label htmlFor="sourceInput" className="urlLabel">URL: </label>
