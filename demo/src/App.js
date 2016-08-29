@@ -7,7 +7,6 @@ export class App extends Component {
     super(props);
     this.state = { format: 'Auto', sourceUrl: '', dropdownOpen: false };
     this.vidi = new Vidi();
-    
     this.play = this.play.bind(this);
     this.handleVideoRef = this.handleVideoRef.bind(this);
   }
@@ -17,7 +16,24 @@ export class App extends Component {
   }
 
   play() {
-    this.vidi.src = this.state.sourceUrl;
+    switch (this.state.format) {
+      case 'Hls':
+        this.vidi.src = {type: Vidi.MediaStreamTypes.HLS, url: this.state.sourceUrl};
+        break;
+      case 'Dash':
+        this.vidi.src = {type: Vidi.MediaStreamTypes.DASH, url: this.state.sourceUrl};
+        break;
+      case 'Mp4':
+        this.vidi.src = {type: Vidi.MediaStreamTypes.MP4, url: this.state.sourceUrl};
+        break;
+      case 'WebM':
+        this.vidi.src = {type: Vidi.MediaStreamTypes.WEBM, url: this.state.sourceUrl};
+        break;
+      default:
+        this.vidi.src = this.state.sourceUrl;
+        break;
+    }
+    this.vidi.pause();
     this.vidi.play();
   }
 
@@ -40,7 +56,7 @@ export class App extends Component {
       <div className="App">
         <div className="content">
           <h1 className="vidi">vidi</h1>
-          <h2><code className="code">&lt;video&gt;</code> <span className="tagLine">playback simplified</span></h2>
+          <h2><code className="code">&lt; video&gt; </code> <span className="tagLine">playback simplified</span></h2>
           <video className="video" key="video" controls ref={this.handleVideoRef} />
           <div className="formWrapper">
             <label htmlFor="sourceInput" className="urlLabel">URL: </label>
@@ -52,10 +68,10 @@ export class App extends Component {
             <span className="btn playBtn" onClick={this.play}>Play</span>
           </div>
           <div className="boxes">
-            <div className="box" onClick={() => this.setState({ sourceUrl: 'http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8' })}>
+            <div className="box" onClick={() => this.setState({ sourceUrl: 'http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8' }) }>
               <img src="https://i.imgsafe.org/7a0b5b81d6.jpg" alt="" />
             </div>
-            <div className="box centerBox" onClick={() => this.setState({ sourceUrl: 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd' })}>
+            <div className="box centerBox" onClick={() => this.setState({ sourceUrl: 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd' }) }>
               <img src="https://i.imgsafe.org/7a0bd2f0e6.jpg" alt="" />
             </div>
             <div className="box">
