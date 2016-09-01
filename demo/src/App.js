@@ -69,13 +69,13 @@ export class App extends Component {
           </div>
           <div className="boxes">
             <div className="box" onClick={() => this.setState({ sourceUrl: 'http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8' }) }>
-              <img src="https://i.imgsafe.org/7a0b5b81d6.jpg" alt="" />
+              <img src="https://raw.githubusercontent.com/wix/vidi/master/demo/assets/BigBuckBunny.jpg" title="Big Buck Bunny via HLS" />
             </div>
             <div className="box centerBox" onClick={() => this.setState({ sourceUrl: 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd' }) }>
-              <img src="https://i.imgsafe.org/7a0bd2f0e6.jpg" alt="" />
+              <img src="https://raw.githubusercontent.com/wix/vidi/master/demo/assets/Sintel.jpg" title="Sintel via MPEG-DASH" />
             </div>
             <div className="box">
-              <img src="https://i.imgsafe.org/7a0b82a91a.jpg" title="Play Movie Name" alt="" />
+              <img src="https://raw.githubusercontent.com/wix/vidi/master/demo/assets/TearsOfSteel.jpg" title="Tears of Steel - source URL is needed" />
             </div>
           </div>
         </div>
