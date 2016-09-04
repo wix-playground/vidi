@@ -4,13 +4,12 @@
   "private": true,
   "homepage": "https://wix.github.io/vidi",
   "devDependencies": {
-    "react-scripts": "0.2.3"
+    "react-scripts": "0.4.1"
   },
   "dependencies": {
     "normalize.css": "^4.2.0",
-    "react": "^15.2.1",
-    "react-dom": "^15.2.1",
-    "vidi": "../"
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1"
   },
   "scripts": {
     "start": "react-scripts start",

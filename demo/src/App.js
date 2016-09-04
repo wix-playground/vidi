@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Vidi from 'vidi';
+import Vidi from '../../dist/src';
 import './App.css';
 
 export class App extends Component {
