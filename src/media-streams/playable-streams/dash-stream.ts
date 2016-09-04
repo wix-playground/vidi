@@ -1,8 +1,7 @@
 import {MediaStream, PlayableStream, MediaStreamTypes, MediaLevel, EmitEventsFn, EnvironmentSupport, MediaStreamDeliveryType} from '../../types';
 
-require('dashjs/dist/dash.all.min');
-const DashMediaPlayer = window['dashjs'].MediaPlayer();
-const DashEvents = window['dashjs'].MediaPlayer.events;
+const DashMediaPlayer = require('dashjs').MediaPlayer();
+const DashEvents = require('dashjs').MediaPlayer.events;
 
 export class DashStream implements PlayableStream {
     private dashPlayer = null;
