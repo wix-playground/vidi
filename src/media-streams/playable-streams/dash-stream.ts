@@ -1,6 +1,6 @@
 import {MediaStream, PlayableStream, MediaStreamTypes, MediaLevel, EmitEventsFn, EnvironmentSupport, MediaStreamDeliveryType} from '../../types';
 
-const DashMediaPlayer = require('dashjs').MediaPlayer();
+const DashMediaPlayer = require('dashjs').MediaPlayer;
 const DashEvents = require('dashjs').MediaPlayer.events;
 
 export class DashStream implements PlayableStream {
@@ -18,7 +18,7 @@ export class DashStream implements PlayableStream {
     }
 
     public attach(videoElement: HTMLVideoElement) {
-        this.dashPlayer = DashMediaPlayer.create();
+        this.dashPlayer = DashMediaPlayer().create();
         this.dashPlayer.getDebug().setLogToBrowserConsole(false);
         this.dashPlayer.initialize(videoElement, this.mediaStream.url, videoElement.autoplay);
         this.dashPlayer.on(DashEvents.STREAM_INITIALIZED, this.onStreamInitialized);
