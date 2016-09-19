@@ -1,9 +1,12 @@
 import {EnvironmentSupport} from '../types';
 
 /**
- * `true` if we are running inside a web browser, `false` otherwise (e.g. running inside Node.js). 
+ * `true` if we are running inside a web browser, `false` otherwise (e.g. running inside Node.js).
+ *
+ * HTMLMediaElement is not supported in PhantomJS
+ * @see https://github.com/ariya/phantomjs/issues/10839
  */
-export const isBrowser = typeof window !== 'undefined';
+export const isBrowser = typeof window !== 'undefined' && typeof window.PHANTOMJS === 'undefined';
 
 /**
  * This is a map which lists native support of formats and APIs.
