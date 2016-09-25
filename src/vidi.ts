@@ -1,7 +1,7 @@
-import {getNativeEventsHandlers} from './events';
-import {PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaStreamTypes, MediaStream, PlayableStream, PlayableStreamCreator, EventListener, EventListenerMap, MediaStreamDeliveryType} from './types';
-import {HlsStream, DashStream, getNativeStreamCreator, resolvePlayableStreams, detectStreamType} from './media-streams';
-import {NativeEnvironmentSupport, isString} from './utils';
+import { getNativeEventsHandlers } from './events';
+import { PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaStreamTypes, MediaStream, ResolvedMediaStream, PlayableStream, PlayableStreamCreator, EventListener, EventListenerMap, MediaStreamDeliveryType } from './types';
+import { HlsStream, DashStream, getNativeStreamCreator, resolvePlayableStreams, detectStreamType } from './media-streams';
+import { NativeEnvironmentSupport, isString } from './utils';
 
 /**
  * The main `vidi` class.
@@ -25,11 +25,11 @@ export class Vidi {
     private eventListeners: EventListenerMap = Object.create(null);
 
     private playableStreamCreators: PlayableStreamCreator[] = [];
-    private videoElement: HTMLVideoElement = null;
-    private currentSrc: MediaSource | MediaSource[] = null;
+    private videoElement: HTMLVideoElement | null = null;
+    private currentSrc: MediaSource | MediaSource[] | null = null;
 
-    private playableStreams: PlayableStream[] = null;
-    private attachedStream: PlayableStream = null;
+    private playableStreams: PlayableStream[] | null = null;
+    private attachedStream: PlayableStream | null = null;
 
     /**
      * Constructor for creating Vidi instances
@@ -40,7 +40,7 @@ export class Vidi {
      * vidi.setVideoElement(nativeVideoEl);
      * ```
      */
-    constructor(nativeVideoEl: HTMLVideoElement = null) {
+    constructor(nativeVideoEl: HTMLVideoElement | null = null) {
         this.onNativeEvent = this.onNativeEvent.bind(this);
 
         const streamCreators: PlayableStreamCreator[] = [
@@ -64,7 +64,7 @@ export class Vidi {
      * @param src The new [[MediaSource]].
      * 
      */
-    set src(src: MediaSource | MediaSource[]) {
+    set src(src: MediaSource | MediaSource[] | null) {
         if (src === this.currentSrc) {
             return;
         }
@@ -82,7 +82,7 @@ export class Vidi {
      * 
      * @returns The currently set [[MediaSource]] on this vidi instance.
      */
-    get src(): MediaSource | MediaSource[] {
+    get src(): MediaSource | MediaSource[] | null {
         return this.currentSrc;
     }
 
@@ -93,7 +93,7 @@ export class Vidi {
      * 
      * @param nativeVideoEl The new `<video>` element to attach to.
      */
-    public setVideoElement(nativeVideoEl: HTMLVideoElement) {
+    public setVideoElement(nativeVideoEl: HTMLVideoElement | null) {
         if (this.videoElement === nativeVideoEl) {
             return;
         }
@@ -109,7 +109,7 @@ export class Vidi {
     /**
      * @returns The currently attached `<video>` element.
      */
-    public getVideoElement(): HTMLVideoElement {
+    public getVideoElement(): HTMLVideoElement | null {
         return this.videoElement;
     }
 
@@ -255,20 +255,20 @@ export class Vidi {
      * Sets the current level for the 
      */
     public setMediaLevel(index: number) {
-        if (this.attachedStream) {
+        if (this.attachedStream && this.videoElement) {
             this.attachedStream.setMediaLevel(index, this.videoElement);
         }
     }
 
     // Private helpers
 
-    private autoDetectSourceTypes(mediaSources: MediaSource[]): MediaStream[] {
+    private autoDetectSourceTypes(mediaSources: MediaSource[]): ResolvedMediaStream[] {
         return mediaSources.map(mediaSource => {
             if (isString(mediaSource)) {
                 const url = mediaSource as string;
                 return { url, type: detectStreamType(url) };
             } else {
-                return mediaSource as MediaStream;
+                return mediaSource as ResolvedMediaStream;
             }
         });
     }
@@ -278,7 +278,7 @@ export class Vidi {
             this.playableStreams = [];
             return;
         }
-        const mediaSources: MediaSource[] = [].concat(this.currentSrc);
+        const mediaSources: MediaSource[] = new Array<MediaSource>().concat(this.currentSrc);
         const mediaStreams = this.autoDetectSourceTypes(mediaSources);
         this.playableStreams = resolvePlayableStreams(mediaStreams, this.playableStreamCreators, this.emit.bind(this));
     }
@@ -297,7 +297,7 @@ export class Vidi {
     }
 
     private detachCurrentStream() {
-        if (this.attachedStream) {
+        if (this.attachedStream && this.videoElement) {
             this.attachedStream.detach(this.videoElement);
             this.attachedStream = null;
         }

@@ -13,7 +13,7 @@ const mockedVideoParams = { duration, currentTime, muted, playbackRate, volume, 
 // Matching state for the above sample data
 const matchingPlaybackState: PlaybackState = { duration, currentTime, muted, playbackRate, volume, status: PlaybackStatus.PLAYING };
 
-const handledNativeEvents = Object.keys(getNativeEventsHandlers(null));
+const handledNativeEvents = Object.keys(getNativeEventsHandlers(null as any));
 
 describe('Vidi instance', function () {
     it('can be constructed with or without a HTMLVideoElement', function () {
@@ -90,7 +90,7 @@ describe('Vidi instance', function () {
         it('stops listening for events coming from previous HTMLVideoElement', function () {
             const initialDuration = 123, initialVideoElement = createdMockedVideoElement({duration: initialDuration});
             const newDuration = 456, newVideoElement = createdMockedVideoElement({duration: newDuration});
-            let receivedDuration: number;
+            let receivedDuration = 0;
 
             const vidi = new Vidi(initialVideoElement);
             vidi.on('durationchange', newDuration => receivedDuration = newDuration)

@@ -1,11 +1,17 @@
-import {MediaStream, PlayableStream, MediaStreamTypes, MediaLevel, EmitEventsFn, EnvironmentSupport, MediaStreamDeliveryType} from '../../types';
+import { MediaStream, PlayableStream, MediaStreamTypes, MediaLevel, EmitEventsFn, EnvironmentSupport, MediaStreamDeliveryType } from '../../types';
 
 const DashMediaPlayer = require('dashjs').MediaPlayer;
 const DashEvents = require('dashjs').MediaPlayer.events;
 
+interface DashJsBitrateInfo {
+    bitrate: number;
+    width: number;
+    height: number;
+}
+
 export class DashStream implements PlayableStream {
-    private dashPlayer = null;
-    private mediaStream: MediaStream = null;
+    private dashPlayer: any = null;
+    private mediaStream: MediaStream | null = null;
 
     constructor(mediaStreams: MediaStream[], private emit: EmitEventsFn) {
         if (mediaStreams.length === 1) {
@@ -18,6 +24,9 @@ export class DashStream implements PlayableStream {
     }
 
     public attach(videoElement: HTMLVideoElement) {
+        if (!this.mediaStream) {
+            return;
+        }
         this.dashPlayer = DashMediaPlayer().create();
         this.dashPlayer.getDebug().setLogToBrowserConsole(false);
         this.dashPlayer.initialize(videoElement, this.mediaStream.url, videoElement.autoplay);
@@ -25,6 +34,9 @@ export class DashStream implements PlayableStream {
     }
 
     public detach(videoElement: HTMLVideoElement) {
+        if (!this.mediaStream) {
+            return;
+        }
         this.dashPlayer.reset()
         this.dashPlayer.off(DashEvents.STREAM_INITIALIZED, this.onStreamInitialized);
         this.dashPlayer = null;
@@ -43,7 +55,7 @@ export class DashStream implements PlayableStream {
             return [];
         }
 
-        const bitrates = this.dashPlayer.getBitrateInfoListFor('video');
+        const bitrates = this.dashPlayer.getBitrateInfoListFor('video') as DashJsBitrateInfo[];
 
         if (bitrates && bitrates.map) {
             return bitrates.map(bitrateInfo => {
@@ -65,5 +77,5 @@ export class DashStream implements PlayableStream {
     public static canPlay(mediaType: string): boolean {
         return mediaType === MediaStreamTypes.DASH;
     }
-    
+
 }

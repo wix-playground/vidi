@@ -20,5 +20,5 @@ export function detectStreamType(url: string): string {
 }
 
 export function getExtFromPath(path: string): string {
-    return path.split('.').pop();
+    return path.split('.').pop() as string;
 }

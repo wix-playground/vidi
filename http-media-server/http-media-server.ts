@@ -3,7 +3,7 @@ import fs = require('fs');
 import url = require('url');
 import path = require('path');
 
-const mimeTypes = {
+const mimeTypes: { [key: string]: string } = {
     mp4: 'video/mp4',
     m4s: 'video/mp4',
     m3u8: 'application/vnd.apple.mpegurl',
@@ -14,9 +14,9 @@ const mimeTypes = {
 
 export function startHttpMediaServer(port = 3000, onListen: Function = () => { }) {
     return http.createServer((req, res) => {
-        const uri = url.parse(req.url).pathname;
+        const uri = url.parse(req.url || '').pathname || '';
 
-        function printMessage(message, responseCode) {
+        function printMessage(message: string, responseCode: number) {
             res.writeHead(responseCode, { 'Content-Type': 'text/plain' });
             res.write(message);
             res.end();

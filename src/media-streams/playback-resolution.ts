@@ -1,10 +1,10 @@
-import {MediaStream, PlayableStream, PlayableStreamCreator, EmitEventsFn} from '../types';
+import {ResolvedMediaStream, PlayableStream, PlayableStreamCreator, EmitEventsFn} from '../types';
 
 interface GroupedMediaStreams {
-    [type: string]: MediaStream[]
+    [type: string]: ResolvedMediaStream[]
 }
 
-export function resolvePlayableStreams(mediaStreams: MediaStream[], playableStreamCreators: PlayableStreamCreator[], emit: EmitEventsFn): PlayableStream[] {
+export function resolvePlayableStreams(mediaStreams: ResolvedMediaStream[], playableStreamCreators: PlayableStreamCreator[], emit: EmitEventsFn): PlayableStream[] {
     const playableStreams: PlayableStream[] = [];
     const groupedStreams = groupStreamsByMediaType(mediaStreams);
     
@@ -26,10 +26,11 @@ export function resolvePlayableStreams(mediaStreams: MediaStream[], playableStre
     return playableStreams;
 }
 
-function groupStreamsByMediaType(mediaStreams: MediaStream[]): GroupedMediaStreams {
+function groupStreamsByMediaType(mediaStreams: ResolvedMediaStream[]): GroupedMediaStreams {
     const typeMap: GroupedMediaStreams = {};
     mediaStreams.forEach(mediaStream => {
-        if (!Array.isArray(mediaStream.type)) {
+        const currentValue = typeMap[mediaStream.type];
+        if (!Array.isArray(typeMap[mediaStream.type])) {
             typeMap[mediaStream.type] = [];
         }
         typeMap[mediaStream.type].push(mediaStream)

@@ -3,7 +3,7 @@ import {MediaStream, PlayableStream, MediaStreamTypes, EnvironmentSupport, EmitE
 const Shaka = require('shaka-player');
 
 export class ShakaStream implements PlayableStream {
-    private shakaPlayer = null;
+    private shakaPlayer: any = null;
 
     constructor(private mediaStreams: MediaStream[], private emit: EmitEventsFn) {
     }
