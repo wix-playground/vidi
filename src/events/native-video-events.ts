@@ -1,62 +1,73 @@
-import {PlaybackStatus} from '../types';
-import {Vidi} from '../vidi';
+import { PlaybackStatus } from '../types';
+import { Vidi } from '../vidi';
 
 export function getNativeEventsHandlers(vidi: Vidi) {
+
+    // Verifies the vidi instance is still connected to the HTMLVideoElement
+    function verifyVideoAndCall(callback: (videoElement: HTMLVideoElement) => void) {
+        const videoElement = vidi.getVideoElement();
+        videoElement && callback(videoElement);
+    }
+
     return {
-        'loadstart': function () {
-            vidi.emit('loadstart', vidi.getPlaybackState());
+        loadstart() {
+            verifyVideoAndCall(() => vidi.emit('loadstart', vidi.getPlaybackState()));
         },
 
-        'durationchange': function () {
-            vidi.emit('durationchange', vidi.getVideoElement().duration)
+        durationchange() {
+            verifyVideoAndCall((videoElement) => vidi.emit('durationchange', videoElement.duration));
         },
 
-        'timeupdate': function () {
-            vidi.emit('timeupdate', vidi.getVideoElement().currentTime)
+        timeupdate() {
+            verifyVideoAndCall((videoElement) => vidi.emit('timeupdate', videoElement.currentTime));
         },
 
-        'ratechange': function () {
-            vidi.emit('ratechange', vidi.getVideoElement().playbackRate)
+        ratechange() {
+            verifyVideoAndCall((videoElement) => vidi.emit('ratechange', videoElement.playbackRate));
         },
 
-        'volumechange': function () {
-            vidi.emit('volumechange', { volume: vidi.getVideoElement().volume, muted: vidi.getVideoElement().muted })
+        volumechange() {
+            verifyVideoAndCall((videoElement) => vidi.emit('volumechange', { volume: videoElement.volume, muted: videoElement.muted }));
         },
 
-        'play': function () {
-            vidi.emit('statuschange', PlaybackStatus.PLAYING_BUFFERING)
+        play() {
+            verifyVideoAndCall(() => vidi.emit('statuschange', PlaybackStatus.PLAYING_BUFFERING));
         },
 
-        'playing': function () {
-            vidi.emit('statuschange', PlaybackStatus.PLAYING)
+        playing() {
+            verifyVideoAndCall(() => vidi.emit('statuschange', PlaybackStatus.PLAYING));
         },
 
-        'pause': function () {
-            vidi.emit('statuschange', PlaybackStatus.PAUSED)
+        pause() {
+            verifyVideoAndCall(() => vidi.emit('statuschange', PlaybackStatus.PAUSED));
         },
 
-        'seeking': function () {
-            if (vidi.getVideoElement().paused) {
-                vidi.emit('statuschange', PlaybackStatus.PAUSED_BUFFERING)
-            } else {
-                vidi.emit('statuschange', PlaybackStatus.PLAYING_BUFFERING)
-            }
+        seeking() {
+            verifyVideoAndCall((videoElement) => {
+                if (videoElement.paused) {
+                    vidi.emit('statuschange', PlaybackStatus.PAUSED_BUFFERING);
+                } else {
+                    vidi.emit('statuschange', PlaybackStatus.PLAYING_BUFFERING);
+                }
+            });
         },
 
-        'seeked': function () {
-            if (vidi.getVideoElement().paused) {
-                vidi.emit('statuschange', PlaybackStatus.PAUSED)
-            } else {
-                vidi.emit('statuschange', PlaybackStatus.PLAYING)
-            }
+        seeked() {
+            verifyVideoAndCall((videoElement) => {
+                if (videoElement.paused) {
+                    vidi.emit('statuschange', PlaybackStatus.PAUSED);
+                } else {
+                    vidi.emit('statuschange', PlaybackStatus.PLAYING);
+                }
+            });
         },
 
-        'ended': function () {
-            vidi.emit('statuschange', PlaybackStatus.ENDED)
+        ended() {
+            verifyVideoAndCall(() => vidi.emit('statuschange', PlaybackStatus.ENDED));
         },
 
-        'error': function () {
-            vidi.emit('error', vidi.getVideoElement().error);
+        error() {
+            verifyVideoAndCall((videoElement) => vidi.emit('error', videoElement.error));
         }
     };
 
