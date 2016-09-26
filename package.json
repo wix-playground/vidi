@@ -1,7 +1,7 @@
 {
   "name": "vidi",
   "version": "0.0.11",
-  "description": "Adaptive HTML5-based video playback abstraction library",
+  "description": "<video> playback simplified",
   "main": "dist/src/index.js",
   "scripts": {
     "clean": "rimraf ./dist",
