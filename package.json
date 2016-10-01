@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/wix/vidi#readme",
   "devDependencies": {
-    "@types/chai": "3.4.33",
+    "@types/chai": "3.4.34",
     "@types/mocha": "2.2.32",
     "@types/node": "6.0.41",
     "awesome-typescript-loader": "2.2.4",
@@ -46,10 +46,10 @@
     "karma-chrome-launcher": "2.0.0",
     "karma-firefox-launcher": "1.0.0",
     "karma-ie-launcher": "1.0.0",
-    "karma-mocha": "1.1.1",
+    "karma-mocha": "1.2.0",
     "karma-safari-launcher": "1.0.0",
     "mkdirp": "0.5.1",
-    "mocha": "3.0.2",
+    "mocha": "3.1.0",
     "mocha-loader": "1.0.0",
     "ncp": "2.0.0",
     "rimraf": "2.5.4",
@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "dashjs": "2.3.0",
-    "hls.js": "0.6.2-7",
+    "hls.js": "0.6.2",
     "webworkify": "1.4.0"
   }
 }
