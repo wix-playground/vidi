@@ -1,7 +1,10 @@
-.App {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    overflow: auto;
+body {
     background: #EEE;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.App {
+    overflow: auto;
     text-align: center;
     font-size: 16px;
     padding-bottom: 40px;
