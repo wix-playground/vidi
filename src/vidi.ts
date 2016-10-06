@@ -1,5 +1,11 @@
+import { EventEmitter } from 'eventemitter3';
+
 import { getNativeEventsHandlers } from './events';
-import { PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaStreamTypes, MediaStream, ResolvedMediaStream, PlayableStream, PlayableStreamCreator, EventListener, EventListenerMap, MediaStreamDeliveryType } from './types';
+import {
+    PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaStreamTypes,
+    MediaStream, ResolvedMediaStream, PlayableStream, PlayableStreamCreator, EventListener,
+    EventListenerMap, MediaStreamDeliveryType
+} from './types';
 import { HlsStream, DashStream, getNativeStreamCreator, resolvePlayableStreams, detectStreamType } from './media-streams';
 import { NativeEnvironmentSupport, isString } from './utils';
 
@@ -8,22 +14,11 @@ import { NativeEnvironmentSupport, isString } from './utils';
  * 
  * Each instance manages playback for a single HTMLVideoElement, onto which sources can be loaded.
  */
-export class Vidi {
-    /**
-     * Static built-in enum for playback status values.
-     */
+export class Vidi extends EventEmitter {
     public static PlaybackStatus = PlaybackStatus;
-    /**
-     * Static built-in string identifiers for known stream formats.
-     */
     public static MediaStreamTypes = MediaStreamTypes;
 
-    /**
-     * Event handling
-     */
     private nativeEventHandlers = getNativeEventsHandlers(this);
-    private eventListeners: EventListenerMap = Object.create(null);
-
     private playableStreamCreators: PlayableStreamCreator[] = [];
     private videoElement: HTMLVideoElement | null = null;
     private currentSrc: MediaSource | MediaSource[] | null = null;
@@ -41,6 +36,7 @@ export class Vidi {
      * ```
      */
     constructor(nativeVideoEl: HTMLVideoElement | null = null) {
+        super();
         this.onNativeEvent = this.onNativeEvent.bind(this);
 
         const streamCreators: PlayableStreamCreator[] = [
@@ -181,77 +177,6 @@ export class Vidi {
     }
 
     /**
-     * Add a listener to a specific event.
-     * 
-     * @param eventType The event type for which the `callback` should be called.
-     * @param callback The function to call once the event is emitted.
-     */
-    public on(eventType: string, callback: Function) {
-        this.addEventListenerToMap(eventType, callback);
-    }
-
-    /**
-     * Add a one-time listener to a specific event.
-     * It will be automatically removed after the event type is emitted and `callback` is called.
-     * 
-     * @param eventType The event type for which the `callback` should be called.
-     * @param callback The function to call once the event is emitted.
-     */
-    public once(eventType: string, callback: Function) {
-        this.addEventListenerToMap(eventType, callback, true);
-    }
-
-
-    /**
-     * Remove a listener to a specific event.
-     * 
-     * @param eventType The event type for which the `callback` was added.
-     * @param callback The callback function to remove.
-     */
-    public off(eventType: string, callback: Function) {
-        if (!eventType || !callback) {
-            return;
-        }
-
-        const currentListeners = this.eventListeners[eventType];
-        if (currentListeners !== undefined) {
-            this.eventListeners[eventType] = currentListeners.filter(listener => listener.callback !== callback)
-        }
-    }
-
-    /**
-     * Trigger a new event.
-     * Calls every listener that was added for the provided event type
-     * with `data` passed as the first parameter.
-     * 
-     * @param eventType The event type to emit/trigger.
-     * @param data An optional data parameter to pass as first parameter to the callback.
-     */
-    public emit(eventType: string, ...args) {
-        if (!eventType) {
-            return;
-        }
-
-        const removeAfterEmit: EventListener[] = [];
-
-        const currentListeners = this.eventListeners[eventType];
-        if (!currentListeners) {
-            return;
-        }
-
-        currentListeners.forEach(listener => {
-            listener.callback.call(this, ...args);
-            if (listener.once) {
-                removeAfterEmit.push(listener)
-            }
-        });
-
-        if (removeAfterEmit.length) {
-            this.eventListeners[eventType] = currentListeners.filter(listener => removeAfterEmit.indexOf(listener) === -1);
-        }
-    }
-
-    /**
      * Sets the current level for the 
      */
     public setMediaLevel(index: number) {
@@ -333,19 +258,5 @@ export class Vidi {
 
     private handleNativeError(error) {
         this.emit('error', error);
-    }
-
-    private addEventListenerToMap(eventType: string, callback: Function, once: boolean = false) {
-        if (!eventType || !callback) {
-            return;
-        }
-        const toAdd = { once, callback };
-
-        const currentListeners = this.eventListeners[eventType];
-        if (currentListeners === undefined) {
-            this.eventListeners[eventType] = [toAdd]
-        } else {
-            currentListeners.push(toAdd)
-        }
     }
 }
