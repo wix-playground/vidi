@@ -1,4 +1,5 @@
-import http = require('http');
+import { createServer } from 'http';
+import { Server } from 'net';
 import fs = require('fs');
 import url = require('url');
 import path = require('path');
@@ -12,8 +13,8 @@ const mimeTypes: { [key: string]: string } = {
     mpd: 'application/dash+xml'
 };
 
-export function startHttpMediaServer(port = 3000, onListen: Function = () => { }) {
-    return http.createServer((req, res) => {
+export function startHttpMediaServer(port = 3000, onListen: Function = () => { }): Server {
+    return createServer((req, res) => {
         const uri = url.parse(req.url || '').pathname || '';
 
         function printMessage(message: string, responseCode: number) {
