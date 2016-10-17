@@ -13,11 +13,7 @@ export enum MediaStreamDeliveryType {
 
 export interface MediaStream {
     url: string;
-    type?: string;
+    type: string;
     name?: string;
     [key: string]: any;
 };
-
-export interface ResolvedMediaStream extends MediaStream {
-    type: string;
-}

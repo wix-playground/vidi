@@ -3,11 +3,11 @@ import { EventEmitter } from 'eventemitter3';
 import { getNativeEventsHandlers } from './events';
 import {
     PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaStreamTypes,
-    MediaStream, ResolvedMediaStream, PlayableStream, PlayableStreamCreator, EventListener,
+    MediaStream, PlayableStream, PlayableStreamCreator, EventListener,
     EventListenerMap, MediaStreamDeliveryType
 } from './types';
 import { HlsStream, DashStream, getNativeStreamCreator, resolvePlayableStreams, detectStreamType } from './media-streams';
-import { NativeEnvironmentSupport, isString } from './utils';
+import { NativeEnvironmentSupport } from './utils';
 
 /**
  * The main `vidi` class.
@@ -187,13 +187,12 @@ export class Vidi extends EventEmitter {
 
     // Private helpers
 
-    private autoDetectSourceTypes(mediaSources: MediaSource[]): ResolvedMediaStream[] {
+    private autoDetectSourceTypes(mediaSources: MediaSource[]): MediaStream[] {
         return mediaSources.map(mediaSource => {
-            if (isString(mediaSource)) {
-                const url = mediaSource as string;
-                return { url, type: detectStreamType(url) };
+            if (typeof mediaSource === 'string') {
+                return { url: mediaSource, type: detectStreamType(mediaSource) };
             } else {
-                return mediaSource as ResolvedMediaStream;
+                return mediaSource;
             }
         });
     }
@@ -203,7 +202,7 @@ export class Vidi extends EventEmitter {
             this.playableStreams = [];
             return;
         }
-        const mediaSources: MediaSource[] = new Array<MediaSource>().concat(this.currentSrc);
+        const mediaSources = new Array<MediaSource>().concat(this.currentSrc);
         const mediaStreams = this.autoDetectSourceTypes(mediaSources);
         this.playableStreams = resolvePlayableStreams(mediaStreams, this.playableStreamCreators, this.emit.bind(this));
     }
