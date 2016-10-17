@@ -1,5 +1,5 @@
 import {MediaStream, MediaStreamDeliveryType} from './media-stream';
-import {EmitEventsFn} from './event-listener';
+import {EmitEventsFn} from './emit-events';
 import {EnvironmentSupport} from './environment-support';
 
 export interface PlayableStream {

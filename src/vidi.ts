@@ -3,8 +3,7 @@ import { EventEmitter } from 'eventemitter3';
 import { getNativeEventsHandlers } from './events';
 import {
     PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaStreamTypes,
-    MediaStream, PlayableStream, PlayableStreamCreator, EventListener,
-    EventListenerMap, MediaStreamDeliveryType
+    MediaStream, PlayableStream, PlayableStreamCreator, MediaStreamDeliveryType
 } from './types';
 import { HlsStream, DashStream, getNativeStreamCreator, resolvePlayableStreams, detectStreamType } from './media-streams';
 import { NativeEnvironmentSupport } from './utils';
