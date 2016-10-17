@@ -2,7 +2,7 @@ var loaders = {
     loaders: [
         {
             test: /\.ts[x]?$/,
-            loader: 'awesome-typescript-loader'
+            loader: 'ts-loader'
         }
     ],
     noParse: /\.min\.js$/

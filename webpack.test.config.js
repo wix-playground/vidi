@@ -2,8 +2,7 @@ var loaders = {
     loaders: [
         {
             test: /\.ts[x]?$/,
-            loader: 'awesome-typescript-loader'
-            // loader  : 'ts-loader?transpileOnly=true'
+            loader: 'ts-loader' // ?transpileOnly=true
         }
     ],
     noParse: /\.min\.js$/
