@@ -1,12 +1,9 @@
-import {EnvironmentSupport} from '../types';
+import { EnvironmentSupport } from '../types';
 
 /**
  * `true` if we are running inside a web browser, `false` otherwise (e.g. running inside Node.js).
- *
- * HTMLMediaElement is not supported in PhantomJS
- * @see https://github.com/ariya/phantomjs/issues/10839
  */
-export const isBrowser = typeof window !== 'undefined' && !/PhantomJS/.test(window.navigator.userAgent);
+export const isBrowser = typeof window !== 'undefined';
 
 /**
  * This is a map which lists native support of formats and APIs.
@@ -22,11 +19,17 @@ export const NativeEnvironmentSupport: EnvironmentSupport = {
 
 function detectEnvironment() {
     if (!isBrowser) {
-        return;
+        return; // Not in a browser
     }
+
     NativeEnvironmentSupport.MSE = ('WebKitMediaSource' in window) || ('MediaSource' in window);
 
     const video = document.createElement('video');
+
+    if (typeof video.canPlayType !== 'function') {
+        return; // env doesn't support HTMLMediaElement (e.g PhantomJS)
+    }
+
     if (video.canPlayType('application/x-mpegURL') || video.canPlayType('application/vnd.apple.mpegURL')) {
         NativeEnvironmentSupport.HLS = true;
     }
