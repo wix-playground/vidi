@@ -1,50 +1,67 @@
 # vidi - `<video>` playback simplified.
 
+The browser world is highly fragmented, and browser vendors all have their own preferences and priorities regarding video encoding standards and adaptive streaming methods. This results in a lack of compatiblity between browsers, with each browser supporting some methods while providing no support for other methods.
+
 ***vidi*** makes it easy dealing with otherwise complex `<video>` playback scenarios.
 
-## Features
-- Accepts multiple MP4, WebM, HLS, and MPEG-DASH sources.
-- Automatically picks a playback format based on the current browser's capabilities.
-- Integrates libraries such as such as 
-[hls.js](https://github.com/dailymotion/hls.js) and
- [dash.js](https://github.com/Dash-Industry-Forum/dash.js/)
- for seamless playback of [adaptive content](https://en.wikipedia.org/wiki/Adaptive_bitrate_streaming)
- via [MSE](https://en.wikipedia.org/wiki/Media_Source_Extensions) (when native support isn't available).
-- Normalizes `<video>` events so that callbacks receive relevant information per the event type.
-- Minimal number of dependencies. 
+## How does *vidi* help?
+
+* Automatically picks a playback format based on the current browser's capabilities.
+* Provides seamless playback of [adaptive content](https://en.wikipedia.org/wiki/Adaptive_bitrate_streaming), even when native support is not available, by using [MSE](https://en.wikipedia.org/wiki/Media_Source_Extensions) (Media Source Extensions).
+* Normalizes and simplifies `<video>` events so that callbacks receive relevant information per the event type.
+
+## Compatible web browsers
+
+* Chrome (tested with v51.0.2704.84)
+* Firefox (tested with v47.0)
+* Internet Explorer 11 (tested on Windows 10)
+* Safari (tested with 9)
 
 ## Getting started
 
 ### Installation
-***vidi*** is currently only available via npm:
+
+***vidi*** is currently only available via npm. At the root folder of the project run:
+
 ```bash
-$ npm install vidi --save
+npm install vidi --save
 ```
 
 ### Usage
-We begin by importing ***vidi*** into our module, and initiallizing it:
+
+We begin by importing ***vidi*** into our module, and initializing it.
+
+If you're using ES6:
+
 ```ts
 import {Vidi} from 'vidi';
-// or, if you aren't using ES6 modules:
-// const Vidi = require('vidi).Vidi;
+```
+Otherwise:
 
+```js
+const Vidi = require('vidi').Vidi;
+```
+
+Then get the `<video>` element from the document, and create a ***Vidi*** instance:
+
+```ts
 // Assuming there is a <video> element in the document with id 'my-video-element'.
 const videoElement = document.getElementById('my-video-element');
 
-// Create a new Vidi instance, providing it the <video>
+// Create a new Vidi instance, providing it the <video> element
 const vidi = new Vidi(videoElement);
 ```
 
-A source can then be set:
+Set the source of the video stream:
+
 ```ts
 vidi.src = 'http://my-url/video.mp4';
 ```
 
-The type of stream is automatically detected from the URL.
+The type of stream is automatically detected from the URL. The following extensions are recognized: `.mp4` (MP4), `.webm` (WebM), `.m3u8` (HLS manifest), and `.mpd` (DASH manifest).
 
-The following extensions are recognized: `.mp4` (MP4), `.webm` (WebM), `.m3u8` (HLS manifest), and `.mpd` (DASH manifest).  
+If the URL does not end with the file extension, the type can be specified explicitly:
 
-If the URL does not end with the file extension, type can be specified explicitly:
 ```ts
 vidi.src = { url: 'http://my-url/video-source', type: Vidi.MediaStreamTypes.HLS };
 ```
@@ -54,6 +71,7 @@ After a `<video>` and a `src` are provided, we have a working HTML5 media playba
 ### *And now, the real magic occurs...*
 
 Multiple sources (of different formats) can be provided as an array:
+
 ```ts
 vidi.src = [
   'http://my-url/video.mp4',
@@ -61,7 +79,9 @@ vidi.src = [
   'http://my-url/video.m3u8'
 ];
 ```
+
 Types can still be specified explicitly (for all or some of the sources):
+
 ```ts
 vidi.src = [
   'http://my-url/video.mp4',
@@ -69,14 +89,13 @@ vidi.src = [
   'http://my-url/video.m3u8'
 ];
 ```
+
 ***vidi*** assumes the URLs point to **different formats** of the **same video**,
 and will automatically detect and choose the ideal format for the current browser.
 
-The order of sources in the array doesn't matter.
-The logic uses the following prioritization system to pick the most suitable format
-(*from highest priority to lowest*):
+The order of sources in the array doesn't matter. The logic uses the following prioritization system to pick the most suitable format (*from highest priority to lowest*):
 
-1. **Adaptive sources** that can be played via **native** browser support. *Example: HLS on Safari* 
+1. **Adaptive sources** that can be played via **native** browser support. *Example: HLS on Safari*
 2. **Adaptive sources** that can be played via **MSE**-based libraries. *Example: DASH on Chrome*
 3. **Progressive** sources (MP4 and WebM) that can be played via **native** browser support.
 
@@ -104,6 +123,7 @@ The following events can be listened to:
 | error          | The error which occurred                                                |
 
 Subscribing to events can be done using the `.on()` or `.once()` methods:
+
 ```ts
 // Callback will be called on every durationchange event
 vidi.on('durationchange', function (newDuration) {
@@ -116,7 +136,8 @@ vidi.once('error', function (errorData) {
 });
 ```
 
-To un-subscribe a listener:
+To unsubscribe a listener:
+
 ```ts
 vidi.off('durationchange', durationChangeHandler);
 ```
@@ -129,7 +150,7 @@ vidi.off('durationchange', durationChangeHandler);
 
 ```ts
 // When two or more sources point to the same format,
-// they are being treated as different MediaLevels instead of separate sources.
+// they are treated as different MediaLevels instead of separate sources.
 // Same API as adaptive sources.
 vidi.src = [
     { url: 'http://my-url/low_quality.mp4', type: Vidi.MediaStreamTypes.MP4, name: '480p' },    //    |---
@@ -138,31 +159,36 @@ vidi.src = [
     { url: 'http://my-url/adaptive-stream.m3u8', type: Vidi.MediaStreamTypes.HLS },
 ];
 ```
+
 #### MediaLevels
 
 ```ts
 vidi.on('levels', function (levels: MediaLevels[]) {
-    // Listen to this event to know the current bitrates of an adaptive source  
+    // Listen to this event to know the current bitrates of an adaptive source
 });
 
 vidi.on('currentLevel', function (level: number) {
-    // When a new level is exposed 
-}
+    // When a new level is exposed
+});
 ```
 
 ## Development
+
 The project is set up using the following tools: TypeScript, npm, webpack, mocha, and chai.
 
 To get dev mode running, use the following commands:
+
 ```Bash
 git clone git@github.com:wix/vidi.git
 cd vidi
 npm install
 npm start
 ```
+
 Then browse to: [http://localhost:8080/webpack-dev-server](http://localhost:8080/webpack-dev-server)
 
 ### Common commands
+
 `npm build` - build using TypeScript
 
 `npm minify` - bundle and minify using webpack
@@ -171,7 +197,8 @@ Then browse to: [http://localhost:8080/webpack-dev-server](http://localhost:8080
 
 `npm test` - run tests, builds project first
 
-`npm run mediaserver` - starts a local http media server. see `http-media-server` folder.
+`npm run mediaserver` - starts a local http media server (see the `http-media-server` folder)
 
 ## License
+
 We use a custom license, see [LICENSE.md](LICENSE.md).
