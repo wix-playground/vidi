@@ -17,8 +17,6 @@ export class HlsStream implements PlayableStream {
         } else {
             throw new Error(`Vidi can only handle a single HLS stream. Received ${mediaStreams.length} streams.`)
         }
-
-        this.onManifestParsed = this.onManifestParsed.bind(this);
     }
 
     public attach(videoElement: HTMLVideoElement) {
@@ -48,7 +46,7 @@ export class HlsStream implements PlayableStream {
         // TODO
     }
 
-    private onManifestParsed() {
+    private onManifestParsed = () => {
         this.emit('levels', this.getMediaLevels())
     }
 

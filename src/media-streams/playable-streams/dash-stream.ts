@@ -19,8 +19,6 @@ export class DashStream implements PlayableStream {
         } else {
             throw new Error(`Vidi can only handle a single DASH stream. Received ${mediaStreams.length} streams.`)
         }
-
-        this.onStreamInitialized = this.onStreamInitialized.bind(this);
     }
 
     public attach(videoElement: HTMLVideoElement) {
@@ -67,7 +65,7 @@ export class DashStream implements PlayableStream {
 
     }
 
-    private onStreamInitialized() {
+    private onStreamInitialized = () => {
         this.emit('levels', this.getMediaLevels())
     }
     public static isSupported(env: EnvironmentSupport): boolean {
