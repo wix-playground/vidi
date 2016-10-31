@@ -25,7 +25,12 @@ describe('Vidi e2e', function () {
             it(`allows playback of ${formatToTest.type}`, function (done) {
                 const vidi = new Vidi(this.videoElement);
 
-                vidi.once('durationchange', () => done());
+                vidi.on('durationchange', (newDuration) =>{
+                    if (newDuration > 0) {
+                        vidi.off('durationchange');
+                        done();
+                    }
+                });
                 vidi.src = formatToTest.url;
             });
         }
