@@ -2,14 +2,14 @@ var loaders = {
     loaders: [
         {
             test: /\.ts[x]?$/,
-            loader: 'ts-loader' // ?transpileOnly=true
+            loader: 'ts-loader?logLevel=warn' // &transpileOnly=true
         }
     ],
     noParse: /\.min\.js$/
 };
 
 var resolve = {
-    extensions: ["", ".webpack.js", ".web.js", ".js", ".ts", ".tsx"]
+    extensions: [".webpack.js", ".web.js", ".js", ".ts", ".tsx"]
 };
 
 var output = {
