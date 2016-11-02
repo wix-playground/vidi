@@ -34,3 +34,6 @@ node_modules
 
 # TypeScript target
 dist
+
+# Visual Studio Code local project settings
+.vscode
