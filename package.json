@@ -9,12 +9,11 @@
     "build": "npm run build:transpile && npm run copy:assets",
     "build:transpile": "tsc -d",
     "build:watch": "tsc -d -w",
-    "bundle": "webpack --progress --config webpack.test.config.js",
+    "bundle": "webpack --progress",
     "mediaserver": "node ./dist/http-media-server/standalone",
-    "minify": "webpack --progress -p --config webpack.prod.config.js",
     "pretest": "npm run clean && npm run build && npm run bundle",
     "test": "node ./dist/test/boot-mediaserver-and-test",
-    "start": "webpack-dev-server --progress --config webpack.test.config.js"
+    "start": "webpack-dev-server --progress"
   },
   "repository": {
     "type": "git",
