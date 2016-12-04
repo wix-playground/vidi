@@ -19,10 +19,11 @@ export class HlsStream implements PlayableStream {
         }
     }
 
-    public attach(videoElement: HTMLVideoElement) {
+    public attach(videoElement: HTMLVideoElement, initialBitrate: number) {
         if (!this.mediaStream) {
             return;
         }
+        HlsJs.DefaultConfig.abrEwmaDefaultEstimate = initialBitrate * 1000;
         this.hls = new HlsJs();
         this.hls.attachMedia(videoElement);
         this.hls.loadSource(this.mediaStream.url);
