@@ -4,6 +4,7 @@
   "homepage": "https://wix.github.io/vidi",
   "private": true,
   "devDependencies": {
+    "gh-pages": "^0.12.0",
     "react-scripts": "0.8.1"
   },
   "dependencies": {
@@ -15,6 +16,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "deploy": "npm run build && gh-pages -d build",
     "eject": "react-scripts eject"
   }
 }
