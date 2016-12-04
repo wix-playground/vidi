@@ -4,7 +4,7 @@
   "homepage": "https://wix.github.io/vidi",
   "private": true,
   "devDependencies": {
-    "react-scripts": "0.6.1"
+    "react-scripts": "0.8.1"
   },
   "dependencies": {
     "normalize.css": "^5.0.0",
