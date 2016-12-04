@@ -3,7 +3,7 @@ import {EmitEventsFn} from './emit-events';
 import {EnvironmentSupport} from './environment-support';
 
 export interface PlayableStream {
-    attach(videoElement: HTMLVideoElement): void;
+    attach(videoElement: HTMLVideoElement, initialBitrate: number): void;
     detach(videoElement: HTMLVideoElement): void;
     getMediaStreamDeliveryType(): MediaStreamDeliveryType;
     setMediaLevel(newLevel: number, videoElement: HTMLVideoElement): void;

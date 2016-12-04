@@ -8,6 +8,8 @@ import {
 import { HlsStream, DashStream, getNativeStreamCreator, resolvePlayableStreams, detectStreamType } from './media-streams';
 import { NativeEnvironmentSupport } from './utils';
 
+const INITIAL_BITRATE = 1750; // 1750kbps
+
 /**
  * The main `vidi` class.
  * 
@@ -215,7 +217,7 @@ export class Vidi extends EventEmitter {
             // Use the first PlayableStream for now
             // Later, we can use the others as fallback
             this.attachedStream = this.playableStreams[0];
-            this.attachedStream.attach(this.videoElement);
+            this.attachedStream.attach(this.videoElement, INITIAL_BITRATE);
         }
     }
 
