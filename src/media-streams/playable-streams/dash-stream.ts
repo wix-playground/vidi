@@ -21,7 +21,7 @@ export class DashStream implements PlayableStream {
         }
     }
 
-    public attach(videoElement: HTMLVideoElement) {
+    public attach(videoElement: HTMLVideoElement, initialBitrate: number) {
         if (!this.mediaStream) {
             return;
         }
@@ -29,6 +29,9 @@ export class DashStream implements PlayableStream {
         this.dashPlayer.getDebug().setLogToBrowserConsole(false);
         this.dashPlayer.initialize(videoElement, this.mediaStream.url, videoElement.autoplay);
         this.dashPlayer.on(DashEvents.STREAM_INITIALIZED, this.onStreamInitialized);
+        if (initialBitrate) {
+            this.dashPlayer.setInitialBitrateFor('video', initialBitrate);
+        }
     }
 
     public detach(videoElement: HTMLVideoElement) {
@@ -66,7 +69,7 @@ export class DashStream implements PlayableStream {
     }
 
     private onStreamInitialized = () => {
-        this.emit('levels', this.getMediaLevels())
+        this.emit('levels', this.dashPlayer)
     }
     public static isSupported(env: EnvironmentSupport): boolean {
         return env.MSE;
