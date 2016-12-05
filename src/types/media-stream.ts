@@ -15,5 +15,5 @@ export interface MediaStream {
     url: string;
     type: string;
     name?: string;
-    [key: string]: any;
+    // [key: string]: any;
 };
