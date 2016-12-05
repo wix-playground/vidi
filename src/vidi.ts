@@ -8,7 +8,7 @@ import {
 import { HlsStream, DashStream, getNativeStreamCreator, resolvePlayableStreams, detectStreamType } from './media-streams';
 import { NativeEnvironmentSupport } from './utils';
 
-const INITIAL_BITRATE = 1750; // 1750kbps
+const DEFAULT_INITIAL_BITRATE = 1750; // 1750kbps, can be modified via Vidi.setInitialBitrate()
 
 /**
  * The main `vidi` class.
@@ -19,6 +19,7 @@ export class Vidi extends EventEmitter {
     public static PlaybackStatus = PlaybackStatus;
     public static MediaStreamTypes = MediaStreamTypes;
 
+    private initialBitrate = DEFAULT_INITIAL_BITRATE;
     private nativeEventHandlers = getNativeEventsHandlers(this);
     private playableStreamCreators: PlayableStreamCreator[] = [];
     private videoElement: HTMLVideoElement | null = null;
@@ -30,7 +31,7 @@ export class Vidi extends EventEmitter {
     /**
      * Constructor for creating Vidi instances
      * 
-     * @param nativeVideoEl is an optional paramaters and is a shorthand for:
+     * @param nativeVideoEl is an optional parameter and is a shorthand for:
      * ```ts
      * const vidi = new Vidi();
      * vidi.setVideoElement(nativeVideoEl);
@@ -178,6 +179,16 @@ export class Vidi extends EventEmitter {
     }
 
     /**
+     * Sets the preferred initial bitrate for adaptive playback.
+     * This will only affect playback via MSE-based libraries, where we have
+     * the ability to specify it. Native adaptive playback will not be
+     * affected and will still use the browser's default behavior.
+     */
+    public setInitialBitrate(bitrate: number) {
+        this.initialBitrate = bitrate;
+    }
+
+    /**
      * Sets the current level for the 
      */
     public setMediaLevel(index: number) {
@@ -187,7 +198,6 @@ export class Vidi extends EventEmitter {
     }
 
     // Private helpers
-
     private autoDetectSourceTypes(mediaSources: MediaSource[]): MediaStream[] {
         return mediaSources.map(mediaSource => {
             if (typeof mediaSource === 'string') {
@@ -217,7 +227,7 @@ export class Vidi extends EventEmitter {
             // Use the first PlayableStream for now
             // Later, we can use the others as fallback
             this.attachedStream = this.playableStreams[0];
-            this.attachedStream.attach(this.videoElement, INITIAL_BITRATE);
+            this.attachedStream.attach(this.videoElement, this.initialBitrate);
         }
     }
 

@@ -8,7 +8,7 @@ The browser world is highly fragmented, and browser vendors all have their own p
 ## How does *vidi* help?
 
 * Automatically picks a playback format based on the current browser's capabilities.
-* Provides seamless playback of [adaptive content](https://en.wikipedia.org/wiki/Adaptive_bitrate_streaming), even when native support is not available, by using [MSE](https://en.wikipedia.org/wiki/Media_Source_Extensions) (Media Source Extensions).
+* Provides seamless playback of [adaptive content](https://en.wikipedia.org/wiki/Adaptive_bitrate_streaming), even when native support is not available, by leveraging [MSE](https://en.wikipedia.org/wiki/Media_Source_Extensions)-based libraries.
 * Normalizes and simplifies `<video>` events so that callbacks receive relevant information per the event type.
 
 ## Compatible web browsers
@@ -143,34 +143,66 @@ To unsubscribe a listener:
 vidi.off('durationchange', durationChangeHandler);
 ```
 
-### Advanced features
+### Adaptive playback via MSE-based libraries
 
-> Work in progress!
+When native browser support for adaptive content is not available,
+`vidi` uses MSE-based libraries
+([dash.js](https://github.com/Dash-Industry-Forum/dash.js/) and 
+[hls.js](https://github.com/dailymotion/hls.js)) to allow seamless playback of MPEG-DASH and HLS
+media streams.
 
-#### Pseudo-adpative:
+`vidi` normalizes the different APIs of each library into a single coherent interface,
+while also allowing for basic customization.
+
+Initially preferred bitrate for adaptive sources can be configured
+per `vidi` instance, via the `setInitialBitrate(bitrate: number)` method:
 
 ```ts
-// When two or more sources point to the same format,
-// they are treated as different MediaLevels instead of separate sources.
-// Same API as adaptive sources.
+vidi.setInitialBitrate(3000); // 3000kbps
+vidi.src = '...';
+```
+### Media Levels
+> Work in progress!
+
+`vidi` exposes two events which fire when a new adaptive source is played. 
+
+The `levels` event provides an array of `MediaLevel`s, each representing
+a sub-streams in the adaptive source.
+```ts
+interface MediaLevel {
+    width?: number;
+    height?: number;
+    bitrate?: number;
+    name?: string;
+}
+
+vidi.on('levels', function (levels: MediaLevels[]) {
+    // map the information to a GUI quality selector...
+});
+```
+
+
+In addition, the `currentLevel` event is fired when playback switches to a new level:
+```ts
+vidi.on('currentLevel', function (levelIdx: number) {
+    // highlight the current level in the GUI quality selector
+});
+```
+
+### Pseudo-adaptive:
+> Work in progress!
+
+When two or more sources point to the same format,
+they are treated as different `MediaLevel`s instead of separate sources.
+Same API as adaptive sources.
+
+```ts
 vidi.src = [
     { url: 'http://my-url/low_quality.mp4', type: Vidi.MediaStreamTypes.MP4, name: '480p' },    //    |---
     { url: 'http://my-url/medium_quality.mp4', type: Vidi.MediaStreamTypes.MP4, name: '720p' }, //  <=|    These three will be grouped by Vidi
     { url: 'http://my-url/high_quality.mp4', type: Vidi.MediaStreamTypes.MP4, name: '1080p' },  //    |---
     { url: 'http://my-url/adaptive-stream.m3u8', type: Vidi.MediaStreamTypes.HLS },
 ];
-```
-
-#### MediaLevels
-
-```ts
-vidi.on('levels', function (levels: MediaLevels[]) {
-    // Listen to this event to know the current bitrates of an adaptive source
-});
-
-vidi.on('currentLevel', function (level: number) {
-    // When a new level is exposed
-});
 ```
 
 ## Development
@@ -185,7 +217,6 @@ cd vidi
 npm install
 npm start
 ```
-
 Then browse to: [http://localhost:8080/webpack-dev-server](http://localhost:8080/webpack-dev-server)
 
 ### Common commands
