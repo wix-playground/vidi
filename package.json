@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "<video> playback simplified",
   "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "clean": "rimraf ./dist",
     "copy:assets": "mkdirp ./dist/http-media-server/assets && ncp ./http-media-server/assets ./dist/http-media-server/assets",
