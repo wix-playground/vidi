@@ -1,4 +1,7 @@
-import { MediaStream, PlayableStream, MediaStreamTypes, MediaLevel, EmitEventsFn, EnvironmentSupport, MediaStreamDeliveryType } from '../../types';
+import {
+    MediaStream, PlayableStream, MediaStreamTypes, MediaLevel, EmitEventsFn,
+    EnvironmentSupport, MediaStreamDeliveryType, Errors
+} from '../../types';
 
 const DashMediaPlayer = require('dashjs').MediaPlayer;
 const DashEvents = require('dashjs').MediaPlayer.events;
@@ -27,8 +30,9 @@ export class DashStream implements PlayableStream {
         }
         this.dashPlayer = DashMediaPlayer().create();
         this.dashPlayer.getDebug().setLogToBrowserConsole(false);
-        this.dashPlayer.initialize(videoElement, this.mediaStream.url, videoElement.autoplay);
         this.dashPlayer.on(DashEvents.STREAM_INITIALIZED, this.onStreamInitialized);
+        this.dashPlayer.on(DashEvents.ERROR, this.onError);
+        this.dashPlayer.initialize(videoElement, this.mediaStream.url, videoElement.autoplay);
         if (initialBitrate) {
             this.dashPlayer.setInitialBitrateFor('video', initialBitrate);
         }
@@ -40,6 +44,7 @@ export class DashStream implements PlayableStream {
         }
         this.dashPlayer.reset()
         this.dashPlayer.off(DashEvents.STREAM_INITIALIZED, this.onStreamInitialized);
+        this.dashPlayer.off(DashEvents.ERROR, this.onError);
         this.dashPlayer = null;
     }
 
@@ -49,6 +54,15 @@ export class DashStream implements PlayableStream {
 
     public setMediaLevel(newLevel: number, videoElement: HTMLVideoElement) {
         // TODO
+    }
+
+    private onError = (e) => {
+        if (!e) {
+            return;
+        }
+        if (e.error === 'manifestError' || (e.error === 'download' && e.event.id === 'manifest')) {
+            this.emit('error', Errors.SRC_LOAD_ERROR, e);
+        }
     }
 
     private getMediaLevels(): MediaLevel[] {
