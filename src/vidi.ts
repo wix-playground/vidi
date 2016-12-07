@@ -3,7 +3,7 @@ import { EventEmitter } from 'eventemitter3';
 import { getNativeEventsHandlers } from './events';
 import {
     PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaStreamTypes,
-    MediaStream, PlayableStream, PlayableStreamCreator, MediaStreamDeliveryType
+    MediaStream, PlayableStream, PlayableStreamCreator, MediaStreamDeliveryType, Errors
 } from './types';
 import { HlsStream, DashStream, getNativeStreamCreator, resolvePlayableStreams, detectStreamType } from './media-streams';
 import { NativeEnvironmentSupport } from './utils';
@@ -18,6 +18,7 @@ const DEFAULT_INITIAL_BITRATE = 1750; // 1750kbps, can be modified via Vidi.setI
 export class Vidi extends EventEmitter {
     public static PlaybackStatus = PlaybackStatus;
     public static MediaStreamTypes = MediaStreamTypes;
+    public static Errors = Errors;
 
     private initialBitrate = DEFAULT_INITIAL_BITRATE;
     private nativeEventHandlers = getNativeEventsHandlers(this);
@@ -149,10 +150,11 @@ export class Vidi extends EventEmitter {
         try {
             const res: any = this.videoElement.play();
             if (res && res.catch) {
-                res.catch(e => this.handleNativeError(e));
+                // Will be exposed by the native error handler of vidi
+                res.catch(() => { });
             }
         } catch (e) {
-            this.handleNativeError(e);
+            // Will be exposed by the native error handler of vidi
         }
     }
 
@@ -168,13 +170,13 @@ export class Vidi extends EventEmitter {
             return;
         }
 
+        // Errors will be exposed by the native error handler of vidi
         try {
             const res: any = this.videoElement.pause();
             if (res && res.catch) {
-                res.catch(e => this.handleNativeError(e));
+                res.catch(() => { });
             }
         } catch (e) {
-            this.handleNativeError(e);
         }
     }
 
@@ -260,13 +262,9 @@ export class Vidi extends EventEmitter {
         }
         const handler = this.nativeEventHandlers[event.type];
         if (handler) {
-            handler();
+            handler(event);
         } else {
             throw `Received a native event without an handler: ${event.type}`;
         }
-    }
-
-    private handleNativeError(error) {
-        this.emit('error', error);
     }
 }
