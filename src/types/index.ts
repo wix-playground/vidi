@@ -5,3 +5,4 @@ export * from './emit-events';
 export * from './media-level';
 export * from './media-source';
 export * from './environment-support';
+export * from './errors';
