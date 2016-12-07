@@ -1,4 +1,4 @@
-import { PlaybackStatus } from '../types';
+import { PlaybackStatus, Errors } from '../types';
 import { Vidi } from '../vidi';
 
 export function getNativeEventsHandlers(vidi: Vidi) {
@@ -66,8 +66,15 @@ export function getNativeEventsHandlers(vidi: Vidi) {
             verifyVideoAndCall(() => vidi.emit('statuschange', PlaybackStatus.ENDED));
         },
 
-        error() {
-            verifyVideoAndCall((videoElement) => vidi.emit('error', videoElement.error));
+        error(event: Event) {
+            verifyVideoAndCall((videoElement) => {
+                const error = videoElement.error;
+                if (error instanceof MediaError) {
+                    vidi.emit('error', Errors.SRC_LOAD_ERROR, error);
+                } else {
+                    vidi.emit('error', error || event);
+                }
+            });
         }
     };
 
