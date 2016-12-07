@@ -146,15 +146,13 @@ export class Vidi extends EventEmitter {
         if (!this.videoElement) {
             return;
         }
-
+        // Errors will be exposed by the native error handler of vidi
         try {
             const res: any = this.videoElement.play();
             if (res && res.catch) {
-                // Will be exposed by the native error handler of vidi
                 res.catch(() => { });
             }
         } catch (e) {
-            // Will be exposed by the native error handler of vidi
         }
     }
 
