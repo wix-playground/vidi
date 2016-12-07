@@ -1,5 +1,8 @@
 const HlsJs = require('hls.js/lib');
-import { MediaStream, PlayableStream, MediaStreamTypes, MediaLevel, EmitEventsFn, EnvironmentSupport, MediaStreamDeliveryType } from '../../types';
+import {
+    MediaStream, PlayableStream, MediaStreamTypes, MediaLevel, EmitEventsFn,
+    EnvironmentSupport, MediaStreamDeliveryType, Errors
+} from '../../types';
 
 interface HlsJsLevel {
     bitrate: number;
@@ -25,9 +28,10 @@ export class HlsStream implements PlayableStream {
         }
         HlsJs.DefaultConfig.abrEwmaDefaultEstimate = initialBitrate * 1000;
         this.hls = new HlsJs();
-        this.hls.attachMedia(videoElement);
-        this.hls.loadSource(this.mediaStream.url);
         this.hls.on(HlsJs.Events.MANIFEST_PARSED, this.onManifestParsed);
+        this.hls.on(HlsJs.Events.ERROR, this.onError);
+        this.hls.loadSource(this.mediaStream.url);
+        this.hls.attachMedia(videoElement);
     }
 
     public detach(videoElement: HTMLVideoElement) {
@@ -35,6 +39,7 @@ export class HlsStream implements PlayableStream {
             return;
         }
         this.hls.off(HlsJs.Events.MANIFEST_PARSED, this.onManifestParsed);
+        this.hls.off(HlsJs.Events.ERROR, this.onError);
         this.hls.destroy();
         this.hls = null;
     }
@@ -49,6 +54,12 @@ export class HlsStream implements PlayableStream {
 
     private onManifestParsed = () => {
         this.emit('levels', this.getMediaLevels())
+    }
+
+    private onError = (type, error) => {
+        if (error && (error.details === 'manifestParsingError' || error.details === 'manifestLoadError')) {
+            this.emit('error', Errors.SRC_LOAD_ERROR, error);
+        }
     }
 
     private getMediaLevels(): MediaLevel[] {
