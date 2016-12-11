@@ -56,9 +56,9 @@ export class HlsStream implements PlayableStream {
         this.emit('levels', this.getMediaLevels())
     }
 
-    private onError = (type, error) => {
-        if (error && (error.details === 'manifestParsingError' || error.details === 'manifestLoadError')) {
-            this.emit('error', Errors.SRC_LOAD_ERROR, error);
+    private onError = (type, errorEvent) => {
+        if (errorEvent && (errorEvent.details === 'manifestParsingError' || errorEvent.details === 'manifestLoadError')) {
+            this.emit('error', Errors.SRC_LOAD_ERROR, this.mediaStream && this.mediaStream.url, errorEvent);
         }
     }
 

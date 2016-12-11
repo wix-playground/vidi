@@ -66,13 +66,13 @@ export function getNativeEventsHandlers(vidi: Vidi) {
             verifyVideoAndCall(() => vidi.emit('statuschange', PlaybackStatus.ENDED));
         },
 
-        error(event: Event) {
+        error(errorEvent: Event) {
             verifyVideoAndCall((videoElement) => {
-                const error = videoElement.error;
-                if (error instanceof MediaError) {
-                    vidi.emit('error', Errors.SRC_LOAD_ERROR, error);
+                const videoError = videoElement.error;
+                if (videoError instanceof MediaError) {
+                    vidi.emit('error', Errors.SRC_LOAD_ERROR, videoElement.src, videoError);
                 } else {
-                    vidi.emit('error', error || event);
+                    vidi.emit('error', videoError || errorEvent);
                 }
             });
         }

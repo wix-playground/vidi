@@ -56,12 +56,12 @@ export class DashStream implements PlayableStream {
         // TODO
     }
 
-    private onError = (e) => {
-        if (!e) {
+    private onError = (errorEvent) => {
+        if (!errorEvent) {
             return;
         }
-        if (e.error === 'manifestError' || (e.error === 'download' && e.event.id === 'manifest')) {
-            this.emit('error', Errors.SRC_LOAD_ERROR, e);
+        if (errorEvent.error === 'manifestError' || (errorEvent.error === 'download' && errorEvent.event.id === 'manifest')) {
+            this.emit('error', Errors.SRC_LOAD_ERROR, this.mediaStream && this.mediaStream.url, errorEvent);
         }
     }
 

@@ -94,7 +94,8 @@ vidi.src = [
 ***vidi*** assumes the URLs point to **different formats** of the **same video**,
 and will automatically detect and choose the ideal format for the current browser.
 
-The order of sources in the array doesn't matter. The logic uses the following prioritization system to pick the most suitable format (*from highest priority to lowest*):
+The order of sources in the array doesn't matter.
+The logic uses the following prioritization system to pick the most suitable format (*from highest priority to lowest*):
 
 1. **Adaptive sources** that can be played via **native** browser support. *Example: HLS on Safari*
 2. **Adaptive sources** that can be played via **MSE**-based libraries. *Example: DASH on Chrome*
@@ -121,19 +122,15 @@ The following events can be listened to:
 | ratechange     | Playback rate (*0 to 1, where 1 is full-speed, 0.5 is half-speed, etc*) |
 | volumechange   | An object containing `volume` and `muted` keys                          |
 | loadstart      | `PlaybackState` object containing all data above combined               |
-| error          | The error which occurred                                                |
+| error          | See [Error Handling](#error-handling) section below.                    |
 
-Subscribing to events can be done using the `.on()` or `.once()` methods:
+The main ***Vidi*** extends [EventEmitter3](https://github.com/primus/eventemitter3),
+so any method from that class can be used on ***vidi***'s instances.
 
+For example, subscribing to events can be done using the `.on()` method:
 ```ts
-// Callback will be called on every durationchange event
 vidi.on('durationchange', function (newDuration) {
     console.log('New duration of video: ' + newDuration);
-});
-
-// Callback will be called only once (for the first error event)
-vidi.once('error', function (errorData) {
-    console.error('All hell broke loose!', errorData);
 });
 ```
 
@@ -143,28 +140,51 @@ To unsubscribe a listener:
 vidi.off('durationchange', durationChangeHandler);
 ```
 
+### Error Handling
+> Work in progress!
+
+***vidi*** aligns the different error codes in each possible playback flow
+into a single system.
+
+Error codes are available on the main ***Vidi*** class:
+```ts
+Vidi.Errors.SRC_LOAD_ERROR // for src load failures in all flows
+
+// More to come soon...
+```
+Listening for errors is done just like other events:
+```ts
+vidi.on('error', function(errorCode, url, originalEvent) {
+    if (errorCode === Vidi.Errors.SRC_LOAD_ERROR) {
+        // couldn't load src. url is provided as a second parameter
+        // show a friendly message (or switch to a placeholder?)
+    }
+});
+```
+
 ### Adaptive playback via MSE-based libraries
 
 When native browser support for adaptive content is not available,
-`vidi` uses MSE-based libraries
+***vidi*** uses MSE-based libraries
 ([dash.js](https://github.com/Dash-Industry-Forum/dash.js/) and 
 [hls.js](https://github.com/dailymotion/hls.js)) to allow seamless playback of MPEG-DASH and HLS
 media streams.
 
-`vidi` normalizes the different APIs of each library into a single coherent interface,
+***vidi*** normalizes the different APIs of each library into a single coherent interface,
 while also allowing for basic customization.
 
 Initially preferred bitrate for adaptive sources can be configured
-per `vidi` instance, via the `setInitialBitrate(bitrate: number)` method:
+per ***Vidi*** instance, via the `setInitialBitrate` method:
 
 ```ts
 vidi.setInitialBitrate(3000); // 3000kbps
 vidi.src = '...';
 ```
+
 ### Media Levels
 > Work in progress!
 
-`vidi` exposes two events which fire when a new adaptive source is played. 
+***vidi*** exposes two events which fire when a new adaptive source is played. 
 
 The `levels` event provides an array of `MediaLevel`s, each representing
 a sub-streams in the adaptive source.
