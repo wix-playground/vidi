@@ -4,13 +4,13 @@
   "homepage": "https://wix.github.io/vidi",
   "private": true,
   "devDependencies": {
-    "gh-pages": "^0.12.0",
-    "react-scripts": "0.8.1"
+    "gh-pages": "0.12.0",
+    "react-scripts": "0.8.4"
   },
   "dependencies": {
-    "normalize.css": "^5.0.0",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1"
+    "normalize.css": "5.0.0",
+    "react": "15.4.1",
+    "react-dom": "15.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
