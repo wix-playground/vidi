@@ -1,5 +1,5 @@
 # vidi - `<video>` playback simplified.
-[![Build Status](https://travis-ci.org/wix/vidi.svg?branch=master)](https://travis-ci.org/wix/vidi)
+[![npm](https://img.shields.io/npm/v/vidi.svg)](https://www.npmjs.com/package/vidi) [![Build Status](https://travis-ci.org/wix/vidi.svg?branch=master)](https://travis-ci.org/wix/vidi)
 
 The browser world is highly fragmented, and browser vendors all have their own preferences and priorities regarding video encoding standards and adaptive streaming methods. This results in a lack of compatiblity between browsers, with each browser supporting some methods while providing no support for other methods.
 
