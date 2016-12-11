@@ -20,3 +20,4 @@ deploy:
   on:
     tags: true
     repo: wix/vidi
+    node: '6'
