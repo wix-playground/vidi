@@ -1,9 +1,8 @@
-import { EventEmitter } from 'eventemitter3';
-
 import { getNativeEventsHandlers } from './events';
 import {
     PlaybackState, defaultPlaybackState, PlaybackStatus, MediaSource, MediaStreamTypes,
-    MediaStream, PlayableStream, PlayableStreamCreator, MediaStreamDeliveryType, Errors
+    MediaStream, PlayableStream, PlayableStreamCreator, MediaStreamDeliveryType, Errors,
+    VidiEmitter
 } from './types';
 import { HlsStream, DashStream, getNativeStreamCreator, resolvePlayableStreams, detectStreamType } from './media-streams';
 import { NativeEnvironmentSupport } from './utils';
@@ -15,7 +14,8 @@ const DEFAULT_INITIAL_BITRATE = 1750; // 1750kbps, can be modified via Vidi.setI
  * 
  * Each instance manages playback for a single HTMLVideoElement, onto which sources can be loaded.
  */
-export class Vidi extends EventEmitter {
+
+export class Vidi extends VidiEmitter {
     public static PlaybackStatus = PlaybackStatus;
     public static MediaStreamTypes = MediaStreamTypes;
     public static Errors = Errors;

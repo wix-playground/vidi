@@ -1,1 +1,1 @@
-export * from './native-video-events';
+export * from './native-events-handlers';

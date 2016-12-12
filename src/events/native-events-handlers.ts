@@ -69,11 +69,8 @@ export function getNativeEventsHandlers(vidi: Vidi) {
         error(errorEvent: Event) {
             verifyVideoAndCall((videoElement) => {
                 const videoError = videoElement.error;
-                if (videoError instanceof MediaError) {
-                    vidi.emit('error', Errors.SRC_LOAD_ERROR, videoElement.src, videoError);
-                } else {
-                    vidi.emit('error', videoError || errorEvent);
-                }
+                const errorType = videoError instanceof MediaError ? Errors.SRC_LOAD_ERROR : Errors.UNKNOWN_ERROR;
+                vidi.emit('error', errorType, videoElement.src, videoError || errorEvent);
             });
         }
     };

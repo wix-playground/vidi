@@ -6,3 +6,4 @@ export * from './media-level';
 export * from './media-source';
 export * from './environment-support';
 export * from './errors';
+export * from './events';
