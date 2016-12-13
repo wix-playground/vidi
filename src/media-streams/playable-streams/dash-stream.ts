@@ -4,7 +4,7 @@ import {
 } from '../../types';
 
 const DashMediaPlayer = require('dashjs').MediaPlayer;
-const DashEvents = require('dashjs').MediaPlayer.events;
+const DashEvents = DashMediaPlayer.events;
 
 interface DashJsBitrateInfo {
     bitrate: number;
@@ -70,20 +70,16 @@ export class DashStream implements PlayableStream {
             return [];
         }
 
-        const bitrates = this.dashPlayer.getBitrateInfoListFor('video') as DashJsBitrateInfo[];
+        const bitrates = this.dashPlayer.getBitrateInfoListFor('video') as DashJsBitrateInfo[] || [];
 
-        if (bitrates && bitrates.map) {
-            return bitrates.map(bitrateInfo => {
-                return { bitrate: bitrateInfo.bitrate, width: bitrateInfo.width, height: bitrateInfo.height };
-            });
-        } else {
-            return [];
-        }
+        return bitrates.map(bitrateInfo => {
+            return { bitrate: bitrateInfo.bitrate, width: bitrateInfo.width, height: bitrateInfo.height };
+        });
 
     }
 
     private onStreamInitialized = () => {
-        this.emit('levels', this.dashPlayer)
+        this.emit('levels', this.getMediaLevels())
     }
     public static isSupported(env: EnvironmentSupport): boolean {
         return env.MSE;
