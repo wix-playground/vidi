@@ -8,6 +8,7 @@ interface HlsJsLevel {
     bitrate: number;
     width: number;
     height: number;
+    name: string;
 }
 
 export class HlsStream implements PlayableStream {
@@ -52,25 +53,23 @@ export class HlsStream implements PlayableStream {
         // TODO
     }
 
-    private onManifestParsed = () => {
-        this.emit('levels', this.getMediaLevels())
+    private onManifestParsed = (
+        eventType: string,
+        { levels = [] as HlsJsLevel[], firstLevel = -1 }
+    ) => {
+        const mediaLevels: MediaLevel[] = levels.map(level => {
+            return { bitrate: level.bitrate, width: level.width, height: level.height, name: level.name };
+        })
+        this.emit('levels', mediaLevels);
+        if (firstLevel >= 0) {
+            this.emit('currentLevel', firstLevel);
+        }
     }
 
     private onError = (type, errorEvent) => {
         if (errorEvent && (errorEvent.details === 'manifestParsingError' || errorEvent.details === 'manifestLoadError')) {
             this.emit('error', Errors.SRC_LOAD_ERROR, this.mediaStream && this.mediaStream.url, errorEvent);
         }
-    }
-
-    private getMediaLevels(): MediaLevel[] {
-        if (!this.hls.levels || !this.hls.levels.length) {
-            return [];
-        }
-
-        const levels = this.hls.levels as HlsJsLevel[];
-        return levels.map(level => {
-            return { bitrate: level.bitrate, width: level.width, height: level.height };
-        })
     }
 
     public static isSupported(env: EnvironmentSupport): boolean {
