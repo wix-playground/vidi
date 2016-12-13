@@ -14,7 +14,6 @@ const DEFAULT_INITIAL_BITRATE = 1750; // 1750kbps, can be modified via Vidi.setI
  * 
  * Each instance manages playback for a single HTMLVideoElement, onto which sources can be loaded.
  */
-
 export class Vidi extends VidiEmitter {
     public static PlaybackStatus = PlaybackStatus;
     public static MediaStreamTypes = MediaStreamTypes;
