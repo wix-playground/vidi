@@ -24,7 +24,7 @@ module.exports = {
     context: __dirname,
     entry: {
         test: ['./test'],
-        webtest: ['mocha!./test']
+        webtest: ['mocha-loader!./test']
     },
     devtool: 'inline-source-map',
     output: output,
