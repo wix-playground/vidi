@@ -30,6 +30,8 @@ export class DashStream implements PlayableStream {
         }
         this.dashPlayer = DashMediaPlayer().create();
         this.dashPlayer.getDebug().setLogToBrowserConsole(false);
+        this.dashPlayer.setFastSwitchEnabled(true);
+        this.dashPlayer.on(DashEvents.QUALITY_CHANGE_RENDERED, this.onQualityChanged);
         this.dashPlayer.on(DashEvents.STREAM_INITIALIZED, this.onStreamInitialized);
         this.dashPlayer.on(DashEvents.ERROR, this.onError);
         this.dashPlayer.initialize(videoElement, this.mediaStream.url, videoElement.autoplay);
@@ -43,6 +45,7 @@ export class DashStream implements PlayableStream {
             return;
         }
         this.dashPlayer.reset()
+        this.dashPlayer.off(DashEvents.QUALITY_CHANGE_RENDERED, this.onQualityChanged);
         this.dashPlayer.off(DashEvents.STREAM_INITIALIZED, this.onStreamInitialized);
         this.dashPlayer.off(DashEvents.ERROR, this.onError);
         this.dashPlayer = null;
@@ -52,8 +55,9 @@ export class DashStream implements PlayableStream {
         return MediaStreamDeliveryType.ADAPTIVE_VIA_MSE;
     }
 
-    public setMediaLevel(newLevel: number, videoElement: HTMLVideoElement) {
-        // TODO
+    public setMediaLevel(newLevel: number) {
+        this.dashPlayer.setAutoSwitchQuality(false);
+        this.dashPlayer.setQualityFor('video', newLevel);
     }
 
     private onError = (errorEvent) => {
@@ -78,9 +82,9 @@ export class DashStream implements PlayableStream {
 
     }
 
-    private onStreamInitialized = () => {
-        this.emit('levels', this.getMediaLevels())
-    }
+    private onStreamInitialized = () => this.emit('levels', this.getMediaLevels());
+    private onQualityChanged = ({newQuality = -1}) => this.emit('levelchange', newQuality);
+
     public static isSupported(env: EnvironmentSupport): boolean {
         return env.MSE;
     };

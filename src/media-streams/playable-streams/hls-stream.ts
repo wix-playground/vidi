@@ -29,6 +29,8 @@ export class HlsStream implements PlayableStream {
         }
         HlsJs.DefaultConfig.abrEwmaDefaultEstimate = initialBitrate * 1000;
         this.hls = new HlsJs();
+
+        this.hls.on(HlsJs.Events.LEVEL_SWITCH, this.onLevelSwitched);
         this.hls.on(HlsJs.Events.MANIFEST_PARSED, this.onManifestParsed);
         this.hls.on(HlsJs.Events.ERROR, this.onError);
         this.hls.loadSource(this.mediaStream.url);
@@ -39,6 +41,7 @@ export class HlsStream implements PlayableStream {
         if (!this.mediaStream) {
             return;
         }
+        this.hls.off(HlsJs.Events.LEVEL_SWITCH, this.onLevelSwitched);
         this.hls.off(HlsJs.Events.MANIFEST_PARSED, this.onManifestParsed);
         this.hls.off(HlsJs.Events.ERROR, this.onError);
         this.hls.destroy();
@@ -49,8 +52,9 @@ export class HlsStream implements PlayableStream {
         return MediaStreamDeliveryType.ADAPTIVE_VIA_MSE;
     }
 
-    public setMediaLevel(newLevel: number, videoElement: HTMLVideoElement) {
-        // TODO
+    public setMediaLevel(newLevel: number) {
+        this.hls.autoLevelCapping = -1;
+        this.hls.currentLevel = newLevel;
     }
 
     private onManifestParsed = (
@@ -62,9 +66,11 @@ export class HlsStream implements PlayableStream {
         })
         this.emit('levels', mediaLevels);
         if (firstLevel >= 0) {
-            this.emit('currentLevel', firstLevel);
+            this.emit('levelchange', firstLevel);
         }
     }
+
+    private onLevelSwitched = (eventType: string, { level = -1 }) => this.emit('levelchange', level);
 
     private onError = (type, errorEvent) => {
         if (errorEvent && (errorEvent.details === 'manifestParsingError' || errorEvent.details === 'manifestLoadError')) {

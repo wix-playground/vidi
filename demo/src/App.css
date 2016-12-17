@@ -103,7 +103,7 @@ h2 {
 }
 
 .boxes {
-    margin: 80px 0;
+    margin: 20px 0 40px 0;
 }
 
 .box {
@@ -192,4 +192,17 @@ h2 {
 
 .dropdown:hover .dropbtn {
     background-color: #808080;
+}
+
+.levels {
+    text-align: left;
+    margin-top: 10px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.level {
+    cursor: pointer;
 }

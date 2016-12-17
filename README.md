@@ -205,9 +205,9 @@ vidi.on('levels', function (levels: MediaLevels[]) {
 ```
 
 
-In addition, the `currentLevel` event is fired when playback switches to a new level:
+In addition, the `levelchange` event is fired when playback switches to a new level:
 ```ts
-vidi.on('currentLevel', function (levelIdx: number) {
+vidi.on('levelchange', function (levelIdx: number) {
     // highlight the current level in the GUI quality selector
 });
 ```

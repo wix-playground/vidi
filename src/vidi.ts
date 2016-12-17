@@ -234,6 +234,8 @@ export class Vidi extends VidiEmitter {
         if (this.attachedStream && this.videoElement) {
             this.attachedStream.detach(this.videoElement);
             this.attachedStream = null;
+            this.emit('levelchange', -1);
+            this.emit('levels', []);
         }
     }
 
