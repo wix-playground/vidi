@@ -13,6 +13,9 @@ before_script:
 cache:
   yarn: true
 
+before_deploy:
+  - npm run minify
+
 deploy:
   provider: npm
   email: avi.vahl@wix.com

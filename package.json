@@ -11,6 +11,7 @@
     "build:transpile": "tsc -d",
     "build:watch": "tsc -d -w",
     "bundle": "webpack --progress",
+    "minify": "webpack --progress -p --config webpack.prod.config.js",
     "mediaserver": "node ./dist/http-media-server/standalone",
     "pretest": "npm run clean && npm run build && npm run bundle",
     "test": "node ./dist/test/boot-mediaserver-and-test",
