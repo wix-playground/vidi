@@ -108,8 +108,7 @@ The algorithm bases decisions using browser feature detection.
 
 ### Events
 ***vidi*** provides an easy to use event system.
-Listeners (callbacks) receive relevant data, per event type,
-as the first parameter.
+Listeners (callbacks) receive relevant data, per event type, as parameters of the call.
 
 It also normalizes several "status" changing native events
 (*play, playing, pause, seeking, seeked, and ended*)
@@ -127,8 +126,8 @@ The following events can be listened to:
 | loadstart      | `PlaybackState` object containing all data above combined               |
 | error          | See [Error Handling](#error-handling) section below.                    |
 
-The main ***Vidi*** extends [EventEmitter3](https://github.com/primus/eventemitter3),
-so any method from that class can be used on ***vidi***'s instances.
+The main ***Vidi*** class extends [EventEmitter3](https://github.com/primus/eventemitter3),
+so any method from that implementation can be used on the created instances.
 
 For example, subscribing to events can be done using the `.on()` method:
 ```ts
