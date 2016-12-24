@@ -6,13 +6,13 @@
   version "3.4.34"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-3.4.34.tgz#d5335792823bb09cddd5e38c3d211b709183854d"
 
-"@types/mocha@2.2.33":
-  version "2.2.33"
-  resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.33.tgz#d79a0061ec270379f4d9e225f4096fb436669def"
+"@types/mocha@2.2.34":
+  version "2.2.34"
+  resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.34.tgz#398e8a265f1db1e5f8c6e520064a74cbef84cbdc"
 
-"@types/node@6.0.52":
-  version "6.0.52"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.52.tgz#1ac3a99b42320f9e463482f25af4c2359473aaa6"
+"@types/node@6.0.53":
+  version "6.0.53"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.53.tgz#8c300ca8ba51f80f98f3525b932ff47c6efd6be1"
 
 abbrev@1:
   version "1.0.9"
@@ -41,8 +41,8 @@ after@0.8.1:
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.1.tgz#ab5d4fb883f596816d3515f8f791c0af486dd627"
 
 ajv@^4.7.0:
-  version "4.10.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-4.10.0.tgz#7ae6169180eb199192a8b9a19fd0f47fc9ac8764"
+  version "4.10.2"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-4.10.2.tgz#27a61437962cb6daf8023ca9ad2a30337d918dda"
   dependencies:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
@@ -174,11 +174,11 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
 autoprefixer@^6.3.1:
-  version "6.5.4"
-  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-6.5.4.tgz#1386eb6708ccff36aefff70adc694ecfd60af1b0"
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-6.6.0.tgz#d5b347ebbaf79e79d30b81c0ee3e482b288527bf"
   dependencies:
-    browserslist "~1.4.0"
-    caniuse-db "^1.0.30000597"
+    browserslist "~1.5.1"
+    caniuse-db "^1.0.30000602"
     normalize-range "^0.1.2"
     num2fraction "^1.2.2"
     postcss "^5.2.6"
@@ -251,8 +251,8 @@ block-stream@*:
     inherits "~2.0.0"
 
 bluebird@^3.3.0:
-  version "3.4.6"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.6.tgz#01da8d821d87813d158967e743d5fe6c62cf8c0f"
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.7.tgz#f72d760be09b7f76d08ed8fae98b289a8d05fab3"
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.6"
@@ -359,11 +359,11 @@ browserify-zlib@^0.1.4:
   dependencies:
     pako "~0.2.0"
 
-browserslist@~1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-1.4.0.tgz#9cfdcf5384d9158f5b70da2aa00b30e8ff019049"
+browserslist@~1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-1.5.1.tgz#67c3f2a1a6ad174cd01d25d2362e6e6083b26986"
   dependencies:
-    caniuse-db "^1.0.30000539"
+    caniuse-db "^1.0.30000601"
 
 buffer-shims@^1.0.0:
   version "1.0.0"
@@ -409,9 +409,9 @@ camelcase@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-3.0.0.tgz#32fc4b9fcdaf845fcdf7e73bb97cac2261f0ab0a"
 
-caniuse-db@^1.0.30000539, caniuse-db@^1.0.30000597:
-  version "1.0.30000597"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000597.tgz#b52e6cbe9dc83669affb98501629feaee1af6588"
+caniuse-db@^1.0.30000601, caniuse-db@^1.0.30000602:
+  version "1.0.30000602"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000602.tgz#06b2cbfb6c3aeef7ddb18cd588043549ad1a2d4e"
 
 caseless@~0.11.0:
   version "0.11.0"
@@ -503,9 +503,9 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-codem-isoboxer@0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/codem-isoboxer/-/codem-isoboxer-0.2.2.tgz#b6d46befd7adc8a866f11f00fad50ade24085fec"
+codem-isoboxer@0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/codem-isoboxer/-/codem-isoboxer-0.2.7.tgz#a4291993d68bf7b344cff53dc2c6279503dc5f42"
 
 color-convert@^1.3.0:
   version "1.8.2"
@@ -790,11 +790,11 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-dashjs@2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/dashjs/-/dashjs-2.3.0.tgz#08e5424c26bb5a41d978ca978d20ce92b80bd9e2"
+dashjs@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/dashjs/-/dashjs-2.4.0.tgz#c755de60147bd62429f0d83d283fd58d59eb81f6"
   dependencies:
-    codem-isoboxer "0.2.2"
+    codem-isoboxer "0.2.7"
     round10 "^1.0.3"
 
 date-now@^0.1.4:
@@ -1356,9 +1356,9 @@ hawk@~3.1.3:
     hoek "2.x.x"
     sntp "1.x.x"
 
-hls.js@0.6.14:
-  version "0.6.14"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.6.14.tgz#5df8f5f3f2432c92774c7e2251b4ef8b3fd38315"
+hls.js@0.6.15:
+  version "0.6.15"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.6.15.tgz#828c02f78f4c78415f8a2b729e10c3624fbde039"
 
 hoek@2.x.x:
   version "2.16.3"
@@ -1667,8 +1667,8 @@ jsonify@~0.0.0:
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
 
 jsonpointer@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/jsonpointer/-/jsonpointer-4.0.0.tgz#6661e161d2fc445f19f98430231343722e1fcbd5"
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/jsonpointer/-/jsonpointer-4.0.1.tgz#4fd92cb34e0e9db3c89c8622ecf51f9b978c6cb9"
 
 jsprim@^1.2.2:
   version "1.3.1"
@@ -1870,8 +1870,8 @@ lodash@^3.8.0:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
 lodash@^4.17.2, lodash@^4.3.0, lodash@^4.5.0, lodash@^4.6.1:
-  version "4.17.2"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
+  version "4.17.3"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.3.tgz#557ed7d2a9438cac5fd5a43043ca60cb455e01f7"
 
 log4js@^0.6.31:
   version "0.6.38"
@@ -2027,8 +2027,8 @@ ms@0.7.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
 
 nan@^2.3.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.4.0.tgz#fb3c59d45fe4effe215f0b890f8adf6eb32d2232"
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.0.tgz#aa8f1e34531d807e9e27755b234b4a6ec0c152a8"
 
 ncp@2.0.0:
   version "2.0.0"
@@ -2419,8 +2419,8 @@ postcss-minify-gradients@^1.0.1:
     postcss-value-parser "^3.3.0"
 
 postcss-minify-params@^1.0.4:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/postcss-minify-params/-/postcss-minify-params-1.1.0.tgz#b6093472b5872a6deda47aa3b0b5b8b973547c50"
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/postcss-minify-params/-/postcss-minify-params-1.2.1.tgz#c899444d9e2ff8933018befac151fbfadf10e737"
   dependencies:
     alphanum-sort "^1.0.1"
     postcss "^5.0.2"
@@ -2493,8 +2493,8 @@ postcss-reduce-idents@^2.2.2:
     postcss-value-parser "^3.0.2"
 
 postcss-reduce-initial@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/postcss-reduce-initial/-/postcss-reduce-initial-1.0.0.tgz#8f739b938289ef2e48936d7101783e4741ca9bbb"
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/postcss-reduce-initial/-/postcss-reduce-initial-1.0.1.tgz#68f80695f045d08263a879ad240df8dd64f644ea"
   dependencies:
     postcss "^5.0.4"
 
@@ -2544,8 +2544,8 @@ postcss-zindex@^2.0.1:
     uniqs "^2.0.0"
 
 postcss@^5.0.10, postcss@^5.0.11, postcss@^5.0.12, postcss@^5.0.13, postcss@^5.0.14, postcss@^5.0.16, postcss@^5.0.2, postcss@^5.0.4, postcss@^5.0.5, postcss@^5.0.6, postcss@^5.0.8, postcss@^5.2.6:
-  version "5.2.6"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-5.2.6.tgz#a252cd67cd52585035f17e9ad12b35137a7bdd9e"
+  version "5.2.7"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-5.2.7.tgz#e38fb8370b7c0703922ecefdf21256c5f4b8d369"
   dependencies:
     chalk "^1.1.3"
     js-base64 "^2.1.9"
@@ -3311,8 +3311,8 @@ url@^0.11.0:
     querystring "0.2.0"
 
 useragent@^2.1.9:
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/useragent/-/useragent-2.1.9.tgz#4dba2bc4dad1875777ab15de3ff8098b475000b7"
+  version "2.1.10"
+  resolved "https://registry.yarnpkg.com/useragent/-/useragent-2.1.10.tgz#2456c5c2b722b47f3d8321ed257b490a3d9bb2af"
   dependencies:
     lru-cache "2.2.x"
 
