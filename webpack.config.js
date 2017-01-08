@@ -29,5 +29,8 @@ module.exports = {
     devtool: 'inline-source-map',
     output: output,
     resolve: resolve,
-    module: loaders
+    module: loaders,
+    performance: {
+        hints: false
+    }
 };

@@ -26,5 +26,8 @@ module.exports = {
     },
     output: output,
     resolve: resolve,
-    module: loaders
+    module: loaders,
+    performance: {
+        hints: false
+    }
 };
