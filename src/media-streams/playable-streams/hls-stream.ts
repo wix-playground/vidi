@@ -4,6 +4,11 @@ import {
     EnvironmentSupport, MediaStreamDeliveryType, Errors
 } from '../../types';
 
+interface HlsJsConfiguration {
+    abrEwmaDefaultEstimate?: number;
+    autoStartLoad?: boolean;
+}
+
 interface HlsJsLevel {
     bitrate: number;
     width: number;
@@ -11,8 +16,10 @@ interface HlsJsLevel {
     name: string;
 }
 
+
 export class HlsStream implements PlayableStream {
     private hls: any = null;
+    private videoElement: HTMLVideoElement | null = null;
     private mediaStream: MediaStream | null = null;
 
     constructor(mediaStreams: MediaStream[], private emit: EmitEventsFn) {
@@ -27,8 +34,16 @@ export class HlsStream implements PlayableStream {
         if (!this.mediaStream) {
             return;
         }
-        HlsJs.DefaultConfig.abrEwmaDefaultEstimate = initialBitrate * 1000;
-        this.hls = new HlsJs();
+        this.videoElement = videoElement;
+
+        const config: HlsJsConfiguration = { abrEwmaDefaultEstimate: initialBitrate * 1000 };
+
+        if (videoElement.preload === 'none') {
+            config.autoStartLoad = false;
+            videoElement.addEventListener('play', this.attachOnPlay);
+        }
+
+        this.hls = new HlsJs(config);
         this.hls.on(HlsJs.Events.MANIFEST_PARSED, this.onManifestParsed);
         this.hls.on(HlsJs.Events.ERROR, this.onError);
         this.hls.loadSource(this.mediaStream.url);
@@ -43,6 +58,8 @@ export class HlsStream implements PlayableStream {
         this.hls.off(HlsJs.Events.ERROR, this.onError);
         this.hls.destroy();
         this.hls = null;
+        videoElement.removeEventListener('play', this.attachOnPlay);
+        this.videoElement = null
     }
 
     public getMediaStreamDeliveryType() {
@@ -51,6 +68,14 @@ export class HlsStream implements PlayableStream {
 
     public setMediaLevel(newLevel: number, videoElement: HTMLVideoElement) {
         // TODO
+    }
+
+    private attachOnPlay = () => {
+        if (!this.videoElement) {
+            return;
+        }
+        this.hls.startLoad();
+        this.videoElement.removeEventListener('play', this.attachOnPlay);
     }
 
     private onManifestParsed = (
