@@ -1113,8 +1113,8 @@ caniuse-api@^1.5.2:
     shelljs "^0.7.0"
 
 caniuse-db@^1.0.30000346, caniuse-db@^1.0.30000539, caniuse-db@^1.0.30000554, caniuse-db@^1.0.30000613:
-  version "1.0.30000613"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000613.tgz#639133b7a5380c1416f9701d23d54d093dd68299"
+  version "1.0.30000615"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000615.tgz#605bc071db4c5031acfb5e469c3b50a531dd5d04"
 
 cardinal@^1.0.0:
   version "1.0.0"
@@ -1178,8 +1178,8 @@ clap@^1.0.9:
     chalk "^1.1.3"
 
 clean-css@4.0.x:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.0.0.tgz#5737f76156696ef2ccfba44c877694d830ba29ca"
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.0.1.tgz#ef7619086e659338326ef80aa65421f45e9c724e"
   dependencies:
     source-map "0.5.x"
 
@@ -1711,8 +1711,8 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
 
 electron-to-chromium@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.2.0.tgz#3bd7761f85bd4163602259ae6c7ed338050b17e7"
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.2.1.tgz#63ac7579a1c5bedb296c8607621f2efc9a54b968"
 
 emojis-list@^2.0.0:
   version "2.1.0"
@@ -3454,11 +3454,11 @@ mime-types@^2.1.12, mime-types@~2.1.11, mime-types@~2.1.13, mime-types@~2.1.7:
   dependencies:
     mime-db "~1.26.0"
 
-mime@1.2.x, mime@^1.2.11:
+mime@1.2.x:
   version "1.2.11"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.2.11.tgz#58203eed86e3a5ef17aed2b7d9ebd47f0a60dd10"
 
-mime@1.3.4, mime@^1.3.4:
+mime@1.3.4, mime@^1.2.11, mime@^1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.3.4.tgz#115f9e3b6b3daf2959983cb38f149a2d40eb5d53"
 

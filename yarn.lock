@@ -10,9 +10,9 @@
   version "2.2.38"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.38.tgz#8c188f6e34c2e7c3f1d0127d908d5a36e5a60dc9"
 
-"@types/node@7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.3.tgz#6bc1d23929bd426eabd409b5898537076bbbdeff"
+"@types/node@7.0.4":
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.4.tgz#9aabc135979ded383325749f508894c662948c8b"
 
 abbrev@1:
   version "1.0.9"
@@ -420,8 +420,8 @@ caniuse-api@^1.5.2:
     shelljs "^0.7.0"
 
 caniuse-db@^1.0.30000346, caniuse-db@^1.0.30000613:
-  version "1.0.30000613"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000613.tgz#639133b7a5380c1416f9701d23d54d093dd68299"
+  version "1.0.30000615"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000615.tgz#605bc071db4c5031acfb5e469c3b50a531dd5d04"
 
 caseless@~0.11.0:
   version "0.11.0"
@@ -910,8 +910,8 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
 
 electron-to-chromium@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.2.0.tgz#3bd7761f85bd4163602259ae6c7ed338050b17e7"
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.2.1.tgz#63ac7579a1c5bedb296c8607621f2efc9a54b968"
 
 elliptic@^6.0.0:
   version "6.3.2"
@@ -1778,8 +1778,8 @@ load-json-file@^1.0.0:
     strip-bom "^2.0.0"
 
 loader-runner@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.2.0.tgz#824c1b699c4e7a2b6501b85902d5b862bf45b3fa"
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.3.0.tgz#f482aea82d543e07921700d5a46ef26fdac6b8a2"
 
 loader-utils@^0.2.16, loader-utils@^0.2.6, loader-utils@^0.2.7, loader-utils@~0.2.15, loader-utils@~0.2.2:
   version "0.2.16"
