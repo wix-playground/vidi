@@ -1,36 +1,33 @@
-var loaders = {
-    loaders: [
-        {
-            test: /\.ts[x]?$/,
-            loader: 'ts-loader?logLevel=warn' // &transpileOnly=true
-        }
-    ],
-    noParse: /\.min\.js$/
-};
-
-var resolve = {
-    extensions: [".webpack.js", ".web.js", ".js", ".ts", ".tsx"]
-};
-
-var output = {
-    path: __dirname + '/dist',
-    filename: '[name].bundle.js',
-    libraryTarget: 'umd',
-    library: '[name]',
-    pathinfo: true
-};
+const path = require('path');
 
 module.exports = {
-    context: __dirname,
     entry: {
-        test: ['./test'],
-        webtest: ['mocha-loader!./test']
+        test: './test',
+        webtest: 'mocha-loader!./test'
     },
-    devtool: 'inline-source-map',
-    output: output,
-    resolve: resolve,
-    module: loaders,
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].bundle.js',
+    },
+    module: {
+        rules: [
+            {
+                test: /\.ts[x]?$/,
+                loader: 'ts-loader',
+                options: {
+                    logLevel: 'warn'
+                    // transpileOnly: true
+
+                }
+            }
+        ]
+    },
+    resolve: {
+        extensions: [".js", ".ts", ".tsx"]
+    },
     performance: {
         hints: false
-    }
+    },
+    devtool: 'inline-source-map',
+    context: __dirname
 };
