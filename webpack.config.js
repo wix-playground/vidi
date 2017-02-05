@@ -17,7 +17,6 @@ module.exports = {
                 options: {
                     logLevel: 'warn'
                     // transpileOnly: true
-
                 }
             }
         ]

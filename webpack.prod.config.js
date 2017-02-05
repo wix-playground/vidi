@@ -1,33 +1,32 @@
-var loaders = {
-    loaders: [
-        {
-            test: /\.ts[x]?$/,
-            loader: 'ts-loader?logLevel=warn' // &transpileOnly=true
-        }
-    ],
-    noParse: /\.min\.js$/
-};
-
-var resolve = {
-    extensions: [".webpack.js", ".web.js", ".js", ".ts", ".tsx"]
-};
-
-var output = {
-    path: __dirname + '/dist',
-    filename: '[name].min.js',
-    libraryTarget: 'umd',
-    library: 'Vidi'
-};
+const path = require('path');
 
 module.exports = {
-    context: __dirname,
     entry: {
-        vidi: ['./src/minified-entry']
+        vidi: './src/minified-entry'
     },
-    output: output,
-    resolve: resolve,
-    module: loaders,
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].min.js',
+        libraryTarget: 'umd',
+        library: 'Vidi'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.ts[x]?$/,
+                loader: 'ts-loader',
+                options: {
+                    logLevel: 'warn'
+                    // transpileOnly: true
+                }
+            }
+        ]
+    },
+    resolve: {
+        extensions: [".js", ".ts", ".tsx"]
+    },
     performance: {
         hints: false
-    }
+    },
+    context: __dirname
 };
