@@ -4,6 +4,8 @@
   "description": "<video> playback simplified",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "author": "Avi Vahl (avi.vahl@wix.com)",
+  "license": "SEE LICENSE IN LICENSE.md",
   "scripts": {
     "clean": "rimraf ./dist",
     "copy:assets": "mkdirp ./dist/http-media-server/assets && ncp ./http-media-server/assets ./dist/http-media-server/assets",
@@ -17,30 +19,10 @@
     "test": "node ./dist/test/boot-mediaserver-and-test",
     "start": "webpack-dev-server --progress"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:wix/vidi.git"
-  },
-  "keywords": [
-    "video",
-    "media",
-    "html5",
-    "mse",
-    "adaptive",
-    "hls",
-    "dash",
-    "mpeg"
-  ],
-  "author": "Avi Vahl (avi.vahl@wix.com)",
-  "license": "SEE LICENSE IN LICENSE.md",
-  "bugs": {
-    "url": "https://github.com/wix/vidi/issues"
-  },
-  "homepage": "https://github.com/wix/vidi#readme",
   "devDependencies": {
     "@types/chai": "3.4.34",
-    "@types/mocha": "2.2.38",
-    "@types/node": "7.0.4",
+    "@types/mocha": "2.2.39",
+    "@types/node": "7.0.5",
     "chai": "3.5.0",
     "karma": "1.4.1",
     "karma-chrome-launcher": "2.0.0",
@@ -57,13 +39,31 @@
     "ts-loader": "2.0.0",
     "typescript": "2.1.5",
     "webpack": "2.2.1",
-    "webpack-dev-server": "2.2.0"
+    "webpack-dev-server": "2.3.0"
   },
   "dependencies": {
     "dashjs": "2.4.0",
     "eventemitter3": "2.0.2",
-    "hls.js": "0.6.19",
-    "url-toolkit": "1.0.7",
+    "hls.js": "0.6.20",
+    "url-toolkit": "1.0.10",
     "webworkify": "1.4.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wix/vidi.git"
+  },
+  "keywords": [
+    "video",
+    "media",
+    "html5",
+    "mse",
+    "adaptive",
+    "hls",
+    "dash",
+    "mpeg"
+  ],
+  "bugs": {
+    "url": "https://github.com/wix/vidi/issues"
+  },
+  "homepage": "https://github.com/wix/vidi"
 }
