@@ -37,14 +37,14 @@
     "ncp": "2.0.0",
     "rimraf": "2.5.4",
     "ts-loader": "2.0.0",
-    "typescript": "2.1.5",
+    "typescript": "2.1.6",
     "webpack": "2.2.1",
     "webpack-dev-server": "2.3.0"
   },
   "dependencies": {
-    "dashjs": "2.4.0",
+    "dashjs": "2.4.1",
     "eventemitter3": "2.0.2",
-    "hls.js": "0.6.20",
+    "hls.js": "0.6.21",
     "url-toolkit": "1.0.10",
     "webworkify": "1.4.0"
   },
