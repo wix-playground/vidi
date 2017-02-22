@@ -24,8 +24,8 @@ interface ReadStreamOptions {
 }
 
 interface RangeRequest {
-    start?: number;
-    end?: number;
+    start: number;
+    end: number;
 }
 
 function readRangeHeader(range: string, totalLength: number): RangeRequest | null {
@@ -88,7 +88,7 @@ export function startHttpMediaServer(port = 3000, onListen: Function = () => { }
                 const ext = path.extname(uri).slice(1);
                 const mimeType = mimeTypes[ext];
                 const fileSize = fs.statSync(fileName).size;
-                const rangeRequest: RangeRequest | null = readRangeHeader(req.headers['range'], fileSize);
+                const rangeRequest: RangeRequest | null = readRangeHeader(req.headers.range, fileSize);
 
                 if (mimeType) {
                     const options: ReadStreamOptions = {};
