@@ -44,7 +44,7 @@
   "dependencies": {
     "dashjs": "2.4.1",
     "eventemitter3": "2.0.2",
-    "hls.js": "0.7.2",
+    "hls.js": "0.7.3",
     "url-toolkit": "2.0.1",
     "webworkify": "1.4.0"
   },
