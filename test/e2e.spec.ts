@@ -3,6 +3,8 @@ import {Vidi} from '../src';
 import {NativeEnvironmentSupport} from '../src/utils/environment-detection';
 
 describe('Vidi e2e', function () {
+    this.timeout(10000);
+
     let videoElement: HTMLVideoElement;
     const formatsToTest = [
         { type: 'MP4', url: 'http://localhost:3000/sample.mp4', supportedByEnv: NativeEnvironmentSupport.MP4 },
