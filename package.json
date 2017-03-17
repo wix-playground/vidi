@@ -9,20 +9,20 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "copy:assets": "mkdirp ./dist/http-media-server/assets && ncp ./http-media-server/assets ./dist/http-media-server/assets",
-    "build": "npm run build:transpile && npm run copy:assets",
+    "build": "yarn run build:transpile && yarn run copy:assets",
     "build:transpile": "tsc -d",
     "build:watch": "tsc -d -w",
     "bundle": "webpack --progress",
     "minify": "webpack --progress -p --config webpack.prod.config.js",
     "mediaserver": "node ./dist/http-media-server/standalone",
-    "pretest": "npm run clean && npm run build && npm run bundle",
+    "pretest": "yarn run clean && yarn run build && yarn run bundle",
     "test": "node ./dist/test/boot-mediaserver-and-test",
     "start": "webpack-dev-server --progress"
   },
   "devDependencies": {
     "@types/chai": "3.4.35",
-    "@types/mocha": "2.2.39",
-    "@types/node": "7.0.5",
+    "@types/mocha": "2.2.40",
+    "@types/node": "7.0.8",
     "chai": "3.5.0",
     "karma": "1.5.0",
     "karma-chrome-launcher": "2.0.0",
@@ -36,15 +36,15 @@
     "mocha-loader": "1.1.1",
     "ncp": "2.0.0",
     "rimraf": "2.6.1",
-    "ts-loader": "2.0.1",
+    "ts-loader": "2.0.2",
     "typescript": "2.2.1",
     "webpack": "2.2.1",
-    "webpack-dev-server": "2.4.1"
+    "webpack-dev-server": "2.4.2"
   },
   "dependencies": {
     "dashjs": "2.4.1",
     "eventemitter3": "2.0.2",
-    "hls.js": "0.7.3",
+    "hls.js": "0.7.4",
     "url-toolkit": "2.0.1",
     "webworkify": "1.4.0"
   },
