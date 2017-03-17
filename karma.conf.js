@@ -1,7 +1,7 @@
 // Karma configuration
 
 module.exports = function (config) {
-    const karmaConfig = {
+    config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
@@ -22,12 +22,6 @@ module.exports = function (config) {
         exclude: [
         ],
 
-        client: {
-            mocha: {
-                reporter: 'html', // change Karma's debug.html to the mocha web reporter
-                ui: 'bdd'
-            }
-        },
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -71,17 +65,7 @@ module.exports = function (config) {
         // how many browser should be started simultaneous
         concurrency: Infinity,
 
-        customLaunchers: {
-            chrome_travis_ci: {
-                base: 'Chrome',
-                flags: ['--no-sandbox']
-            }
-        }
-    }
-
-    if (process.env.TRAVIS) {
-        karmaConfig.browsers = ['chrome_travis_ci', 'Firefox'];
-    }
-
-    config.set(karmaConfig)
+        // https://docs.travis-ci.com/user/gui-and-headless-browsers/#Karma-and-Firefox-inactivity-timeouts
+        browserNoActivityTimeout: 30000
+    })
 }
