@@ -38,13 +38,13 @@
     "rimraf": "2.6.1",
     "ts-loader": "2.0.3",
     "typescript": "2.2.2",
-    "webpack": "2.3.2",
+    "webpack": "2.3.3",
     "webpack-dev-server": "2.4.2"
   },
   "dependencies": {
     "dashjs": "2.4.1",
     "eventemitter3": "2.0.3",
-    "hls.js": "0.7.4",
+    "hls.js": "0.7.5",
     "url-toolkit": "2.1.1",
     "webworkify": "1.4.0"
   },
