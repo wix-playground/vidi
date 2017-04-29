@@ -3,8 +3,9 @@ import {
     EnvironmentSupport, MediaStreamDeliveryType, Errors
 } from '../../types';
 
-const DashMediaPlayer = require('dashjs').MediaPlayer;
-const DashEvents = DashMediaPlayer.events;
+import {MediaPlayer} from 'dashjs';
+
+const DashEvents = MediaPlayer['events'];
 
 interface DashJsBitrateInfo {
     bitrate: number;
@@ -28,7 +29,7 @@ export class DashStream implements PlayableStream {
         if (!this.mediaStream) {
             return;
         }
-        this.dashPlayer = DashMediaPlayer().create();
+        this.dashPlayer = MediaPlayer().create();
         this.dashPlayer.getDebug().setLogToBrowserConsole(false);
         this.dashPlayer.on(DashEvents.STREAM_INITIALIZED, this.onStreamInitialized);
         this.dashPlayer.on(DashEvents.ERROR, this.onError);
