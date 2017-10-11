@@ -1,4 +1,4 @@
-const HlsJs = require('hls.js/lib');
+const HlsJs = require('hls.js/dist/hls.light');
 import {
     MediaStream, PlayableStream, MediaStreamTypes, MediaLevel, EmitEventsFn,
     EnvironmentSupport, MediaStreamDeliveryType, Errors
