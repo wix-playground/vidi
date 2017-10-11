@@ -912,9 +912,9 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-dashjs@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/dashjs/-/dashjs-2.6.1.tgz#58397f131cadc5ae709dd31c61531d3a869f94a2"
+dashjs@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/dashjs/-/dashjs-2.6.0.tgz#8ec9e9d221580c3e5ed40b11492e35fffcfc172e"
   dependencies:
     codem-isoboxer "^0.3.3"
     deep-equal "^1.0.1"
@@ -1692,7 +1692,7 @@ he@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
-hls.js@^0.8.4:
+hls.js@0.8.4:
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.8.4.tgz#4cc31e66f4c6ccd3b686ce2fbbe2d9be20de04b9"
   dependencies:

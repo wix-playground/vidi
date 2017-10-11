@@ -3,7 +3,7 @@ import {
     EnvironmentSupport, MediaStreamDeliveryType, Errors
 } from '../../types';
 
-const MediaPlayer = require('dashjs/build/es5/src/streaming/MediaPlayer');
+const {MediaPlayer} = require('dashjs');
 const {events: DashEvents} = MediaPlayer;
 
 interface DashJsBitrateInfo {
