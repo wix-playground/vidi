@@ -1433,7 +1433,7 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-codem-isoboxer@^0.3.2:
+codem-isoboxer@^0.3.3:
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/codem-isoboxer/-/codem-isoboxer-0.3.4.tgz#6ce6e820782d42194493efa94b73d7b276a0c55a"
 
@@ -1799,11 +1799,13 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-dashjs@2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/dashjs/-/dashjs-2.5.0.tgz#92853a1e373911eff23f2afa7589817291396225"
+dashjs@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/dashjs/-/dashjs-2.6.0.tgz#8ec9e9d221580c3e5ed40b11492e35fffcfc172e"
   dependencies:
-    codem-isoboxer "^0.3.2"
+    codem-isoboxer "^0.3.3"
+    deep-equal "^1.0.1"
+    imsc "^1.0.0-beta.3"
     round10 "^1.0.3"
 
 date-now@^0.1.4:
@@ -2375,7 +2377,7 @@ eventemitter3@1.x.x:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-1.2.0.tgz#1c86991d816ad1e504750e73874224ecf3bec508"
 
-eventemitter3@2.0.3:
+eventemitter3@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-2.0.3.tgz#b5e1079b59fb5e1ba2771c0a993be060a58c99ba"
 
@@ -3006,9 +3008,11 @@ he@1.1.x:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
-hls.js@0.7.8:
-  version "0.7.8"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.7.8.tgz#340ebf98ab1422a8192a944d34ec0c21ae9b7942"
+hls.js@0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.8.4.tgz#4cc31e66f4c6ccd3b686ce2fbbe2d9be20de04b9"
+  dependencies:
+    url-toolkit "^2.0.1"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
@@ -3177,6 +3181,12 @@ ieee754@^1.1.4:
 ignore@^3.3.3:
   version "3.3.5"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.5.tgz#c4e715455f6073a8d7e5dae72d2fc9d71663dba6"
+
+imsc@^1.0.0-beta.3:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/imsc/-/imsc-1.0.0.tgz#fc1a1ea57f49f64589cc3c250b2a031430f4033a"
+  dependencies:
+    sax "1.2.1"
 
 imurmurhash@^0.1.4:
   version "0.1.4"
@@ -5634,6 +5644,10 @@ sane@~1.6.0:
     walker "~1.0.5"
     watch "~0.10.0"
 
+sax@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
+
 sax@^1.2.1, sax@~1.2.1:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
@@ -6328,7 +6342,7 @@ url-parse@^1.1.8:
     querystringify "~1.0.0"
     requires-port "1.0.x"
 
-url-toolkit@2.1.1:
+url-toolkit@^2.0.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/url-toolkit/-/url-toolkit-2.1.1.tgz#96c2da3cd672df1aa2ac7fc89240b2dcf5c99a80"
 
@@ -6392,15 +6406,13 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vidi@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/vidi/-/vidi-0.5.0.tgz#d230064a58c5e52cb4b680ff6d568de4afe27ef1"
+vidi@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/vidi/-/vidi-0.5.1.tgz#3674ba4c79fc57ae2e6a2ec207f8c74a96cebb0c"
   dependencies:
-    dashjs "2.5.0"
-    eventemitter3 "2.0.3"
-    hls.js "0.7.8"
-    url-toolkit "2.1.1"
-    webworkify "1.4.0"
+    dashjs "2.6.0"
+    eventemitter3 "^2.0.3"
+    hls.js "0.8.4"
 
 vm-browserify@0.0.4:
   version "0.0.4"
@@ -6530,10 +6542,6 @@ websocket-driver@>=0.5.1:
 websocket-extensions@>=0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.2.tgz#0e18781de629a18308ce1481650f67ffa2693a5d"
-
-webworkify@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/webworkify/-/webworkify-1.4.0.tgz#71245d1e34cacf54e426bd955f8cc6ee12d024c2"
 
 whatwg-encoding@^1.0.1:
   version "1.0.1"
