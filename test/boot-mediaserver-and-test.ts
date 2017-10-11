@@ -1,7 +1,7 @@
 import {startHttpMediaServer} from '../http-media-server';
 const KarmaServer = require('karma').Server;
 
-const mediaServer = startHttpMediaServer(3000, startKarma);
+startHttpMediaServer(3000, startKarma);
 
 function startKarma() {
     const karmaOptions = {

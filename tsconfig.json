@@ -6,7 +6,8 @@
         "strictNullChecks": true,
         "sourceMap": true,
         "outDir": "dist",
-        "jsx": "react"
+        "noUnusedLocals": true,
+        "noUnusedParameters": true
     },
     "exclude": [
         "node_modules",

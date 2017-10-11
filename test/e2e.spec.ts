@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {Vidi} from '../src';
 import {NativeEnvironmentSupport} from '../src/utils/environment-detection';
 

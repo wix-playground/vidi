@@ -1,4 +1,4 @@
-import {MediaStream, MediaStreamTypes, MediaSource} from '../types';
+import {MediaStreamTypes} from '../types';
 
 const extensionsMap = Object.create(null);
 

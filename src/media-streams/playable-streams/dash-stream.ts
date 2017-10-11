@@ -38,7 +38,7 @@ export class DashStream implements PlayableStream {
         }
     }
 
-    public detach(videoElement: HTMLVideoElement) {
+    public detach() {
         if (!this.mediaStream) {
             return;
         }
@@ -52,11 +52,11 @@ export class DashStream implements PlayableStream {
         return MediaStreamDeliveryType.ADAPTIVE_VIA_MSE;
     }
 
-    public setMediaLevel(newLevel: number, videoElement: HTMLVideoElement) {
+    public setMediaLevel(_newLevel: number, _videoElement: HTMLVideoElement) {
         // TODO
     }
 
-    private onError = (errorEvent) => {
+    private onError = (errorEvent: any) => {
         if (!errorEvent) {
             return;
         }

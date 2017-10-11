@@ -1,6 +1,6 @@
 import { EventEmitter } from 'eventemitter3';
 import { MediaLevel } from './media-level';
-import { ErrorTypes } from './errors';
+import { Errors } from './errors';
 import { PlaybackState, PlaybackStatus } from './playback-state';
 
 export type LoadStartListener = (playbackState: PlaybackState) => void;
@@ -9,7 +9,7 @@ export type TimeUpdateListener = (currentTime: number) => void;
 export type RateChangeListener = (playbackRate: number) => void;
 export type VolumeChangeListener = (volumeState: { volume: number, muted: boolean }) => void;
 export type StatusChangeListener = (playbackStatus: PlaybackStatus) => void;
-export type ErrorListener = (code: ErrorTypes, url: string, originalEvent: any) => void;
+export type ErrorListener = (code: Errors, url: string, originalEvent: any) => void;
 export type LevelsListener = (levels: MediaLevel[]) => void;
 
 export interface VidiEmitter {

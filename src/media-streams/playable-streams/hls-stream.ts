@@ -16,7 +16,6 @@ interface HlsJsLevel {
     name: string;
 }
 
-
 export class HlsStream implements PlayableStream {
     private hls: any = null;
     private videoElement: HTMLVideoElement | null = null;
@@ -66,7 +65,7 @@ export class HlsStream implements PlayableStream {
         return MediaStreamDeliveryType.ADAPTIVE_VIA_MSE;
     }
 
-    public setMediaLevel(newLevel: number, videoElement: HTMLVideoElement) {
+    public setMediaLevel(_newLevel: number, _videoElement: HTMLVideoElement) {
         // TODO
     }
 
@@ -79,7 +78,7 @@ export class HlsStream implements PlayableStream {
     }
 
     private onManifestParsed = (
-        eventType: string,
+        _eventType: string,
         { levels = [] as HlsJsLevel[], firstLevel = -1 }
     ) => {
         const mediaLevels: MediaLevel[] = levels.map(level => {
@@ -91,7 +90,7 @@ export class HlsStream implements PlayableStream {
         }
     }
 
-    private onError = (type, errorEvent) => {
+    private onError = (_type: string, errorEvent: any) => {
         if (errorEvent && (errorEvent.details === 'manifestParsingError' || errorEvent.details === 'manifestLoadError')) {
             this.emit('error', Errors.SRC_LOAD_ERROR, this.mediaStream && this.mediaStream.url, errorEvent);
         }

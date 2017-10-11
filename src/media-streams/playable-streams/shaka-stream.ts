@@ -1,4 +1,4 @@
-import { MediaStream, PlayableStream, MediaStreamTypes, EnvironmentSupport, EmitEventsFn, MediaStreamDeliveryType } from '../../types';
+import { MediaStream, PlayableStream, MediaStreamTypes, EmitEventsFn, MediaStreamDeliveryType } from '../../types';
 
 const Shaka = require('shaka-player');
 Shaka.polyfill.installAll();
@@ -17,7 +17,7 @@ export class ShakaStream implements PlayableStream {
         }
     }
 
-    public detach(videoElement: HTMLVideoElement) {
+    public detach() {
         this.shakaPlayer.destroy()
         this.shakaPlayer = null;
     }
@@ -26,7 +26,7 @@ export class ShakaStream implements PlayableStream {
         return MediaStreamDeliveryType.ADAPTIVE_VIA_MSE;
     }
 
-    public static isSupported(env: EnvironmentSupport): boolean {
+    public static isSupported(): boolean {
         return Shaka.Player.isBrowserSupported();
     };
 
@@ -34,7 +34,7 @@ export class ShakaStream implements PlayableStream {
         return mediaType === MediaStreamTypes.DASH;
     }
 
-    public setMediaLevel(newLevel: number, videoElement: HTMLVideoElement) {
+    public setMediaLevel(_newLevel: number, _videoElement: HTMLVideoElement) {
         //
     }
 }
