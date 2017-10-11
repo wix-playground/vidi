@@ -2,18 +2,13 @@ dist: trusty
 language: node_js
 
 node_js:
-  - '8'
-  - '6'
+  - 8
+  - 6
 
 sudo: false
 
 addons:
-  apt:
-    packages:
-      - google-chrome-stable
-
-cache:
-  yarn: true
+  chrome: stable
 
 before_deploy:
   - npm run minify
@@ -27,4 +22,7 @@ deploy:
   on:
     tags: true
     repo: wix/vidi
-    node: '6'
+    node: 6
+
+cache:
+  yarn: true
