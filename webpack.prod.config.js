@@ -23,7 +23,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: [".js", ".ts", ".tsx"]
+        extensions: ['.ts', '.js']
     },
     performance: {
         hints: false
