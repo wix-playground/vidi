@@ -61,5 +61,9 @@
   "bugs": {
     "url": "https://github.com/wix/vidi/issues"
   },
-  "homepage": "https://github.com/wix/vidi"
+  "homepage": "https://github.com/wix/vidi",
+  "files": [
+    "dist/src",
+    "dist/vidi.min.js"
+  ]
 }

@@ -6,6 +6,7 @@
         "noImplicitAny": false,
         "strictNullChecks": true,
         "sourceMap": true,
+        "inlineSources": true,
         "outDir": "dist",
         "noUnusedLocals": true,
         "noUnusedParameters": true
