@@ -1,7 +1,16 @@
 // Karma configuration
+const webpack = require('./webpack.config');
+const testEntrypoint = './test/index.ts';
 
 module.exports = function (config) {
     config.set({
+        // this key is used by karma-webpack, see preprocessors below
+        webpack,
+
+        // the default mime type for ts files is video/mp2t, which Chrome won't execute, so force correct mime type
+        mime: {
+            "text/x-typescript": ["ts", "tsx"],
+        },
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
@@ -14,7 +23,7 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'dist/test.bundle.js'
+            testEntrypoint
         ],
 
 
@@ -26,6 +35,7 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
+            [testEntrypoint]: ['webpack']
         },
 
 

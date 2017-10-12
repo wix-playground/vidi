@@ -2,8 +2,7 @@ const path = require('path');
 
 module.exports = {
     entry: {
-        test: './test',
-        webtest: 'mocha-loader!./test'
+        tests: 'mocha-loader!./test'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -15,8 +14,9 @@ module.exports = {
                 test: /\.ts[x]?$/,
                 loader: 'ts-loader',
                 options: {
-                    logLevel: 'warn'
-                    // transpileOnly: true
+                    compilerOptions: {
+                        declaration: false
+                    }
                 }
             }
         ]
@@ -27,6 +27,6 @@ module.exports = {
     performance: {
         hints: false
     },
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     context: __dirname
 };

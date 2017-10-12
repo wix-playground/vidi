@@ -16,8 +16,9 @@ module.exports = {
                 test: /\.ts[x]?$/,
                 loader: 'ts-loader',
                 options: {
-                    logLevel: 'warn'
-                    // transpileOnly: true
+                    compilerOptions: {
+                        declaration: false
+                    }
                 }
             }
         ]
