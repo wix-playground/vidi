@@ -72,7 +72,7 @@ class App extends Component {
             <span className="btn playBtn" onClick={this.play}>Play</span>
           </div>
           <div className="boxes">
-            <div className="box" onClick={() => this.setState({ sourceUrl: 'http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8' })}>
+            <div className="box" onClick={() => this.setState({ sourceUrl: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8' })}>
               <img src={bigBuckBunny} title="Big Buck Bunny via HLS" alt="Big Buck Bunny" />
             </div>
             <div className="box centerBox" onClick={() => this.setState({ sourceUrl: 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd' })}>
