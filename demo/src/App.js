@@ -69,7 +69,7 @@ export class App extends Component {
                 <div className="content">
                     <h1 className="vidi">vidi</h1>
                     <h2><code className="code">&lt;video&gt;</code> <span className="tagLine">playback simplified</span></h2>
-                    <video className="video" key="video" controls ref={this.handleVideoRef} />
+                    <video className="video" key="video" controls ref={this.handleVideoRef} onCanPlay={this.turnOffTextTracks} />
                     <div className="formWrapper">
                         <label htmlFor="sourceInput" className="urlLabel">URL: </label>
                         <input type="text" id="sourceInput" onChange={e => this.setState({ sourceUrl: e.target.value })} value={this.state.sourceUrl} />
