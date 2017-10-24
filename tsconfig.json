@@ -1,12 +1,15 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "declaration": true,
         "target": "es5",
         "noImplicitAny": false,
         "strictNullChecks": true,
         "sourceMap": true,
+        "inlineSources": true,
         "outDir": "dist",
-        "jsx": "react"
+        "noUnusedLocals": true,
+        "noUnusedParameters": true
     },
     "exclude": [
         "node_modules",

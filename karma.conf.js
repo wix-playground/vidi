@@ -1,7 +1,16 @@
 // Karma configuration
+const webpack = require('./webpack.config');
+const testEntrypoint = './test/index.ts';
 
 module.exports = function (config) {
-    const karmaConfig = {
+    config.set({
+        // this key is used by karma-webpack, see preprocessors below
+        webpack,
+
+        // the default mime type for ts files is video/mp2t, which Chrome won't execute, so force correct mime type
+        mime: {
+            "text/x-typescript": ["ts", "tsx"],
+        },
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
@@ -14,7 +23,7 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'dist/test.bundle.js'
+            testEntrypoint
         ],
 
 
@@ -22,16 +31,11 @@ module.exports = function (config) {
         exclude: [
         ],
 
-        client: {
-            mocha: {
-                reporter: 'html', // change Karma's debug.html to the mocha web reporter
-                ui: 'bdd'
-            }
-        },
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
+            [testEntrypoint]: ['webpack']
         },
 
 
@@ -60,7 +64,7 @@ module.exports = function (config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['Chrome', 'Firefox'],
+        browsers: ['ChromeHeadless'],
 
 
         // Continuous Integration mode
@@ -71,17 +75,7 @@ module.exports = function (config) {
         // how many browser should be started simultaneous
         concurrency: Infinity,
 
-        customLaunchers: {
-            chrome_travis_ci: {
-                base: 'Chrome',
-                flags: ['--no-sandbox']
-            }
-        }
-    }
-
-    if (process.env.TRAVIS) {
-        karmaConfig.browsers = ['chrome_travis_ci', 'Firefox'];
-    }
-
-    config.set(karmaConfig)
+        // https://docs.travis-ci.com/user/gui-and-headless-browsers/#Karma-and-Firefox-inactivity-timeouts
+        browserNoActivityTimeout: 30000
+    })
 }

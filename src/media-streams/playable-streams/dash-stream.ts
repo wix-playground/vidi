@@ -3,8 +3,8 @@ import {
     EnvironmentSupport, MediaStreamDeliveryType, Errors
 } from '../../types';
 
-const DashMediaPlayer = require('dashjs').MediaPlayer;
-const DashEvents = DashMediaPlayer.events;
+const {MediaPlayer} = require('dashjs/build/es5/index_mediaplayerOnly');
+const {events: DashEvents} = MediaPlayer;
 
 interface DashJsBitrateInfo {
     bitrate: number;
@@ -28,7 +28,7 @@ export class DashStream implements PlayableStream {
         if (!this.mediaStream) {
             return;
         }
-        this.dashPlayer = DashMediaPlayer().create();
+        this.dashPlayer = MediaPlayer().create();
         this.dashPlayer.getDebug().setLogToBrowserConsole(false);
         this.dashPlayer.setFastSwitchEnabled(true);
         this.dashPlayer.on(DashEvents.QUALITY_CHANGE_RENDERED, this.onQualityChanged);
@@ -40,7 +40,7 @@ export class DashStream implements PlayableStream {
         }
     }
 
-    public detach(videoElement: HTMLVideoElement) {
+    public detach() {
         if (!this.mediaStream) {
             return;
         }
@@ -60,7 +60,7 @@ export class DashStream implements PlayableStream {
         this.dashPlayer.setQualityFor('video', newLevel);
     }
 
-    private onError = (errorEvent) => {
+    private onError = (errorEvent: any) => {
         if (!errorEvent) {
             return;
         }

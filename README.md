@@ -1,8 +1,6 @@
 # vidi - `<video>` playback simplified.
 [![npm](https://img.shields.io/npm/v/vidi.svg)](https://www.npmjs.com/package/vidi)
 [![Build Status](https://travis-ci.org/wix/vidi.svg?branch=master)](https://travis-ci.org/wix/vidi)
-[![dependencies Status](https://david-dm.org/wix/vidi/status.svg)](https://david-dm.org/wix/vidi)
-[![devDependencies Status](https://david-dm.org/wix/vidi/dev-status.svg)](https://david-dm.org/wix/vidi?type=dev)
 
 The browser world is highly fragmented, and browser vendors all have their own preferences and priorities regarding video encoding standards and adaptive streaming methods. This results in a lack of compatiblity between browsers, with each browser supporting some methods while providing no support for other methods.
 
@@ -108,8 +106,7 @@ The algorithm bases decisions using browser feature detection.
 
 ### Events
 ***vidi*** provides an easy to use event system.
-Listeners (callbacks) receive relevant data, per event type,
-as the first parameter.
+Listeners (callbacks) receive relevant data, per event type, as parameters of the call.
 
 It also normalizes several "status" changing native events
 (*play, playing, pause, seeking, seeked, and ended*)
@@ -127,8 +124,8 @@ The following events can be listened to:
 | loadstart      | `PlaybackState` object containing all data above combined               |
 | error          | See [Error Handling](#error-handling) section below.                    |
 
-The main ***Vidi*** extends [EventEmitter3](https://github.com/primus/eventemitter3),
-so any method from that class can be used on ***vidi***'s instances.
+The main ***Vidi*** class extends [EventEmitter3](https://github.com/primus/eventemitter3),
+so any method from that implementation can be used on the created instances.
 
 For example, subscribing to events can be done using the `.on()` method:
 ```ts

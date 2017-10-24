@@ -1,8 +1,7 @@
 import {expect} from 'chai';
 import Vidi from '../src';
 import {createdMockedVideoElement} from '../test-kit';
-import {getNativeEventsHandlers} from '../src/events';
-import {defaultPlaybackState, PlaybackState, PlaybackStatus, PlayableStream} from '../src/types';
+import {defaultPlaybackState, PlaybackState, PlaybackStatus} from '../src/types';
 
 // Sample video data
 const duration = 50, currentTime = 5, muted = true, playbackRate = 0.75, paused = false, volume = 0.9;
@@ -12,8 +11,6 @@ const mockedVideoParams = { duration, currentTime, muted, playbackRate, volume, 
 
 // Matching state for the above sample data
 const matchingPlaybackState: PlaybackState = { duration, currentTime, muted, playbackRate, volume, status: PlaybackStatus.PLAYING };
-
-const handledNativeEvents = Object.keys(getNativeEventsHandlers(null as any));
 
 describe('Vidi instance', function () {
     it('can be constructed with or without a HTMLVideoElement', function () {

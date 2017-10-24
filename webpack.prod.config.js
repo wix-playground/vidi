@@ -2,11 +2,13 @@ const path = require('path');
 
 module.exports = {
     entry: {
-        tests: 'mocha-loader!./test'
+        vidi: './src/minified-entry'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].bundle.js',
+        filename: '[name].min.js',
+        libraryTarget: 'umd',
+        library: 'Vidi'
     },
     module: {
         rules: [
@@ -22,11 +24,10 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: [".js", ".ts", ".tsx"]
+        extensions: ['.ts', '.js']
     },
     performance: {
         hints: false
     },
-    devtool: 'source-map',
     context: __dirname
 };

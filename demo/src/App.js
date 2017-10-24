@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import Vidi from '../../dist/src';
+import Vidi from 'vidi';
+import bigBuckBunny from './images/big-buck-bunny.jpg';
+import sintel from './images/sintel.jpg';
+import tearsOfSteel from './images/tears-of-steel.jpg';
 import './App.css';
 
 export class App extends Component {
+    state = { format: 'Auto', sourceUrl: '', dropdownOpen: false, levels: [], currentLevel: -1 };
+    vidi = new Vidi();
+
     constructor(props) {
         super(props);
-        this.state = { format: 'Auto', sourceUrl: '', dropdownOpen: false, levels: [], currentLevel: -1 };
-        this.vidi = new Vidi();
         this.vidi.on('levels', levels => {
             this.setState({ levels });
         });
@@ -44,8 +48,13 @@ export class App extends Component {
         this.vidi.setVideoElement(videoElement);
     }
 
-    render() {
+    turnOffTextTracks = ({ target: videoElement }) => {
+        for (let i = 0; i < videoElement.textTracks.length; ++i) {
+            videoElement.textTracks[i].mode = 'hidden';
+        }
+    }
 
+    render() {
         const dropdownContent = !this.state.dropdownOpen ? null :
             <div className="dropdown-content">
                 <div onClick={() => this.setFormat('Auto')}>Auto</div>
@@ -87,14 +96,18 @@ export class App extends Component {
                             : null
                     }
                     <div className="boxes">
-                        <div className="box" onClick={() => this.setState({ sourceUrl: 'http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8' })}>
-                            <img src="https://raw.githubusercontent.com/wix/vidi/master/demo/assets/BigBuckBunny.jpg" title="Big Buck Bunny via HLS" alt="Big Buck Bunny" />
+                        <div className="box" onClick={() => this.setState({
+                            sourceUrl: 'http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8'
+                        })}>
+                            <img src={bigBuckBunny} title="Big Buck Bunny via HLS" alt="Big Buck Bunny" />
                         </div>
-                        <div className="box centerBox" onClick={() => this.setState({ sourceUrl: 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd' })}>
-                            <img src="https://raw.githubusercontent.com/wix/vidi/master/demo/assets/Sintel.jpg" title="Sintel via MPEG-DASH" alt="Sintel" />
+                        <div className="box centerBox" onClick={() => this.setState({
+                            sourceUrl: 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+                        })}>
+                            <img src={sintel} title="Sintel via MPEG-DASH" alt="Sintel" />
                         </div>
                         <div className="box">
-                            <img src="https://raw.githubusercontent.com/wix/vidi/master/demo/assets/TearsOfSteel.jpg" title="Tears of Steel - source URL is needed" alt="Tears of Steel" />
+                            <img src={tearsOfSteel} title="Tears of Steel - source URL is needed" alt="Tears of Steel" />
                         </div>
                     </div>
 
@@ -103,3 +116,5 @@ export class App extends Component {
         );
     }
 }
+
+export default App;

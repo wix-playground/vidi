@@ -29,7 +29,6 @@ export function resolvePlayableStreams(mediaStreams: MediaStream[], playableStre
 function groupStreamsByMediaType(mediaStreams: MediaStream[]): GroupedMediaStreams {
     const typeMap: GroupedMediaStreams = {};
     mediaStreams.forEach(mediaStream => {
-        const currentValue = typeMap[mediaStream.type];
         if (!Array.isArray(typeMap[mediaStream.type])) {
             typeMap[mediaStream.type] = [];
         }

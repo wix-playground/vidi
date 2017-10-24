@@ -1,9 +1,4 @@
-export type SRC_LOAD_ERROR = 'SRC_LOAD_ERROR';
-export type UNKNOWN_ERROR = 'UNKNOWN_ERROR';
-
-export type ErrorTypes = UNKNOWN_ERROR | SRC_LOAD_ERROR;
-
-export const Errors = {
-    SRC_LOAD_ERROR: 'SRC_LOAD_ERROR' as SRC_LOAD_ERROR,
-    UNKNOWN_ERROR: 'UNKNOWN_ERROR' as UNKNOWN_ERROR
-};
+export enum Errors {
+    SRC_LOAD_ERROR = 'Source loading error',
+    UNKNOWN_ERROR = 'Unknown Error'
+}

@@ -1,8 +1,8 @@
-export const MediaStreamTypes = {
-    MP4: 'MP4',
-    WEBM: 'WEBM',
-    HLS: 'HLS',
-    DASH: 'DASH'
+export enum MediaStreamTypes {
+    MP4 = 'MP4',
+    WEBM = 'WEBM',
+    HLS = 'HLS',
+    DASH = 'DASH'
 }
 
 export enum MediaStreamDeliveryType {
