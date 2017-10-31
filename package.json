@@ -24,8 +24,8 @@
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
-    "@types/mocha": "^2.2.43",
-    "@types/node": "^8.0.46",
+    "@types/mocha": "^2.2.44",
+    "@types/node": "8",
     "chai": "^4.1.2",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
@@ -39,8 +39,8 @@
     "ncp": "^2.0.0",
     "npm-run-all": "^4.1.1",
     "rimraf": "^2.6.2",
-    "ts-loader": "^3.0.5",
-    "typescript": "^2.5.3",
+    "ts-loader": "^3.1.1",
+    "typescript": "^2.6.1",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.3"
   },
