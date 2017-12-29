@@ -6,7 +6,7 @@
   "dependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "vidi": "^0.5.4"
+    "vidi": "^0.5.5"
   },
   "devDependencies": {
     "gh-pages": "^1.1.0",

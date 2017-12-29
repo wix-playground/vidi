@@ -1381,7 +1381,7 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-codem-isoboxer@^0.3.3:
+codem-isoboxer@0.3.5:
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/codem-isoboxer/-/codem-isoboxer-0.3.5.tgz#71f1cd1267d0e1210331b2c0e7bf99ef05d7717c"
 
@@ -1746,11 +1746,11 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-dashjs@2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/dashjs/-/dashjs-2.6.2.tgz#0a9b19c81323dd1cf9a4922a98018ac353c3c7f5"
+dashjs@2.6.4:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/dashjs/-/dashjs-2.6.4.tgz#4ad5d312acb83ce9dbde92594f4e33fd6914a52b"
   dependencies:
-    codem-isoboxer "^0.3.3"
+    codem-isoboxer "0.3.5"
     deep-equal "^1.0.1"
     imsc "^1.0.0-beta.3"
     round10 "^1.0.3"
@@ -2334,9 +2334,9 @@ eventemitter3@1.x.x:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-1.2.0.tgz#1c86991d816ad1e504750e73874224ecf3bec508"
 
-eventemitter3@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-2.0.3.tgz#b5e1079b59fb5e1ba2771c0a993be060a58c99ba"
+eventemitter3@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.0.0.tgz#fc29ecf233bd19fbd527bb4089bbf665dc90c1e3"
 
 events@^1.0.0:
   version "1.1.1"
@@ -2973,9 +2973,9 @@ he@1.1.x:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
-hls.js@0.8.5:
-  version "0.8.5"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.8.5.tgz#1f76a0db72ab9eaeca788d282bcf0f1cd7443f41"
+hls.js@0.8.9:
+  version "0.8.9"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.8.9.tgz#db367cc99ce5b0976ea3e059a1d044d7b0790697"
   dependencies:
     url-toolkit "^2.0.1"
 
@@ -6361,13 +6361,13 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vidi@^0.5.4:
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/vidi/-/vidi-0.5.4.tgz#b92b69fcb3abc67524d794a3ccb90c83e01df47d"
+vidi@^0.5.5:
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/vidi/-/vidi-0.5.5.tgz#2d935f79cf3ddb11563254f790addffbcbde68ea"
   dependencies:
-    dashjs "2.6.2"
-    eventemitter3 "^2.0.3"
-    hls.js "0.8.5"
+    dashjs "2.6.4"
+    eventemitter3 "^3.0.0"
+    hls.js "0.8.9"
 
 vm-browserify@0.0.4:
   version "0.0.4"
