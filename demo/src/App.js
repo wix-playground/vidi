@@ -75,7 +75,7 @@ class App extends Component {
             <div className="box" onClick={() => this.setState({ sourceUrl: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8' })}>
               <img src={bigBuckBunny} title="Big Buck Bunny via HLS" alt="Big Buck Bunny" />
             </div>
-            <div className="box centerBox" onClick={() => this.setState({ sourceUrl: 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd' })}>
+            <div className="box centerBox" onClick={() => this.setState({ sourceUrl: 'https://bitdash-a.akamaihd.net/content/sintel/sintel.mpd' })}>
               <img src={sintel} title="Sintel via MPEG-DASH" alt="Sintel" />
             </div>
             <div className="box">
