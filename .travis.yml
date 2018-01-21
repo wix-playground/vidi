@@ -5,7 +5,7 @@ node_js:
   - 9
   - 8
 
-sudo: false
+sudo: true
 
 addons:
   chrome: stable
