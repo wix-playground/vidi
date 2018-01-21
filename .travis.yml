@@ -9,6 +9,7 @@ sudo: false
 
 addons:
   chrome: stable
+  firefox: latest
 
 before_deploy:
   - npm run minify
