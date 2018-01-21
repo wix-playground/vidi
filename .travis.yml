@@ -7,6 +7,9 @@ node_js:
 
 sudo: true
 
+env:
+  - MOZ_HEADLESS=1
+
 addons:
   chrome: stable
   firefox: latest
