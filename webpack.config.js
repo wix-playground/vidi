@@ -1,6 +1,9 @@
 const path = require('path');
 
 module.exports = {
+    mode: 'development',
+    devtool: 'source-map',
+    context: __dirname,
     entry: {
         tests: 'mocha-loader!./test'
     },
@@ -11,22 +14,15 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.ts[x]?$/,
-                loader: 'ts-loader',
-                options: {
-                    compilerOptions: {
-                        declaration: false
-                    }
-                }
+                test: /\.ts$/,
+                loader: '@ts-tools/webpack-loader'
             }
         ]
     },
     resolve: {
-        extensions: [".js", ".ts", ".tsx"]
+        extensions: ['.ts', '.js', '.json']
     },
     performance: {
         hints: false
     },
-    devtool: 'source-map',
-    context: __dirname
 };

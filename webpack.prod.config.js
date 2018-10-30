@@ -1,33 +1,27 @@
 const path = require('path');
 
 module.exports = {
-    entry: {
-        vidi: './src/minified-entry'
-    },
+    mode: 'production',
+    context: __dirname,
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: '[name].min.js',
+        filename: 'vidi.min.js',
+        libraryExport: 'default',
         libraryTarget: 'umd',
         library: 'Vidi'
     },
     module: {
         rules: [
             {
-                test: /\.ts[x]?$/,
-                loader: 'ts-loader',
-                options: {
-                    compilerOptions: {
-                        declaration: false
-                    }
-                }
+                test: /\.ts$/,
+                loader: '@ts-tools/webpack-loader',
+                
             }
         ]
     },
     resolve: {
-        extensions: ['.ts', '.js']
+        extensions: ['.ts', '.js', '.json']
     },
     performance: {
         hints: false
-    },
-    context: __dirname
+    }
 };
